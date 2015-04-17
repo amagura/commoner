@@ -36,4 +36,3 @@ int main()
      r += test_revs();
      return (r == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
-
