@@ -20,3 +20,8 @@ clean:
 
 valgrind: clean build
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN) || true
+
+release: build clean
+	git checkout master
+	$(RM) Makefile || true
+	$(RM) test.c || true
