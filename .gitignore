@@ -3,6 +3,7 @@
 
 # binaries
 bin/test
+test
 
 # automake stuff
 autom4te.cache
