@@ -2,18 +2,21 @@
 
 _CFLAGS = -std=c99 -O2 -ggdb -g -pipe -Wall -Wextra
 
-SRC = bin/test.c
+SRC = test.c common.c
 OBJS = $(SRC:.c=.o)
-BIN = $(OBJS:.o=)
+BIN = test
 
-all: $(BIN)
+all: build
+
+build:
+	$(CC) $(CFLAGS) $(_CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $(BIN) $(SRC)
 
 .c.o:
-	$(CC) $(CFLAGS) $(_CFLAGS) ($CPPFLAGS) $(LDFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) $(_CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@ $<
 
 clean:
-	$(RM) bin/test.o
-	$(RM) bin/test
-	$(RM)
+	$(RM) test || true
+	$(RM) *.o || true
 
-test: $(BIN)
+valgrind: clean build
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(BIN) || true

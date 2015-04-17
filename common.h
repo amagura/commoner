@@ -43,6 +43,7 @@ the end of C declarations. */
 BEGIN_C_DECLS
 
 #include <stdio.h>
+#include <string.h>
 
 # ifndef COM_DEBUG
 #  define COM_DEBUG 1 // XXX change this to turn debug messages on/off
@@ -151,11 +152,17 @@ BEGIN_C_DECLS
 # endif
 
 # undef bzero
-# define bzero(COM_b, COM_len) (memset((COM_b), '\0', (COM_len)), (void) 0)
+inline void bzero(void *b, size_t len)
+{
+     return (memset(b, '\0', len), (void) 0);
+}
 
-# undef mempcpy
-# define mempcpy(COM_DST, COM_SRC, COM_LEN)			\
-     (memcpy((COM_DST), (COM_SRC), (COM_LEN)) + COM_LEN)
+# ifndef mempcpy
+inline void *mempcpy(void *dst, void *src, size_t len)
+{
+     return (memcpy(dst, src, len) + len);
+}
+# endif
 
 /** Function Prototypes **/
 
@@ -170,15 +177,22 @@ void intmlen PARAMS((int dst, int src));
 
 /** rev: reverse an array of characters **/
 void rev PARAMS((char *s));
-char *revp PARAMS((const char *s));
+char *revp PARAMS((const char *s)); /* XXX return value needs free */
 
 /** itoa: convert a number to an atom (i.e. string) **/
 void itoa PARAMS((char *dst, int src));
 char *itoap PARAMS((int src));
 
-/** catl: catenate as many _s_ource strings into `buf'
+/** concatl: catenate as many _s_ource strings into `buf'
  ** as will fit in `bufsiz' bytes **/
-size_t catl PARAMS((char *buf, size_t bufsiz, const char *s1, ...));
+/** XXX if you _must_ use concatl directly: be sure to pass `(void *)NULL' as
+ ** the last argument **/
+size_t concatl PARAMS((char *buf, size_t bufsiz, const char *s1, ...));
+# undef catl
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+
+/** repeat: create an array of chars containing n-1 many _s_ chars **/
+void repeat PARAMS((char *dst, const char s, size_t n));
 
 END_C_DECLS
 

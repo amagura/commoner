@@ -88,17 +88,17 @@ char cpeek(char *c, char *s, short fwd)
  * XXX A failure is indicated by a return value _equal to
  * the destination buffers size_, which may make errors somewhat
  * harder to spot! */
-size_t catl(char *buf, size_t bufsiz, const char *s1, ...)
+size_t concatl(char *buf, size_t bufsiz, const char *s1, ...)
 {
      va_list args;
-     const char *s;
+     const char *s = NULL;
      char *p, *tmp;
      unsigned long ldx, mdx, ndx;
      size_t used = 0;
 
      mdx = ndx = strlen(s1);
      va_start(args, s1);
-     while ((s = va_arg(args, const char *))) {
+     while ((s = va_arg(args, char *))) {
 	  ldx = strlen(s);
 	  if ((mdx += ldx) < ldx) break;
      }
@@ -108,16 +108,20 @@ size_t catl(char *buf, size_t bufsiz, const char *s1, ...)
      tmp = malloc(mdx + 1);
      if (!tmp) return bufsiz;
      bzero(tmp, mdx + 1);
+     bzero(buf, mdx + 1);
 
-     p = mempcpy(p = tmp, s1, ndx);
+     p = tmp;
+     p = mempcpy(p, (char *)s1, ndx);
+
      used += ndx;
      COM_DBG("p: `%s`\n", p);
+     COM_DBG("used: %lu\n", used - 0);
 
      va_start(args, s1);
-     while ((s = va_arg(args, const char *))) {
+     while ((s = va_arg(args, char *))) {
 	  ldx = strlen(s);
 	  if ((ndx += ldx) < ldx || ndx > mdx) break;
-	  p = mempcpy(p, s, ldx);
+	  p = mempcpy(p, (char *)s, ldx);
 	  used += ldx;
      }
      va_end(args);
@@ -126,22 +130,22 @@ size_t catl(char *buf, size_t bufsiz, const char *s1, ...)
 	  return bufsiz;
      }
 
-     COM_DBG("*p: `%c'\n", *p);
-     COM_DBG("*p--: `%c'\n", cpeek(p, tmp, 0));
-     *p = '\0';
-     ++used;
+     *p++ = '\0', ++used;
+
+     COM_DBG("tmp: `%s'\n", tmp);
+     COM_DBG("*p: `%c'\n", *(p - 1));
+     COM_DBG("*p--: `%c'\n", cpeek(p - 1, tmp, 0));
+     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
 
 #if COM_DLVL > 1
      COM_DBG("used > bufsiz: %d\n", used > bufsiz);
-     COM_DBG("used == strlen(p): %d\n", used == strlen(p));
-     COM_DBG("used: %lu\n", used - 0);
-     COM_DBG("strlen(p): %lu\n", strlen(p));
-     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
+     COM_DBG("used == (strlen(tmp) + 1): %d\n", used == (strlen(tmp) + 1));
+     COM_DBG("used#2: %lu\n", used - 0);
+     COM_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
      COM_DBG("mdx + 1: %lu\n", mdx + 1);
-     COM_DBG("p: `%s`\n", p);
      COM_DBG("p == &tmp[%lu + 1]: %d\n", mdx, p == &tmp[mdx + 1]);
      COM_DBG("bufsiz - used: %lu\n", bufsiz - used);
-     COM_DBG("used: %lu\n", used);
+     COM_DBG("used#3: %lu\n", used - 0);
      COM_DBG("p == &tmp[%lu]: %d\n", mdx - 0, p == &tmp[mdx]);
 #endif
 
@@ -167,17 +171,13 @@ char *revp(const char *s)
      int hdx[2];
      *hdx = strlen(s) - 1;
      char *copy = strdup(s);
-     char dst[hdx[0] + 1];
-     char *wp = dst;
 
      for (int idx = 0; idx < *hdx; ++idx, --hdx[0]) {
 	  hdx[1] = copy[idx];
 	  copy[idx] = copy[*hdx];
 	  copy[*hdx] = hdx[1];
      }
-     memcpy(wp, copy, hdx[0] + 1);
-     free(copy);
-     return wp;
+     return copy;
 }
 
 char *itoap(const int src)
@@ -197,7 +197,7 @@ char *itoap(const int src)
 
      }
      COM_DBG("*wp: `%c'\n", *wp);
-     *wp = '\0';
+     *++wp = '\0';
 
 #if COM_DLEVEL > 1
 	  COM_DBG("*len: %d\n", *len);
@@ -250,4 +250,20 @@ void itoa(char *dst, int src)
 #endif
      COM_DBG("wp: `%s'\n", tmp);
      memcpy(dst, tmp, len);
+}
+
+void repeat(char *dst, const char s, size_t n)
+{
+     bzero(dst, n);
+     char *wp = dst;
+
+     do {
+	  *wp = s;
+     } while(++wp != &dst[n - 1]);
+
+     dst[n] = '\0';
+     COM_DBG("dst: `%s'\n", dst);
+     COM_DBG("strlen(dst): %lu\n", strlen(dst));
+     COM_DBG("sizeof(dst): %lu\n", sizeof(dst));
+     COM_DBG("sizeof(void *): %lu\n", sizeof(void *));
 }
