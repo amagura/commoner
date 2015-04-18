@@ -173,7 +173,8 @@ char cpeek PARAMS((char *c, char *s, short fwd));
 /** intlen: find how many digits a given integral contains. **/
 int intlen PARAMS((int n));
 int intlenc PARAMS((const int n));
-void intlenm PARAMS((int dst, int src));
+size_t intlenm PARAMS((int src)); /* XXX for use with malloc'ing for
+				   * calls to `itoa' */
 
 /** rev: reverse an array of characters **/
 void rev PARAMS((char *s));

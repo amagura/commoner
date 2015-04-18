@@ -41,14 +41,14 @@ int intlenc(const int idx)
      return result;
 }
 
-void intlenm(int dst, int src)
+size_t intlenm(int src)
 {
-     dst = 0;
+     size_t dst = 1; /* XXX adds 1 for null-terminator */
      while (src) {
 	  ++dst;
 	  src /= 10;
      }
-     memset(&dst, src, sizeof(int));
+     return dst;
 }
 
 char cpeek(char *c, char *s, short fwd)
@@ -236,10 +236,8 @@ void itoa(char *dst, int src)
 	  COM_DBG("*wp: `%c`\n", *wp);
 #endif
      }
-     COM_DBG("wp: `%s'\n", wp);
-     *wp = '\0';
+     *wp++ = '\0';
 #if COM_DLVL > 1
-     COM_DBG("*wp: `%c'\n", *wp);
      COM_DBG("len: %d\n", len);
      COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
      COM_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
@@ -250,9 +248,8 @@ void itoa(char *dst, int src)
      COM_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
      COM_DBG("sizeof(tmp)#2: %lu\n", sizeof(tmp));
      COM_DBG("tmp#2: `%s'\n", tmp);
-     COM_DBG("*wp#2: `%c'\n", *wp);
 #endif
-     COM_DBG("wp: `%s'\n", tmp);
+     COM_DBG("tmp#3: `%s'\n", tmp);
      memcpy(dst, tmp, len);
 }
 

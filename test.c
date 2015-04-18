@@ -34,7 +34,11 @@ int test_itoas()
      int idx = 12345;
      char *s = itoap(idx);
      COM_DBG("s: `%s'\n", s);
-     r = strcmp(s, "12345");
+     r += strcmp(s, "12345");
+     free(s);
+     s = malloc(intlenm(987654));
+     itoa(s, 987654);
+     r += strcmp(s, "987654");
      free(s);
      return r;
 }
