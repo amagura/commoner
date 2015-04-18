@@ -235,7 +235,11 @@ char *concat(const char *s1, ...)
 	va_end(args);
 	if (s || m >= INT_MAX) return NULL;
 
+#if defined(__cplusplus)
 	result = (char *)malloc(m + 1);
+#else
+	result = malloc(m + 1);
+#endif
 	if (!result) return NULL;
 
 	memcpy(p = result, s1, n);
