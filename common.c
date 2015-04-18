@@ -53,22 +53,19 @@ size_t intlenm(int src)
 
 char cpeek(char *c, char *s, short fwd)
 {
-     char tmp = 0;
-     switch (fwd) {
-     case 1:
+     char tmp = '\0';
+     if (fwd > 0) {
 	  if (c == &s[strlen(s) - 1] || c == &s[strlen(s)])
 	       return *c;
 	  else
 	       tmp = *++c;
 	  --c;
-	  break;
-     case 0:
+     } else if (fwd <= 0) {
 	  if (c == s)
 	       return *c;
 	  else
 	       tmp = *--c;
 	  ++c;
-	  break;
      }
      return tmp;
 }
