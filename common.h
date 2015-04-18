@@ -151,11 +151,12 @@ BEGIN_C_DECLS
      } while(0)
 # endif
 
-# undef bzero
+# ifndef bzero
 inline void bzero(void *b, size_t len)
 {
      return (memset(b, '\0', len), (void) 0);
 }
+# endif
 
 # ifndef mempcpy
 inline void *mempcpy(void *dst, void *src, size_t len)
