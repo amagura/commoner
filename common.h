@@ -43,7 +43,13 @@ the end of C declarations. */
 BEGIN_C_DECLS
 
 #include <stdio.h>
-#include <string.h>
+
+# if 0
+void *memset PARAMS((void *s, int c, size_t n));
+void *memcpy PARAMS((void *dest, const void *src, size_t n));
+# else
+#  include <string.h>
+# endif
 
 # ifndef COM_DEBUG
 #  define COM_DEBUG 1 // XXX change this to turn debug messages on/off
