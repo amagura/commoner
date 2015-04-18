@@ -170,7 +170,8 @@ char *revp(const char *s)
 {
      int hdx[2];
      *hdx = strlen(s) - 1;
-     char *copy = strdup(s);
+     char *copy = malloc(*hdx + 1 * (sizeof(*copy)));
+     memcpy(copy, s, *hdx + 1);
 
      for (int idx = 0; idx < *hdx; ++idx, --hdx[0]) {
 	  hdx[1] = copy[idx];
@@ -186,11 +187,11 @@ char *itoap(const int src)
      char buf[++*len];
      char *wp = buf;
 
-     for (; *len != 0; ++wp, len[1] /= 10) {
+     for (; *len != 0; ++wp, *len /= 10) {
 	  if (*len >= 0)
-	       *wp = '0' + (len[1] % 10);
+	       *wp = '0' + (*len % 10);
 	  else
-	       *wp = '0' - (len[1] % 10);
+	       *wp = '0' - (*len % 10);
 #if COM_DLVL > 1
 	  COM_DBG("*wp: `%c'\n", *wp);
 #endif
