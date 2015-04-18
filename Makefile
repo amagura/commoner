@@ -1,5 +1,7 @@
 ## GNU Makefile
 
+
+CC ?= clang
 _CFLAGS = -std=c99 -O2 -ggdb -g -pipe -Wall -Wextra
 
 SRC = test.c common.c

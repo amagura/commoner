@@ -30,17 +30,18 @@ int intlen(int idx)
      return result;
 }
 
-int intclen(const int idx)
+int intlenc(const int idx)
 {
-     int copy[2] = {idx, 0};
-     while (*copy) {
-	  ++copy[1];
-	  copy[0] /= 10;
+     int copy = idx;
+     int result = 0;
+     while (copy) {
+	  ++result;
+	  copy /= 10;
      }
-     return *copy;
+     return result;
 }
 
-void intmlen(int dst, int src)
+void intlenm(int dst, int src)
 {
      dst = 0;
      while (src) {
@@ -183,22 +184,25 @@ char *revp(const char *s)
 
 char *itoap(const int src)
 {
-     int len[2] = {intclen(src), 0};
-     char buf[++*len];
-     char *wp = buf;
+     /* XXX + 1 for the null terminator */
+     int idx = src, len = intlenc(src) + 1;
+     char *wp, *buf;
 
-     for (; *len != 0; ++wp, *len /= 10) {
-	  if (*len >= 0)
-	       *wp = '0' + (*len % 10);
+     buf = malloc(len * (sizeof(*buf)));
+     bzero(buf, len);
+     wp = buf;
+
+     for (; idx != 0; ++wp, idx /= 10) {
+	  if (idx >= 0)
+	       *wp = '0' + (idx % 10);
 	  else
-	       *wp = '0' - (*len % 10);
+	       *wp = '0' - (idx % 10);
 #if COM_DLVL > 1
 	  COM_DBG("*wp: `%c'\n", *wp);
 #endif
-
      }
-     COM_DBG("*wp: `%c'\n", *wp);
-     *++wp = '\0';
+     *wp++ = '\0';
+     COM_DBG("*wp#2: `%c'\n", *(wp - 2));
 
 #if COM_DLEVEL > 1
 	  COM_DBG("*len: %d\n", *len);
@@ -207,21 +211,20 @@ char *itoap(const int src)
 	  COM_DBG("*wp: `%c'\n", *wp);
 	  COM_DBG("buf: `%s'\n", buf);
 #endif
-     wp = revp(buf);
+     rev(buf);
 
      COM_DBG("strlen(buf)#2: %lu\n", strlen(buf));
      COM_DBG("sizeof(buf)#2: %lu\n", sizeof(buf));
      COM_DBG("buf: `%s'\n", buf);
-     COM_DBG("*wp: `%c'\n", *wp);
 
-     return wp;
+     return buf;
 }
 
 
 void itoa(char *dst, int src)
 {
-     int len = intlen(src);
-     char tmp[++len];
+     int len = intlen(src) + 1; /* XXX + 1 for the null terminator */
+     char tmp[len];
      char *wp = tmp;
 
      for (; src != 0; ++wp, src /= 10) {

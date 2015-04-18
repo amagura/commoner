@@ -28,11 +28,26 @@ int test_revs()
      return r;
 }
 
+int test_itoas()
+{
+     int r = 0;
+     int idx = 12345;
+     char *s = itoap(idx);
+     COM_DBG("s: `%s'\n", s);
+     r = strcmp(s, "12345");
+     free(s);
+     return r;
+}
+
 
 int main()
 {
      int r = 0;
-//     r += test_catl();
+     com_ping;
+     r += test_catl();
+     com_ping;
      r += test_revs();
+     com_ping;
+     r += test_itoas();
      return (r == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
