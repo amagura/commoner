@@ -44,6 +44,24 @@ int test_itoas()
      return r;
 }
 
+int test_intlen()
+{
+     int r, ret, result;
+     size_t rs = 0;
+     r = 0;
+     int idx = 256;
+     ret = intlen(idx);
+     result = intlenc(idx);
+     rs = intlenm(idx);
+     r += (ret == result == (rs - 1));
+     idx = rand();
+     ret = intlen(idx);
+     result = intlenc(idx);
+     rs = intlenm(idx);
+     r += (ret == result == (rs - 1));
+     return r;
+}
+
 
 int main()
 {
@@ -54,5 +72,8 @@ int main()
      r += test_revs();
      com_ping;
      r += test_itoas();
+     com_ping;
+     r += test_intlen();
+     com_pong;
      return (r == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
