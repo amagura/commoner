@@ -158,17 +158,26 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 # endif
 
 # ifndef bzero
+#  if 0
+#   define bzero(COM_B, COM_LEN) (memset((COM_B), '\0', (COM_LEN)), (void) 0)
+#  else
 inline void bzero(void *b, size_t len)
 {
      return (memset(b, '\0', len), (void) 0);
 }
+#  endif
 # endif
 
 # ifndef mempcpy
+#  if 0
+#   define mempcpy(COM_D, COM_S, COM_L)			\
+     (memcpy((COM_D), (COM_S), (COM_L) + (COM_L)))
+#  else
 inline void *mempcpy(void *dst, void *src, size_t len)
 {
      return (memcpy(dst, src, len) + len);
 }
+#  endif
 # endif
 
 /** Function Prototypes **/
@@ -195,7 +204,7 @@ char *itoap PARAMS((int src));
  ** XXX return value needs free.  **/
 char *concat PARAMS((const char *s1, ...));
 # undef cat
-# define cat(...) (concat(__VA_ARGS, (void *)NULL))
+# define cat(...) (concat(__VA_ARGS__, (void *)NULL))
 
 /** concatl: catenate as many _s_ource strings into `buf'
  ** as will fit in `bufsiz' bytes **/
