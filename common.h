@@ -42,13 +42,21 @@ the end of C declarations. */
 
 BEGIN_C_DECLS
 
-#include <stdio.h>
+# include <stdio.h>
 
-# if 0
+# if !defined(COM_INCLUDE)
+#  define COM_INCLUDE 0
+# endif
+
+# if COM_INCLUDE
 void *memset PARAMS((void *s, int c, size_t n));
 void *memcpy PARAMS((void *dest, const void *src, size_t n));
 # else
 #  include <string.h>
+# endif
+
+# if !defined(COM_TESTING)
+#  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
 # endif
 
 # ifndef COM_DEBUG
@@ -161,7 +169,7 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
      } while(0)
 # endif
 
-# ifndef bzero
+# if !defined(bzero)
 #  if COM_MACROS
 #   define bzero(COM_B, COM_LEN)			\
      (memset((COM_B), '\0', (COM_LEN)), (void) 0)
@@ -173,7 +181,7 @@ inline void bzero(void *b, size_t len)
 #  endif
 # endif
 
-# ifndef mempcpy
+# if !defined(mempcpy)
 #  if COM_MACROS
 #   define mempcpy(COM_D, COM_S, COM_L)			\
      (memcpy((COM_D), (COM_S), (COM_L) + (COM_L)))
@@ -221,9 +229,11 @@ size_t concatl PARAMS((char *buf, size_t bufsiz, const char *s1, ...));
 
 /** repeat: create an array of chars containing n-1 many _s_ chars **/
 void repeat PARAMS((char *dst, const char s, size_t n));
+# if COM_TESTING
 int strrep PARAMS((char *dst, const char *s, size_t n));
 char *strprep PARAMS((const char *s, int x));
+# endif
 
 END_C_DECLS
 
-#endif /* COMMONS_MAIN_H_GUARD */
+#endif /* COMMON_MAIN_H_GUARD */

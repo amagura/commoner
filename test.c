@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define COM_TESTING 1
 #include "common.h"
 
 int test_catl()
