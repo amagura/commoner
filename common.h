@@ -213,12 +213,15 @@ char *revp PARAMS((const char *s)); /* XXX return value needs free */
 void itoa PARAMS((char *dst, int src));
 char *itoap PARAMS((int src));
 
-/** concat: catenate several strings together
- ** XXX return value needs free.  **/
-char *concat PARAMS((const char *s1, ...));
+/** concat: catenate several strings together **/
+char *concat PARAMS((const char *s1, ...)); // XXX return value needs free
+size_t concatl PARAMS((char *dest, size_t dest_siz, const char *s1, ...));
 # undef cat
 # define cat(...) (concat(__VA_ARGS__, (void *)NULL))
+# undef catl
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
 
+# if 0
 /** concatl: catenate as many _s_ource strings into `buf'
  ** as will fit in `bufsiz' bytes **/
 /** XXX if you _must_ use concatl directly: be sure to pass `(void *)NULL' as
@@ -226,6 +229,7 @@ char *concat PARAMS((const char *s1, ...));
 size_t concatl PARAMS((char *buf, size_t bufsiz, const char *s1, ...));
 # undef catl
 # define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+# endif
 
 /** repeat: create an array of chars containing n-1 many _s_ chars **/
 void repeat PARAMS((char *dst, const char s, size_t n));
