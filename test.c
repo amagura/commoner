@@ -53,15 +53,35 @@ int test_intlen()
      ret = intlen(idx);
      result = intlenc(idx);
      rs = intlenm(idx);
-     r += (ret == result == (rs - 1));
-     idx = rand();
+     COM_DBG("ret: %d, result: %d, rs: %lu\n", ret, result, rs - 0);
+     if (!(ret == result == (rs - 1)))
+	  r += 1;
+     COM_DBG("r: %d\n", r);
+     idx = rand() + (srand(rand()), rand());
      ret = intlen(idx);
      result = intlenc(idx);
      rs = intlenm(idx);
-     r += (ret == result == (rs - 1));
+     COM_DBG("ret: %d, result: %d, rs: %lu\n", ret, result, rs - 1);
+     if (!(ret == result == (rs - 1)))
+	  r += 1;
      return r;
 }
 
+int test_repeats()
+{
+     int r = 0;
+     char *dst = strprep("hello", 3);
+     size_t n = (sizeof("hello") - 1) * 3 + 1;
+     r += strcmp("hellohellohello", dst);
+     COM_DBG("r: %d\n", r);
+     r += !(strlen("hellohellohello") == strlen(dst));
+     COM_DBG("r: %d\n", r);
+     free(dst);
+     dst = malloc(n);
+     strrep(dst, "hello", n);
+     COM_DBG("dst: `%s'\n", dst);
+     return r;
+}
 
 int main()
 {
@@ -74,6 +94,7 @@ int main()
      r += test_itoas();
      com_ping;
      r += test_intlen();
-     com_pong;
+     com_ping;
+     r += test_repeats();
      return (r == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }

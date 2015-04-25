@@ -61,6 +61,10 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 #  endif
 # endif
 
+# ifndef COM_MACROS
+#  define COM_MACROS 0 // XXX change this to use or not use macros vs inline
+# endif
+
 # ifndef PACKAGE_VERSION
 #  define PACKAGE_VERSION ""
 # endif
@@ -158,8 +162,9 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 # endif
 
 # ifndef bzero
-#  if 0
-#   define bzero(COM_B, COM_LEN) (memset((COM_B), '\0', (COM_LEN)), (void) 0)
+#  if COM_MACROS
+#   define bzero(COM_B, COM_LEN)			\
+     (memset((COM_B), '\0', (COM_LEN)), (void) 0)
 #  else
 inline void bzero(void *b, size_t len)
 {
@@ -169,7 +174,7 @@ inline void bzero(void *b, size_t len)
 # endif
 
 # ifndef mempcpy
-#  if 0
+#  if COM_MACROS
 #   define mempcpy(COM_D, COM_S, COM_L)			\
      (memcpy((COM_D), (COM_S), (COM_L) + (COM_L)))
 #  else
@@ -216,6 +221,8 @@ size_t concatl PARAMS((char *buf, size_t bufsiz, const char *s1, ...));
 
 /** repeat: create an array of chars containing n-1 many _s_ chars **/
 void repeat PARAMS((char *dst, const char s, size_t n));
+int strrep PARAMS((char *dst, const char *s, size_t n));
+char *strprep PARAMS((const char *s, int x));
 
 END_C_DECLS
 
