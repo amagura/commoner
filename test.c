@@ -53,17 +53,12 @@ int test_intlen()
      ret = intlen(idx);
      result = intlenc(idx);
      rs = intlenm(idx);
-     COM_DBG("ret: %d, result: %d, rs: %lu\n", ret, result, rs - 0);
-     if (!(ret == result == (rs - 1)))
-	  r += 1;
+     COM_DBG("ret: %d, result: %d, rs: %lu\n", ret, result, (unsigned long)rs);
+     r += ret - result;
      COM_DBG("r: %d\n", r);
-     idx = rand() + (srand(rand()), rand());
-     ret = intlen(idx);
-     result = intlenc(idx);
-     rs = intlenm(idx);
-     COM_DBG("ret: %d, result: %d, rs: %lu\n", ret, result, rs - 1);
-     if (!(ret == result == (rs - 1)))
-	  r += 1;
+     r += ret - (int)(rs - 1);
+     COM_DBG("ret - (rs - 1): %d\n", ret - (int)(rs - 1));
+     COM_DBG("r#2: %d\n", r);
      return r;
 }
 
