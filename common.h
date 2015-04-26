@@ -70,7 +70,7 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 # endif
 
 # if !defined(COM_MACROS)
-#  define COM_MACROS 0 // XXX change this to use or not use macros vs inline
+#  define COM_MACROS 1 // XXX change this to use or not use macros vs inline
 # endif
 
 # if !defined(PACKAGE_VERSION)
