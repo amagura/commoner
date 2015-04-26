@@ -12,6 +12,7 @@ config.log
 config.status
 aclocal.m4
 Makefile.in
+Makefile
 .deps
 configure
 build-aux
