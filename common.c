@@ -51,7 +51,80 @@ size_t intlenm(int src)
      return dst;
 }
 
-char cpeek(char *c, char *s, short fwd)
+#if 0
+** itoa functions **
+#endif
+void itoa(char *dst, int src)
+{
+     int len = intlen(src) + 1; /* XXX + 1 for the null terminator */
+     char tmp[len];
+     char *wp = tmp;
+
+     for (; src != 0; ++wp, src /= 10) {
+	  if (src >= 0)
+	       *wp = '0' + (src % 10);
+	  else
+	       *wp = '0' - (src % 10);
+#if COM_DLVL > 1
+	  COM_DBG("*wp: `%c`\n", *wp);
+#endif
+     }
+     *wp++ = '\0';
+#if COM_DLVL > 1
+     COM_DBG("len: %d\n", len);
+     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
+     COM_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
+     COM_DBG("tmp: `%s'\n", tmp);
+#endif
+     rev(tmp);
+#if COM_DLVL > 1
+     COM_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
+     COM_DBG("sizeof(tmp)#2: %lu\n", sizeof(tmp));
+     COM_DBG("tmp#2: `%s'\n", tmp);
+#endif
+     COM_DBG("tmp#3: `%s'\n", tmp);
+     memcpy(dst, tmp, len);
+}
+
+char *itoap(const int src)
+{
+     /* XXX + 1 for the null terminator */
+     int idx = src, len = intlenc(src) + 1;
+     char *wp, *buf;
+
+     buf = malloc(len * (sizeof(*buf)));
+     bzero(buf, len);
+     wp = buf;
+
+     for (; idx != 0; ++wp, idx /= 10) {
+	  if (idx >= 0)
+	       *wp = '0' + (idx % 10);
+	  else
+	       *wp = '0' - (idx % 10);
+#if COM_DLVL > 1
+	  COM_DBG("*wp: `%c'\n", *wp);
+#endif
+     }
+     *wp++ = '\0';
+     COM_DBG("*wp#2: `%c'\n", *(wp - 2));
+
+#if COM_DLEVEL > 1
+	  COM_DBG("*len: %d\n", *len);
+	  COM_DBG("strlen(buf): %lu\n", strlen(buf));
+	  COM_DBG("sizeof(buf): %lu\n", sizeof(buf));
+	  COM_DBG("*wp: `%c'\n", *wp);
+	  COM_DBG("buf: `%s'\n", buf);
+#endif
+     rev(buf);
+
+     COM_DBG("strlen(buf)#2: %lu\n", strlen(buf));
+     COM_DBG("sizeof(buf)#2: %lu\n", sizeof(buf));
+     COM_DBG("buf: `%s'\n", buf);
+
+     return buf;
+}
+
+char cpeek(const char *c, const char *s, const short fwd)
 {
      char tmp = '\0';
      if (fwd > 0) {
@@ -70,6 +143,9 @@ char cpeek(char *c, char *s, short fwd)
      return tmp;
 }
 
+# if 0
+** Reverse functions **
+#endif
 void rev(char *s)
 {
      int hdx[2];
@@ -97,7 +173,137 @@ char *revp(const char *s)
      return copy;
 }
 
+#if 0
+** Concat functions **
+#endif
+char *concat(const char *s1, ...)
+{
+	va_list args;
+	const char *s;
+	char *p, *result;
+	unsigned long l, m, n;
 
+	m = n = strlen(s1);
+	va_start(args, s1);
+	while ((s = va_arg(args, char *))) {
+		l = strlen(s);
+		if ((m += l) < l) break;
+	}
+	va_end(args);
+	if (s || m >= INT_MAX) return NULL;
+
+#if defined(__cplusplus)
+	result = (char *)malloc(m + 1);
+#else
+	result = malloc(m + 1);
+#endif
+	if (!result) return NULL;
+
+	memcpy(p = result, s1, n);
+	p += n;
+	va_start(args, s1);
+	while ((s = va_arg(args, char *))) {
+		l = strlen(s);
+		if ((n += l) < l || n > m) break;
+		memcpy(p, s, l);
+		p += l;
+	}
+	va_end(args);
+	if (s || m != n || p != result + n) {
+		free(result);
+		return NULL;
+	}
+
+	*p = '\0';
+	return result;
+}
+
+/* unlike `concat', which returns a
+ * new pointer that must then be copied
+ * or acted upon in some meaningfully meaningless
+ * manner, `catl' returns the number of bytes belonging
+ * to `buf', which could _NOT_ be filled, always copying
+ * no more than `bufsiz` of data into `buf'
+ *
+ * If the return value is an integral value, which
+ * we'll call `y', that is less than 0,
+ * then the resulting catenation has been truncated by `!y'
+ * many bytes.  Similarlly, if a positive value is returned:
+ * `y' many bytes is how much of `buf', which was _NOT_ used.
+ *
+ * XXX A failure is indicated by a return value _equal to
+ * the destination buffers size_, which may make errors somewhat
+ * harder to spot! */
+size_t concatl(char *buf, size_t bufsiz, const char *s1, ...)
+{
+     va_list args;
+     const char *s = NULL;
+     char *p, *tmp;
+     unsigned long ldx, mdx, ndx;
+     size_t used = 0;
+
+     mdx = ndx = strlen(s1);
+     va_start(args, s1);
+     while ((s = va_arg(args, char *))) {
+	  ldx = strlen(s);
+	  if ((mdx += ldx) < ldx) break;
+     }
+     va_end(args);
+     if (s || mdx >= INT_MAX) return bufsiz;
+
+#if defined(__cplusplus)
+     tmp = (char *)malloc(mdx + 1);
+#else
+     tmp = malloc(mdx + 1);
+#endif
+     if (!tmp) return bufsiz;
+     bzero(tmp, mdx + 1);
+     bzero(buf, mdx + 1);
+
+     p = tmp;
+     p = mempcpy(p, (char *)s1, ndx);
+
+     used += ndx;
+     COM_DBG("p: `%s`\n", p);
+     COM_DBG("used: %lu\n", used - 0);
+
+     va_start(args, s1);
+     while ((s = va_arg(args, char *))) {
+	  ldx = strlen(s);
+	  if ((ndx += ldx) < ldx || ndx > mdx) break;
+	  p = mempcpy(p, (char *)s, ldx);
+	  used += ldx;
+     }
+     va_end(args);
+     if (s || mdx != ndx || p != tmp + ndx) {
+	  free(tmp);
+	  return bufsiz;
+     }
+
+     *p = '\0';
+     /* NOTE it's so easy to forget, but in C, arrays start at 0.
+      * I know it may sound silly to say that I forget this, but I do.
+      * Because of this, a pointer at position 255 is really at position
+      * 256, because the pointer's start position is 0; not 1.
+      * This is why, if you were to assign `*p' like so:
+      * *++p = '\0'; it would result in an error: because position 256 is
+      * outside of the malloc'd memory address. */
+     ++used;
+
+     COM_DBG("tmp: `%s'\n", tmp);
+     COM_DBG("*p: `%c'\n", *(p - 1));
+     COM_DBG("*p--: `%c'\n", cpeek(p - 1, tmp, 0));
+     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
+     COM_DBG("used#2: %lu\n", used - 0);
+
+     memcpy(buf, tmp, (used > bufsiz ? bufsiz : used));
+     free(tmp);
+     return bufsiz - used;
+}
+
+#if 0
+** Repeat functions **
+#endif
 void repeat(char *dst, const char s, size_t n)
 {
      bzero(dst, n);
@@ -147,4 +353,36 @@ char *strprep(const char *s, int times)
 
      *wp++ = '\0';
      return copy;
+}
+
+# if 0
+** strcdelim **
+#endif
+int *strcdelim(const char *s, const char od, const char cd, int count[2])
+{
+     memset(count, 0, sizeof(*count)*2);
+     char *c = strchr(s, '\0');
+
+     if (c == s)
+	  return NULL;
+
+     do {
+	  if (c != s && cpeek(c, s, 0) == '\\')
+	       continue;
+	  if (*c == cd)
+	       ++count[1];
+	  else if (*c == od)
+	       ++count[0];
+     } while (--c != s);
+
+     if (od == cd && count[1] > 0) {
+	  if (count[1] % 2 == 1)
+	       while (count[0]++ < --count[1]);
+	  else {
+	       count[0] = count[1] * 0.5;
+	       count[1] *= 0.5;
+	  }
+     }
+
+     return count;
 }

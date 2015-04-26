@@ -3,6 +3,7 @@
 #include <string.h>
 
 #define COM_TESTING 1
+#define COM_DEBUG 1
 #include "common.h"
 
 int test_catl()
@@ -77,6 +78,7 @@ int test_repeats()
      dst = malloc(n);
      strrep(dst, "hello", n);
      COM_DBG("dst: `%s'\n", dst);
+     free(dst);
      return r;
 }
 

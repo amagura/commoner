@@ -1,6 +1,39 @@
 ## Process this file with Automake to generate Makefile.in
 
 bin_PROGRAMS = test
-test_SOURCES = common.c itoa.c concat.c test.c
-AMCFLAGS = -std=c99 -O2 -ggdb -g -pipe -Wall -Wextra
-AMLDFLAGS =
+test_SOURCES = common.c test.c common.h
+AM_CFLAGS =
+AM_CPPFLAGS =
+AM_LDFLAGS =
+
+AM_CFLAGS += -Wall -Wextra -O2
+
+if DEBUG
+AM_CFLAGS += -g -ggdb
+AM_CPPFLAGS += -DCOM_DEBUG=1
+endif
+
+if !DEBUG
+if NO_DEBUG
+AM_CPPFLAGS += -DCOM_DEBUG=0
+endif
+endif
+
+if NATIVE
+if !GENERIC
+AM_CFLAGS += -march=native -mtune=native
+endif
+endif
+
+if GENERIC
+if CPU_KNOWN
+AM_CFLAGS += -mtune=generic-$(CPUTYPE)
+else
+AM_CFLAGS += -mtune=generic
+endif
+endif
+
+valgrind: clean test
+	for f in $(bin_PROGRAMS); do \
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./"$$f" ;\
+	done

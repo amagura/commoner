@@ -59,26 +59,30 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 #  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
 # endif
 
-# ifndef COM_DEBUG
-#  define COM_DEBUG 1 // XXX change this to turn debug messages on/off
+# if !defined(COM_DEBUG)
+#  define COM_DEBUG 0 // XXX change this to turn debug messages on/off
 # endif
 
 # if COM_DEBUG
-#  ifndef COM_DLVL
-#   define COM_DLVL 2 // XXX change this to increase/decrease debug verbosity
+#  if !defined(COM_DLVL)
+#   define COM_DLVL (COM_DEBUG + 1) // XXX change this to increase/decrease debug verbosity
 #  endif
 # endif
 
-# ifndef COM_MACROS
+# if !defined(COM_MACROS)
 #  define COM_MACROS 0 // XXX change this to use or not use macros vs inline
 # endif
 
-# ifndef PACKAGE_VERSION
+# if !defined(PACKAGE_VERSION)
 #  define PACKAGE_VERSION ""
 # endif
 
-# ifndef COM_PROGNAME
-#  define COM_PROGNAME "common"
+# if !defined(PACKAGE)
+#  define PACKAGE "common"
+# endif
+
+# if !defined(COM_PROGNAME)
+#  define COM_PROGNAME PACKAGE
 # endif
 
 # if COM_DEBUG
@@ -170,7 +174,7 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 # endif
 
 # if !defined(bzero)
-#  if COM_MACROS
+#  if COM_MACROS || 1
 #   define bzero(COM_B, COM_LEN)			\
      (memset((COM_B), '\0', (COM_LEN)), (void) 0)
 #  else
@@ -197,7 +201,7 @@ inline void *mempcpy(void *dst, void *src, size_t len)
 
 /** cpeek: access the character either before or after the current character
  ** in an array of characters.  **/
-char cpeek PARAMS((char *c, char *s, short fwd));
+char cpeek PARAMS((const char *c, const char *s, const short fwd));
 
 /** intlen: find how many digits a given integral contains. **/
 int intlen PARAMS((int n));
