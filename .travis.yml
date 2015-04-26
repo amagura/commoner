@@ -6,7 +6,7 @@ compiler:
   - gcc-4.6
 install:
   - sudo apt-get update
-  - sudo apt-get install gcc-4.4 gcc-4.5 gcc-4.6 tcc
+  - sudo apt-get install gcc-4.4 gcc-4.5 gcc-4.6 tcc valgrind
 script:
   - autoreconf -fi
   - ./configure --enable-debug
