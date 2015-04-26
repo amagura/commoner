@@ -23,6 +23,8 @@ AC_PROG_CC
 AC_PROG_CC_STDC
 AC_PROG_CPP
 
+AC_SEARCH_LIBS([abs], [m],,[AC_MSG_ERROR([Please use a C99 compliant compiler])])
+
 # Check if peeps want to try to compile to native (compiler may or may not support it)
 AC_ARG_ENABLE([native],
               AS_HELP_STRING([--enable-native], [enable processor-model specific compilation (default: enabled)]),

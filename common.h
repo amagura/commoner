@@ -219,11 +219,14 @@ char *itoap PARAMS((int src));
 
 /** concat: catenate several strings together **/
 char *concat PARAMS((const char *s1, ...)); // XXX return value needs free
-size_t concatl PARAMS((char *dest, size_t dest_siz, const char *s1, ...));
+size_t concatl PARAMS((char *dest, size_t destsiz, const char *s1, ...));
+size_t concatm PARAMS((char *dest, size_t destsiz, const char *s1, ...));
 # undef cat
 # define cat(...) (concat(__VA_ARGS__, (void *)NULL))
 # undef catl
 # define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+# undef catm
+# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
 
 # if 0
 /** concatl: catenate as many _s_ource strings into `buf'
@@ -241,6 +244,13 @@ void repeat PARAMS((char *dst, const char s, size_t n));
 int strrep PARAMS((char *dst, const char *s, size_t n));
 char *strprep PARAMS((const char *s, int x));
 # endif
+
+/** strndelim: counts number of delimiters within a given string **/
+int *strndelim PARAMS((const char *s, const char od, const char cd, int count[2]));
+
+/** strwodq: remove double quotes from a string **/
+int strwodq PARAMS((char *dst, const char *src, size_t n));
+char *strwodqp PARAMS((const char *src));
 
 END_C_DECLS
 

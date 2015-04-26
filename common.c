@@ -16,6 +16,7 @@ limitations under the License.
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <string.h>
 #include <limits.h>
 #include "common.h"
@@ -279,26 +280,80 @@ size_t concatl(char *buf, size_t bufsiz, const char *s1, ...)
 	  free(tmp);
 	  return bufsiz;
      }
-
+     if (++used > bufsiz)
+	  p -= (used - bufsiz);
      *p = '\0';
-     /* NOTE it's so easy to forget, but in C, arrays start at 0.
-      * I know it may sound silly to say that I forget this, but I do.
-      * Because of this, a pointer at position 255 is really at position
-      * 256, because the pointer's start position is 0; not 1.
-      * This is why, if you were to assign `*p' like so:
-      * *++p = '\0'; it would result in an error: because position 256 is
-      * outside of the malloc'd memory address. */
-     ++used;
 
+     memcpy(buf, tmp, (used > bufsiz ? bufsiz : used));
      COM_DBG("tmp: `%s'\n", tmp);
      COM_DBG("*p: `%c'\n", *(p - 1));
      COM_DBG("*p--: `%c'\n", cpeek(p - 1, tmp, 0));
      COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
+     COM_DBG("strlen(buf): %lu\n", strlen(buf));
      COM_DBG("used#2: %lu\n", used - 0);
-
-     memcpy(buf, tmp, (used > bufsiz ? bufsiz : used));
      free(tmp);
-     return bufsiz - used;
+     return (used > bufsiz ? 0 : bufsiz - used);
+}
+
+/* concatm is a little different:
+ * unlike `concatl' or `concat', concatm _moves_ memory: that is, the destination
+ * pointer can be passed as an argument. */
+size_t concatm(char *dst, size_t dstsiz, const char *s1, ...)
+{
+     va_list args;
+     const char *s = NULL;
+     char *p, *tmp;
+     unsigned long ldx, mdx, ndx;
+     size_t used = 0;
+
+     mdx = ndx = strlen(s1);
+     va_start(args, s1);
+     while ((s = va_arg(args, char *))) {
+	  ldx = strlen(s);
+	  if ((mdx += ldx) < ldx) break;
+     }
+     va_end(args);
+     if (s || mdx >= INT_MAX) return dstsiz;
+
+#if defined(__cplusplus)
+     tmp = (char *)malloc(mdx + 1);
+#else
+     tmp = malloc(mdx + 1);
+#endif
+     if (!tmp) return dstsiz;
+     bzero(tmp, mdx + 1);
+
+     p = tmp;
+     p = mempcpy(p, (char *)s1, ndx);
+
+     used += ndx;
+     COM_DBG("p: `%s`\n", p);
+     COM_DBG("used: %lu\n", used - 0);
+
+     va_start(args, s1);
+     while ((s = va_arg(args, char *))) {
+	  ldx = strlen(s);
+	  if ((ndx += ldx) < ldx || ndx > mdx) break;
+	  p = mempcpy(p, (char *)s, ldx);
+	  used += ldx;
+     }
+     va_end(args);
+     if (s || mdx != ndx || p != tmp + ndx) {
+	  free(tmp);
+	  return dstsiz;
+     }
+     if (++used > dstsiz)
+	  p -= (used - dstsiz);
+     *p = '\0';
+     memmove(dst, tmp, (used > dstsiz ? dstsiz : used));
+     COM_DBG("tmp: `%s'\n", tmp);
+     COM_DBG("*p: `%c'\n", *(p - 1));
+     COM_DBG("*p--: `%c'\n", cpeek(p - 1, tmp, 0));
+     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
+     COM_DBG("strlen(dst): %lu\n", strlen(dst));
+     COM_DBG("used#2: %lu\n", used - 0);
+     free(tmp);
+     return (used > dstsiz ? 0 : dstsiz - used);
 }
 
 #if 0
@@ -356,9 +411,9 @@ char *strprep(const char *s, int times)
 }
 
 # if 0
-** strcdelim **
+** strndelim **
 #endif
-int *strcdelim(const char *s, const char od, const char cd, int count[2])
+int *strndelim(const char *s, const char od, const char cd, int count[2])
 {
      memset(count, 0, sizeof(*count)*2);
      char *c = strchr(s, '\0');
@@ -373,7 +428,7 @@ int *strcdelim(const char *s, const char od, const char cd, int count[2])
 	       ++count[1];
 	  else if (*c == od)
 	       ++count[0];
-     } while (--c != s);
+     } while (c-- != s);
 
      if (od == cd && count[1] > 0) {
 	  if (count[1] % 2 == 1)
@@ -385,4 +440,95 @@ int *strcdelim(const char *s, const char od, const char cd, int count[2])
      }
 
      return count;
+}
+
+#if 0
+** strwoq **
+#endif
+
+char *strwodqp(const char *src)
+{
+     size_t n = strlen(src) + 1;
+     int c[2] = {0, 0}, even = 0;
+     char *tmp, *token, *rest, *newp;
+     tmp = token = rest = newp = NULL;
+
+     if (!strndelim(src, '"', '"', c))
+	  return NULL;
+
+     if (c[0] == 0)
+	  return NULL;
+
+     tmp = strdup(src);
+     newp = malloc(n);
+     even = c[0] - abs(c[0] - c[1]);
+
+     token = strtok_r(tmp, "\"", &rest);
+
+     if (token == NULL) {
+	  free(newp);
+	  return NULL;
+     }
+
+     catl(newp, n, token);
+     while ((token = strtok_r(NULL, "\"", &rest)) != NULL) {
+	  if (even % 2 == 1) {
+	       catm(newp, n, newp, token);
+	       --even;
+	  } else {
+	       ++even;
+	  }
+     }
+
+     free(tmp);
+     return newp;
+}
+
+int strwodq(char *dst, const char *src, size_t n)
+{
+     int c[2] = {0, 0};
+     int even = 0;
+     int r = 0;
+     char *tmp = NULL;
+     char *token = NULL;
+     char *rest = NULL;
+     char *newp = NULL;
+
+     if (!strndelim(src, '"', '"', c)) {
+	  r += 1;
+	  goto end;
+     }
+
+     if (c[0] == 0) {
+	  r += 2;
+	  goto end;
+     }
+
+     tmp = strdup(src);
+     newp = malloc(n);
+     even = c[0] - abs(c[0] - c[1]);
+
+     token = strtok_r(tmp, "\"", &rest);
+     if (token == NULL) {
+	  r += 3;
+	  goto free;
+     }
+     catl(newp, n, token);
+
+     while ((token = strtok_r(NULL, "\"", &rest)) != NULL) {
+	  if (even % 2 == 1) {
+	       catm(newp, n, newp, token);
+	       --even;
+	  } else {
+	       ++even;
+	  }
+     }
+
+     memcpy(dst, newp, n);
+
+free:
+     free(tmp);
+     free(newp);
+end:
+     return r;
 }

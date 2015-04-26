@@ -13,6 +13,14 @@ int test_catl()
 
      int r = (int)catl(result, 256, input);
      COM_DBG("result: `%s'\n", result);
+
+     bzero(result, 256);
+     bzero(input, 256);
+     repeat(input, 'b', 129);
+     catm(result, 256, input);
+     r += (int)catm(result, 256, result, input);
+     COM_DBG("r: %d\n", r);
+     COM_DBG("result#2: `%s'\n", result);
      return r;
 }
 
@@ -82,6 +90,51 @@ int test_repeats()
      return r;
 }
 
+int test_strcdelim()
+{
+     int r = 0, c[2], *idx;
+     char s[] = "\"hello\"";
+     char s1[] = "{hello}{";
+     idx = strndelim(s, '"', '"', c);
+
+     if (idx) {
+	  COM_DBG("idx[0]: %d\n", c[0]);
+	  COM_DBG("idx[1]: %d\n", c[1]);
+	  r += c[0] - c[1];
+     } else {
+	  r += 1;
+     }
+
+     idx = strndelim(s1, '{', '}', c);
+     if (idx) {
+	  COM_DBG("c[0]: %d\n", c[0]);
+	  COM_DBG("c[1]: %d\n", c[1]);
+	  r += c[0] - c[1] - 1;
+     } else {
+	  r += 1;
+     }
+     return r;
+}
+
+int test_strwodq()
+{
+     int r = 0;
+     char *s = "\"hello\"";
+     size_t n = sizeof("\"hello\"");
+     char *s1 = malloc(n);
+
+     r += strwodq(s1, s, n);
+     COM_DBG("s1: `%s'\n", s1);
+     free(s1);
+
+     s1 = strwodqp(s);
+     r += strcmp(s1, "hello");
+     COM_DBG("s1#2: `%s'\n", s1);
+     free(s1);
+
+     return r;
+}
+
 int main()
 {
      int r = 0;
@@ -95,5 +148,9 @@ int main()
      r += test_intlen();
      com_ping;
      r += test_repeats();
+     com_ping;
+     r += test_strcdelim();
+     com_ping;
+     r += test_strwodq();
      return (r == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }

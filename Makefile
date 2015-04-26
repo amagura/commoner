@@ -87,9 +87,9 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = test$(EXEEXT)
-#am__append_1 = -g -ggdb
-#am__append_2 = -DCOM_DEBUG=1
-#am__append_3 = -DCOM_DEBUG=0
+am__append_1 = -g -ggdb
+am__append_2 = -DCOM_DEBUG=1
+##am__append_3 = -DCOM_DEBUG=0
 am__append_4 = -march=native -mtune=native
 #am__append_5 = -mtune=generic-$(CPUTYPE)
 ##am__append_6 = -mtune=generic
