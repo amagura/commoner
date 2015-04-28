@@ -1,0 +1,37 @@
+.TH libcommon 3
+.SH NAME
+libcommon - general purpose library
+.SH SYNOPSIS
+\fB#include <libcommon.h>\fR
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBchar cpeek(const char *\fR\fIc\fP\fB, const char *\fR\fIs\fP\fB, const short \fR\fIfwd\fP\fB);\fR"
+.br
+.ti -1c
+
+.\" intlen
+.RI "\fBint intlen(int\fR \fIn\fP\fB);\fR"
+.ti -1c
+.RI "\fBint intlenc(const int\fR \fIn\fP\fB);\fR"
+.ti -1c
+.RI "\fBsize_t intlenm(int\fR \fIn\fP\fB);\fR"
+.ti -1c
+
+.\" reverse
+.RI "\fBvoid rev(char *\fR\fIs\fP\fB);\fR"
+.ti -1c
+.RI "\fBchar *revp(const char *\fR\fIs\fP\fB);\fR"
+.ti -1c
+.RI "\fBvoid revn(char *\fR\fIs\fP\fB, size_t\fR \fIn\fP\fB);\fR"
+.ti -1c
+
+.\" itoa
+.RI "\fBvoid itoa(char *\fR\fIdest\fP\fB, int\fR \fIsrc\fP\fB);\fR"
+.ti -1c
+.RI "\fBchar *itoap(int\fR \fIsrc\fP\fB);\fR"
+.ti -1c
+
+.\" concat
