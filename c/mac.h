@@ -71,18 +71,6 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 #  endif
 # endif
 
-# if !defined(COM_INLINE)
-#  define COM_INLINE 1 /* XXX change this to disable/enable use of inline
-			* functions vs macros in certain situations */
-# endif
-
-# if !defined(COM_MACRO)
-#  define COM_MACRO 0 /* XXX change this enable/disable use of macros vs inline
-		       * functions in certain situations.
-		       * XXX change both this and `COM_INLINE' to `0' to
-		       * use external defintions */
-# endif
-
 # if !defined(PACKAGE_VERSION)
 #  define PACKAGE_VERSION ""
 # endif
@@ -223,18 +211,11 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
       + (size_t)(COM_L))
 # endif
 
-# if COM_INLNE
-inline void *mempmove(void *dst, const void *src, size_t n)
-{
-     return (memmove(dst, src, n) + n);
-}
-# else
 #  define mempmove(COM_D, COM_S, COM_L)		\
      (memmove((void *)(COM_D),			\
 	      (const void *)(COM_S),		\
 	      (size_t)(COM_L))			\
       + (size_t)(COM_L))
-# endif
 
 END_C_DECLS
 #endif /* COMMON_MAC_H_GUARD */
