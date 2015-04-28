@@ -6,10 +6,12 @@ compiler:
   - gcc-4.6
 install:
   - sudo apt-get update
-  - sudo apt-get install gcc-4.4 gcc-4.5 gcc-4.6 tcc
+  - sudo apt-get install gcc-4.4 gcc-4.5 gcc-4.6 tcc chicken-bin libchicken-dev
 script:
+  - cd c
   - autoreconf -fi
   - ./configure --enable-debug
   - make
 after_success:
+  - cd c
   - ./test
