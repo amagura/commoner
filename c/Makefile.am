@@ -1,5 +1,11 @@
 ## Process this file with Automake to generate Makefile.in
 
+#  Copyright 2015 Alexej Magura
+#
+#  Copying and distribution of this file, with or without modification,
+#  are permitted in any medium without royalty provided the copyright
+#  notice and this notice are preserved.  This file is offered as-is,
+#  without any warranty.
 bin_PROGRAMS = test
 test_SOURCES = common.c test.c common.h
 AM_CFLAGS =
