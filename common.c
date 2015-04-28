@@ -52,12 +52,68 @@ size_t intlenm(int src)
      return dst;
 }
 
+# if 0
+** Reverse functions **
+#endif
+void rev(char *s)
+{
+     int idx = 0;
+     int hdx = (int)strlen(s) - 1;
+
+     for (char c; idx < hdx; ++idx, --hdx) {
+	  c = s[idx];
+	  s[idx] = s[hdx];
+	  s[hdx] = c;
+     }
+}
+
+char *revp(const char *s)
+{
+     int idx = 0;
+     int hdx = (int)strlen(s) - 1;
+     char *copy = strdup(s);
+
+     for (char c; idx < hdx; ++idx, --hdx) {
+	  c = copy[idx];
+	  copy[idx] = copy[hdx];
+	  copy[hdx] = c;
+     }
+     return copy;
+}
+
+void revn(char *s, size_t n)
+{
+     --n;
+     if (strchr(s, '\0'))
+	  --n;
+     int idx = 0;
+     for (char tmp; idx < (int)n; ++idx, --n) {
+	  tmp = s[idx];
+	  s[idx] = s[n];
+	  s[n] = tmp;
+     }
+}
+
+char *revnp(char *s, size_t n)
+{
+     const size_t len = --n;
+     if (strchr(s, '\0'))
+	  --n;
+     int idx = 0;
+     for (char tmp; idx < (int)n; ++idx, --n) {
+	  tmp = s[idx];
+	  s[idx] = s[n];
+	  s[n] = tmp;
+     }
+     return &s[0] + len;
+}
+
 #if 0
 ** itoa functions **
 #endif
 void itoa(char *dst, int src)
 {
-     int len = intlen(src) + 1; /* XXX + 1 for the null terminator */
+     size_t len = intlenm(src);
      char tmp[len];
      char *wp = tmp;
 
@@ -72,7 +128,7 @@ void itoa(char *dst, int src)
      }
      *wp++ = '\0';
 #if COM_DLVL > 1
-     COM_DBG("len: %d\n", len);
+     COM_DBG("len: %lu\n", len);
      COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
      COM_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
      COM_DBG("tmp: `%s'\n", tmp);
@@ -89,89 +145,41 @@ void itoa(char *dst, int src)
 
 char *itoap(const int src)
 {
-     /* XXX + 1 for the null terminator */
-     int idx = src, len = intlenc(src) + 1;
-     char *wp, *buf;
+     COM_DBG("src: %d\n", src);
+     size_t len = intlenm(src);
+     int idx = src;
+     char *dst = malloc(len);
+     bzero(dst, len);
+     char *wp = dst;
 
-     buf = malloc(len * (sizeof(*buf)));
-     bzero(buf, len);
-     wp = buf;
-
-     for (; idx != 0; ++wp, idx /= 10) {
+     for (; idx != 0; idx /= 10) {
 	  if (idx >= 0)
-	       *wp = '0' + (idx % 10);
+	       *wp++ = '0' + (idx % 10);
 	  else
-	       *wp = '0' - (idx % 10);
-#if COM_DLVL > 1
-	  COM_DBG("*wp: `%c'\n", *wp);
-#endif
+	       *wp++ = '0' - (idx % 10);
      }
-     *wp++ = '\0';
-     COM_DBG("*wp#2: `%c'\n", *(wp - 2));
+     wp = revnp(dst, len);
+     *wp = '\0';
+     COM_DBG("dst: `%s'\n", dst);
 
-#if COM_DLEVEL > 1
-	  COM_DBG("*len: %d\n", *len);
-	  COM_DBG("strlen(buf): %lu\n", strlen(buf));
-	  COM_DBG("sizeof(buf): %lu\n", sizeof(buf));
-	  COM_DBG("*wp: `%c'\n", *wp);
-	  COM_DBG("buf: `%s'\n", buf);
-#endif
-     rev(buf);
-
-     COM_DBG("strlen(buf)#2: %lu\n", strlen(buf));
-     COM_DBG("sizeof(buf)#2: %lu\n", sizeof(buf));
-     COM_DBG("buf: `%s'\n", buf);
-
-     return buf;
+     return dst;
 }
 
 char cpeek(const char *c, const char *s, const short fwd)
 {
-     char tmp = '\0';
      if (fwd > 0) {
-	  if (c == &s[strlen(s) - 1] || c == &s[strlen(s)])
+	  if (*c == '\0'
+# if defined(_GNU_SOURCE)
+	      || c == strchr(s, '\0') - 1
+# else
+	      || c == &s[strlen(s)]
+# endif
+	       )
 	       return *c;
 	  else
-	       tmp = *++c;
-	  --c;
-     } else if (fwd <= 0) {
-	  if (c == s)
-	       return *c;
-	  else
-	       tmp = *--c;
-	  ++c;
+	       return *(c + 1);
      }
-     return tmp;
-}
-
-# if 0
-** Reverse functions **
-#endif
-void rev(char *s)
-{
-     int hdx[2];
-     *hdx = strlen(s) - 1;
-
-     for (int idx = 0; idx < *hdx; ++idx, --hdx[0]) {
-	  hdx[1] = s[idx];
-	  s[idx] = s[*hdx];
-	  s[*hdx] = hdx[1];
-     }
-}
-
-char *revp(const char *s)
-{
-     int hdx[2];
-     *hdx = strlen(s) - 1;
-     char *copy = malloc(*hdx * (sizeof(*copy)) + 1);
-     memcpy(copy, s, *hdx + 1);
-
-     for (int idx = 0; idx < *hdx; ++idx, --hdx[0]) {
-	  hdx[1] = copy[idx];
-	  copy[idx] = copy[*hdx];
-	  copy[*hdx] = hdx[1];
-     }
-     return copy;
+     return (c == s) ? *c : *(c - 1);
 }
 
 #if 0
@@ -235,7 +243,7 @@ char *concat(const char *s1, ...)
  * XXX A failure is indicated by a return value _equal to
  * the destination buffers size_, which may make errors somewhat
  * harder to spot! */
-size_t concatl(char *buf, size_t bufsiz, const char *s1, ...)
+size_t concatl(char *dst, size_t sz, const char *s1, ...)
 {
      va_list args;
      const char *s = NULL;
@@ -250,16 +258,16 @@ size_t concatl(char *buf, size_t bufsiz, const char *s1, ...)
 	  if ((mdx += ldx) < ldx) break;
      }
      va_end(args);
-     if (s || mdx >= INT_MAX) return bufsiz;
+     if (s || mdx >= INT_MAX) return sz;
 
 #if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
 #else
      tmp = malloc(mdx + 1);
 #endif
-     if (!tmp) return bufsiz;
+     if (!tmp) return sz;
      bzero(tmp, mdx + 1);
-     bzero(buf, mdx + 1);
+     bzero(dst, mdx + 1);
 
      p = tmp;
      p = mempcpy(p, (char *)s1, ndx);
@@ -278,27 +286,28 @@ size_t concatl(char *buf, size_t bufsiz, const char *s1, ...)
      va_end(args);
      if (s || mdx != ndx || p != tmp + ndx) {
 	  free(tmp);
-	  return bufsiz;
+	  return sz;
      }
-     if (++used > bufsiz)
-	  p -= (used - bufsiz);
-     *p = '\0';
 
-     memcpy(buf, tmp, (used > bufsiz ? bufsiz : used));
      COM_DBG("tmp: `%s'\n", tmp);
-     COM_DBG("*p: `%c'\n", *(p - 1));
-     COM_DBG("*p--: `%c'\n", cpeek(p - 1, tmp, 0));
-     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
-     COM_DBG("strlen(buf): %lu\n", strlen(buf));
-     COM_DBG("used#2: %lu\n", used - 0);
+     p = mempcpy(dst, tmp, (used > sz ? sz : used));
      free(tmp);
-     return (used > bufsiz ? 0 : bufsiz - used);
+     *p = '\0';
+     ++used;
+
+     COM_DBG("dst: `%s'\n", dst);
+     COM_DBG("*p: `%c'\n", *p);
+     COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
+     COM_DBG("strlen(dst): %lu\n", strlen(dst));
+     COM_DBG("used#2: %lu\n", used - 0);
+
+     return (used > sz ? 0 : sz - used);
 }
 
 /* concatm is a little different:
  * unlike `concatl' or `concat', concatm _moves_ memory: that is, the destination
  * pointer can be passed as an argument. */
-size_t concatm(char *dst, size_t dstsiz, const char *s1, ...)
+size_t concatm(char *dst, size_t sz, const char *s1, ...)
 {
      va_list args;
      const char *s = NULL;
@@ -313,14 +322,14 @@ size_t concatm(char *dst, size_t dstsiz, const char *s1, ...)
 	  if ((mdx += ldx) < ldx) break;
      }
      va_end(args);
-     if (s || mdx >= INT_MAX) return dstsiz;
+     if (s || mdx >= INT_MAX) return sz;
 
 #if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
 #else
      tmp = malloc(mdx + 1);
 #endif
-     if (!tmp) return dstsiz;
+     if (!tmp) return sz;
      bzero(tmp, mdx + 1);
 
      p = tmp;
@@ -340,20 +349,26 @@ size_t concatm(char *dst, size_t dstsiz, const char *s1, ...)
      va_end(args);
      if (s || mdx != ndx || p != tmp + ndx) {
 	  free(tmp);
-	  return dstsiz;
+	  return sz;
      }
-     if (++used > dstsiz)
-	  p -= (used - dstsiz);
-     *p = '\0';
-     memmove(dst, tmp, (used > dstsiz ? dstsiz : used));
      COM_DBG("tmp: `%s'\n", tmp);
-     COM_DBG("*p: `%c'\n", *(p - 1));
-     COM_DBG("*p--: `%c'\n", cpeek(p - 1, tmp, 0));
-     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
+#if defined(mempmove) && 0
+     p = mempmove(dst, tmp, (used > sz ? sz : used));
+#else
+     memmove(dst, tmp, (used > sz ? sz : used));
+     p = &dst[(used > sz ? sz : used)];
+#endif
+     free(tmp);
+     *p = '\0';
+     ++used;
+
+     COM_DBG("dst: `%s'\n", dst);
+     COM_DBG("*p: `%c'\n", *p);
+     COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
      COM_DBG("strlen(dst): %lu\n", strlen(dst));
      COM_DBG("used#2: %lu\n", used - 0);
-     free(tmp);
-     return (used > dstsiz ? 0 : dstsiz - used);
+
+     return (used > sz ? 0 : sz - used);
 }
 
 #if 0

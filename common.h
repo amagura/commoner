@@ -43,16 +43,18 @@ the end of C declarations. */
 BEGIN_C_DECLS
 
 # include <stdio.h>
+# include <stdlib.h>
 
-# if !defined(COM_INCLUDE)
-#  define COM_INCLUDE 0
+# if !defined(COM_INCLUDE_STRING_H)
+#  define COM_INCLUDE_STRING_H 0
 # endif
 
-# if COM_INCLUDE
+# if COM_INCLUDE_STRING_H
+#  include <string.h>
+# else
 void *memset PARAMS((void *s, int c, size_t n));
 void *memcpy PARAMS((void *dest, const void *src, size_t n));
-# else
-#  include <string.h>
+void *memmove PARAMS((void *dest, const void *src, size_t n));
 # endif
 
 # if !defined(COM_TESTING)
@@ -69,8 +71,16 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 #  endif
 # endif
 
-# if !defined(COM_MACROS)
-#  define COM_MACROS 1 // XXX change this to use or not use macros vs inline
+# if !defined(COM_INLINE)
+#  define COM_INLINE 1 /* XXX change this to disable/enable use of inline
+			* functions vs macros in certain situations */
+# endif
+
+# if !defined(COM_MACRO)
+#  define COM_MACRO 0 /* XXX change this enable/disable use of macros vs inline
+		       * functions in certain situations.
+		       * XXX change both this and `COM_INLINE' to `0' to
+		       * use external defintions */
 # endif
 
 # if !defined(PACKAGE_VERSION)
@@ -109,6 +119,15 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 #  define COM_XONDBG(COM_X) COM_X
 #  define com_ping COM_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
 #  define com_pong COM_DBG("\n$$$$ %s $$$$\n", "POLO!")
+#  define com_neko(COM_F, ...) \
+     do {								\
+	  COM_DBG("\n%s: %s %s %s",					\
+		  "neko-chan",						\
+		  "nyaa, nya~",						\
+		  "<3", "\n~(=^..^)/\n\n");					\
+	  fprintf(stderr, (COM_F), ##__VA_ARGS__);			\
+	  fprintf(stderr, "\n");					\
+     } while(0)
 # else
 #  define COM_DBG(format, ...)
 #  define COM_SDBG(format, exp)
@@ -116,6 +135,7 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 #  define COM_XONDBG(COM_X)
 #  define com_ping
 #  define com_pong
+#  define com_neko(COM_F, ...)
 # endif
 
 # define COM_ERROR(format, ...)				\
@@ -128,6 +148,15 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
 		  __LINE__,				\
 		  __FUNCTION__);			\
      } while(0)
+
+# define COM_FATAL(...)			\
+     do {				\
+	  fprintf(stderr,		\
+		  "%s: %s\n",		\
+		  (COM_PROGNAME),	\
+		  ##__VA_ARGS__);	\
+	  exit(EXIT_FAILURE);		\
+     } while (0)
 
 # define com_usage(format) (printf((format), (COM_PROGNAME)));
 
@@ -173,29 +202,40 @@ void *memcpy PARAMS((void *dest, const void *src, size_t n));
      } while(0)
 # endif
 
-# if !defined(bzero)
-#  if COM_MACROS || 1
-#   define bzero(COM_B, COM_LEN)			\
-     (memset((COM_B), '\0', (COM_LEN)), (void) 0)
-#  else
-inline void bzero(void *b, size_t len)
-{
-     return (memset(b, '\0', len), (void) 0);
-}
-#  endif
+# ifndef bzero
+#  define bzero(COM_B, COM_LEN)						\
+     (memset((void *)(COM_B), '\0', (size_t)(COM_LEN)), (void)0)
 # endif
 
-# if !defined(mempcpy)
-#  if COM_MACROS
-#   define mempcpy(COM_D, COM_S, COM_L)			\
-     (memcpy((COM_D), (COM_S), (COM_L) + (COM_L)))
-#  else
-inline void *mempcpy(void *dst, void *src, size_t len)
-{
-     return (memcpy(dst, src, len) + len);
-}
-#  endif
+# ifndef bcopy
+#  define bcopy(COM_B1, COM_B2, COM_LEN)			\
+     (memmove((void *)(COM_B2),					\
+	      (const void *)(COM_B1),				\
+	      (size_t)(COM_LEN)),				\
+      (void)0)
 # endif
+
+# ifndef mempcpy
+#  define mempcpy(COM_D, COM_S, COM_L)		\
+     (memcpy((void *)(COM_D),			\
+	     (const void *)(COM_S),		\
+	     (size_t)(COM_L))			\
+      + (size_t)(COM_L))
+# endif
+
+# if COM_INLNE
+inline void *mempmove(void *dst, const void *src, size_t n)
+{
+     return (memmove(dst, src, n) + n);
+}
+# else
+#  define mempmove(COM_D, COM_S, COM_L)		\
+     (memmove((void *)(COM_D),			\
+	      (const void *)(COM_S),		\
+	      (size_t)(COM_L))			\
+      + (size_t)(COM_L))
+# endif
+
 
 /** Function Prototypes **/
 
@@ -212,6 +252,7 @@ size_t intlenm PARAMS((int src)); /* XXX for use with malloc'ing for
 /** rev: reverse an array of characters **/
 void rev PARAMS((char *s));
 char *revp PARAMS((const char *s)); /* XXX return value needs free */
+void revn PARAMS((char *s, size_t n)); /* XXX `s' does not need to null-terminated */
 
 /** itoa: convert a number to an atom (i.e. string) **/
 void itoa PARAMS((char *dst, int src));

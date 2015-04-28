@@ -138,19 +138,19 @@ int test_strwodq()
 int main()
 {
      int r = 0;
-     com_ping;
+     com_neko("r: %d\n", r);
      r += test_catl();
-     com_ping;
+     com_neko("r: %d\n", r);
      r += test_revs();
-     com_ping;
+     com_neko("r: %d\n", r);
      r += test_itoas();
-     com_ping;
+     com_neko("r: %d\n", r);
      r += test_intlen();
-     com_ping;
+     com_neko("r: %d\n", r);
      r += test_repeats();
-     com_ping;
+     com_neko("r: %d\n", r);
      r += test_strcdelim();
-     com_ping;
+     com_neko("r: %d\n", r);
      r += test_strwodq();
      return (r == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }
