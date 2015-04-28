@@ -107,14 +107,22 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 #  define COM_XONDBG(COM_X) COM_X
 #  define com_ping COM_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
 #  define com_pong COM_DBG("\n$$$$ %s $$$$\n", "POLO!")
-#  define com_neko(COM_F, ...) \
-     do {								\
-	  COM_DBG("\n%s: %s %s %s",					\
-		  "neko-chan",						\
-		  "nyaa, nya~",						\
-		  "<3", "\n~(=^..^)/\n\n");					\
-	  fprintf(stderr, (COM_F), ##__VA_ARGS__);			\
-	  fprintf(stderr, "\n");					\
+#  define com_neko(COM_F, ...)				\
+     do {						\
+	  fprintf(stderr,				\
+		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",	\
+		  "\033[91m❤\033[0m",			\
+		  "\033[91m❤\033[0m",			\
+		  __FILE__, __FUNCTION__, __LINE__);	\
+	  fprintf(stderr, "%s%s%s, %s%s%s~\n",		\
+		  "\033[32mn",				\
+		  "\033[35my",				\
+		  "\033[31ma\033[0m",			\
+		  "\033[32mn",				\
+		  "\033[35my",				\
+		  "\033[31ma\033[33ma\033[0m");		\
+	  fprintf(stderr, (COM_F), ##__VA_ARGS__);	\
+	  fprintf(stderr, "\n");			\
      } while(0)
 # else
 #  define COM_DBG(format, ...)
