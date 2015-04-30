@@ -32,7 +32,7 @@ the end of C declarations. */
   compilers that don't understand ANSI C prototypes still work,
   and ANSI C compilers can issue warnings about type mismatches. */
 #undef PARAMS
-#if defined (__STDC__) || defined (_AIX) \
+#if defined (__STDC__) || defined (_AIX)		\
        || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
        || defined(WIN32) || defined(__cplusplus)
 # define PARAMS(protos) protos
@@ -42,7 +42,7 @@ the end of C declarations. */
 
 BEGIN_C_DECLS
 
-# if !defined(COMMON_WINDOWS)
+# if !defined(COMMON__WINDOWS)
 #  if defined(__CYGWIN__)			\
      || defined(_WIN16)				\
      || defined(_WIN32)				\
@@ -50,9 +50,32 @@ BEGIN_C_DECLS
      || defined(__WIN32__)			\
      || defined(__TOS_WIN__)			\
      || defined(__WINDOWS__)
-#   define COMMON_WINDOWS 1
+#   define COMMON__WINDOWS 1
 #  else
-#   define COMMON_WINDOWS 0
+#   define COMMON__WINDOWS 0
+#  endif
+# endif
+
+# if !defined(COMMON__BSD)
+#  if defined(__NetBSD__)	   \
+     || defined(__FreeBSD__)	   \
+     || defined(__FreeBSD__kernel) \
+     || defined(__DragonFly__)	   \
+     || defined(__bsdi__)	   \
+     || defined(__OpenBSD__)	   \
+     || defined(_SYSTYPE_BSD)
+#   define COMMON__BSD 1
+#  else
+#   define COMMON__BSD 0
+#  endif
+# endif
+
+# if !defined(COMMON__LINUX)
+#  if defined(__linux__)	\
+     || defined(__gnu_linux__)
+#   define COMMON__LINUX 1
+#  else
+#   define COMMON_LINUX 0
 #  endif
 # endif
 
