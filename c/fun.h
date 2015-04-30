@@ -48,22 +48,13 @@ BEGIN_C_DECLS
  ** in an array of characters.  **/
 char cpeek PARAMS((const char *c, const char *s, const short fwd));
 
-/** intlen: find how many digits a given integral contains. **/
-int intlen PARAMS((int n));
-int intlenc PARAMS((const int n));
-size_t intlenm PARAMS((int src)); /* XXX for use with malloc'ing for
-				   * calls to `itoa' */
+# include "intlen.h"
 
-/** rev: reverse an array of characters **/
-void rev PARAMS((char *s));
-char *revp PARAMS((const char *s)); /* XXX return value needs free */
-void revn PARAMS((char *s, size_t n)); /* XXX `s' does not need to null-terminated */
+# include "rev.h"
 
-/** itoa: convert a number to an atom (i.e. string) **/
-void itoa PARAMS((char *dst, int src));
-char *itoap PARAMS((int src));
+# include "itoa.h"
 
-# include "concat/concat.h"
+# include "concat.h"
 
 # if 0
 /** concatl: catenate as many _s_ource strings into `buf'

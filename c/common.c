@@ -21,171 +21,21 @@ limitations under the License.
 #include <limits.h>
 #include "common.h"
 
-int intlen(int idx)
-{
-     int result = 0;
-     while (idx) {
-	  ++result;
-	  idx /= 10;
-     }
-     return result;
-}
-
-int intlenc(const int idx)
-{
-     int copy = idx;
-     int result = 0;
-     while (copy) {
-	  ++result;
-	  copy /= 10;
-     }
-     return result;
-}
-
-size_t intlenm(int src)
-{
-     size_t dst = 1; /* XXX adds 1 for null-terminator */
-     while (src) {
-	  ++dst;
-	  src /= 10;
-     }
-     return dst;
-}
 
 # if 0
 ** Reverse functions **
 #endif
-void rev(char *s)
-{
-     int idx = 0;
-     int hdx = (int)strlen(s) - 1;
-
-     for (char c; idx < hdx; ++idx, --hdx) {
-	  c = s[idx];
-	  s[idx] = s[hdx];
-	  s[hdx] = c;
-     }
-}
-
-char *revp(const char *s)
-{
-     int idx = 0;
-     int hdx = (int)strlen(s) - 1;
-     char *copy = strdup(s);
-
-     for (char c; idx < hdx; ++idx, --hdx) {
-	  c = copy[idx];
-	  copy[idx] = copy[hdx];
-	  copy[hdx] = c;
-     }
-     return copy;
-}
-
-void revn(char *s, size_t n)
-{
-     --n;
-     if (strchr(s, '\0'))
-	  --n;
-     int idx = 0;
-     for (char tmp; idx < (int)n; ++idx, --n) {
-	  tmp = s[idx];
-	  s[idx] = s[n];
-	  s[n] = tmp;
-     }
-}
-
-char *revnp(char *s, size_t n)
-{
-     const size_t len = --n;
-     if (strchr(s, '\0'))
-	  --n;
-     int idx = 0;
-     for (char tmp; idx < (int)n; ++idx, --n) {
-	  tmp = s[idx];
-	  s[idx] = s[n];
-	  s[n] = tmp;
-     }
-     return &s[0] + len;
-}
+#include "rev.c"
 
 #if 0
 ** itoa functions **
 #endif
-void itoa(char *dst, int src)
-{
-     size_t len = intlenm(src);
-     char tmp[len];
-     char *wp = tmp;
-
-     for (; src != 0; ++wp, src /= 10) {
-	  if (src >= 0)
-	       *wp = '0' + (src % 10);
-	  else
-	       *wp = '0' - (src % 10);
-#if COM_DLVL > 1
-	  COM_DBG("*wp: `%c`\n", *wp);
-#endif
-     }
-     *wp++ = '\0';
-#if COM_DLVL > 1
-     COM_DBG("len: %lu\n", len);
-     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
-     COM_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
-     COM_DBG("tmp: `%s'\n", tmp);
-#endif
-     rev(tmp);
-#if COM_DLVL > 1
-     COM_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
-     COM_DBG("sizeof(tmp)#2: %lu\n", sizeof(tmp));
-     COM_DBG("tmp#2: `%s'\n", tmp);
-#endif
-     COM_DBG("tmp#3: `%s'\n", tmp);
-     memcpy(dst, tmp, len);
-}
-
-char *itoap(const int src)
-{
-     COM_DBG("src: %d\n", src);
-     size_t len = intlenm(src);
-     int idx = src;
-     char *dst = malloc(len);
-     bzero(dst, len);
-     char *wp = dst;
-
-     for (; idx != 0; idx /= 10) {
-	  if (idx >= 0)
-	       *wp++ = '0' + (idx % 10);
-	  else
-	       *wp++ = '0' - (idx % 10);
-     }
-     wp = revnp(dst, len);
-     *wp = '\0';
-     COM_DBG("dst: `%s'\n", dst);
-
-     return dst;
-}
-
-char cpeek(const char *c, const char *s, const short fwd)
-{
-     if (fwd > 0) {
-	  if (*c == '\0'
-# if defined(_GNU_SOURCE)
-	      || c == strchr(s, '\0') - 1
-# else
-	      || c == &s[strlen(s)]
-# endif
-	       )
-	       return *c;
-	  else
-	       return *(c + 1);
-     }
-     return (c == s) ? *c : *(c - 1);
-}
+#include "itoa.c"
 
 #if 0
 ** Concat functions **
 #endif
-#include "concat/concat.c"
+#include "concat.c"
 
 #if 0
 ** Repeat functions **
