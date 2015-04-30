@@ -21,6 +21,8 @@ limitations under the License.
 #include <limits.h>
 #include "common.h"
 
+#include "intlen.c"
+#include "cpeek.c"
 
 # if 0
 ** Reverse functions **
