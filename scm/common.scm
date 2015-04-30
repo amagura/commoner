@@ -52,6 +52,8 @@ limitations under the License.
 (define (true? exp)
   (and exp #t))
 
+(define
+
 ;; fat cat
 (define (fcat dest-file #!rest src-files)
   (do ((srcs src-files (cdr srcs))

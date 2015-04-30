@@ -43,6 +43,7 @@ the end of C declarations. */
 BEGIN_C_DECLS
 
 # include "fun.h"
+# include "compat.h"
 
 END_C_DECLS
 
