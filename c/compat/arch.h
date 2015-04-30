@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ****/
-#ifndef COMMON_COMPAT_H_GUARD
-# define COMMON_COMPAT_H_GUARD 1
+#ifndef COMMON_COMPAT_ARCH_H_GUARD
+# define COMMON_COMPAT_ARCH_H_GUARD 1
 /* BEGIN_C_DECLS should be used at the beginning of your declarations,
 so that C++ compilers don't mangle their names.  Use END_C_DECLS at
 the end of C declarations. */
@@ -42,8 +42,50 @@ the end of C declarations. */
 
 BEGIN_C_DECLS
 
-# include "compat/arch.h"
-# include "compat/os.h"
+# if !defined(COMMON_alpha)
+#  if defined(__alpha__) \
+     || defined(__alpha) \
+     || defined(_M_ALPHA)
+#   define COMMON_alpha 1
+#  else
+#   define COMMON_alpha 0
+#  endif
+# endif
+
+# if !defined(COMMON_amd64)
+#  if defined(__amd64__)     \
+     || defined(__amd64)     \
+     || defined(__x86_64__)  \
+     || defined(__x86_64)    \
+     || defined(_M_X64)	     \
+     || defined(_M_AMD64)
+#   define COMMON_amd64 1
+#  else
+#   define COMMON_amd64 0
+#  endif
+# endif
+
+# if !defined(COMMON_x86)
+#  if defined(i386)		\
+     || defined(__i386)		\
+     || defined(__i386__)	\
+     || defined(__i486__)	\
+     || defined(__i586__)	\
+     || defined(__i686__)	\
+     || defined(__IA32__)	\
+     || defined(_M_I86)		\
+     || defined(_M_IX86)	\
+     || defined(__X86__)	\
+     || defined(_X86_)		\
+     || defined(__THW_INTEL__) 	\
+     || defined(__I86__)	\
+     || defined(__INTEL__)	\
+     || defined(__386)
+#   define COMMON_x86 1
+#  else
+#   define COMMON_x86 0
+#  endif
+# endif
 
 END_C_DECLS
 

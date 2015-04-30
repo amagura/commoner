@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ****/
-#ifndef COMMON_COMPAT_H_GUARD
-# define COMMON_COMPAT_H_GUARD 1
+#ifndef COMMON_COMPAT_OS_H_GUARD
+# define COMMON_COMPAT_OS_H_GUARD 1
 /* BEGIN_C_DECLS should be used at the beginning of your declarations,
 so that C++ compilers don't mangle their names.  Use END_C_DECLS at
 the end of C declarations. */
@@ -42,9 +42,21 @@ the end of C declarations. */
 
 BEGIN_C_DECLS
 
-# include "compat/arch.h"
-# include "compat/os.h"
+# if !defined(COMMON_WINDOWS)
+#  if defined(__CYGWIN__)			\
+     || defined(_WIN16)				\
+     || defined(_WIN32)				\
+     || defined(_WIN64)				\
+     || defined(__WIN32__)			\
+     || defined(__TOS_WIN__)			\
+     || defined(__WINDOWS__)
+#   define COMMON_WINDOWS 1
+#  else
+#   define COMMON_WINDOWS 0
+#  endif
+# endif
+
 
 END_C_DECLS
 
-#endif /* COMMMON_COMPAT_H_GUARD */
+#endif /* COMMMON_COMPAT_OS_H_GUARD */
