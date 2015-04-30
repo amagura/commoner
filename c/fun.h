@@ -63,16 +63,7 @@ void revn PARAMS((char *s, size_t n)); /* XXX `s' does not need to null-terminat
 void itoa PARAMS((char *dst, int src));
 char *itoap PARAMS((int src));
 
-/** concat: catenate several strings together **/
-char *concat PARAMS((const char *s1, ...)); // XXX return value needs free
-size_t concatl PARAMS((char *dest, size_t destsiz, const char *s1, ...));
-size_t concatm PARAMS((char *dest, size_t destsiz, const char *s1, ...));
-# undef cat
-# define cat(...) (concat(__VA_ARGS__, (void *)NULL))
-# undef catl
-# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
-# undef catm
-# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
+# include "concat/concat.h"
 
 # if 0
 /** concatl: catenate as many _s_ource strings into `buf'

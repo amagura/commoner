@@ -7,7 +7,7 @@
 #  notice and this notice are preserved.  This file is offered as-is,
 #  without any warranty.
 bin_PROGRAMS = test
-test_SOURCES = common.c test.c common.h compat.h mac.h fun.h
+test_SOURCES = common.c test.c common.h
 AM_CFLAGS =
 AM_CPPFLAGS =
 AM_LDFLAGS =
