@@ -23,29 +23,15 @@ limitations under the License.
 
 #include "intlen.c"
 #include "cpeek.c"
-
-# if 0
-** Reverse functions **
-#endif
-#include "rev.c"
-
-#if 0
-** itoa functions **
-#endif
 #include "itoa.c"
-
-#if 0
-** Concat functions **
-#endif
+#include "rev.c"
 #include "concat.c"
-
-#if 0
-** Repeat functions **
-#endif
 #include "repeat.c"
-
-
-# if 0
-** strndelim, strwoq **
-#endif
 #include "str.c"
+
+#if defined(COMMON_NEEDS_A_MAIN)
+int main()
+{
+     return EXIT_SUCCESS;
+}
+#endif

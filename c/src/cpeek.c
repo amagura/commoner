@@ -13,8 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ****/
-#include <string.h>
-#include "common.h"
+#ifndef COMMON_CPEEK_GUARD
+# define COMMON_CPEEK_GUARD 1
+# include <string.h>
+# include "common.h"
 
 char cpeek(const char *c, const char *s, const short fwd)
 {
@@ -32,3 +34,4 @@ char cpeek(const char *c, const char *s, const short fwd)
      }
      return (c == s) ? *c : *(c - 1);
 }
+#endif

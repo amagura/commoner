@@ -13,11 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ****/
-#include <stdio.h>
-#include <stdlib.h>
-#include "rev.c"
-#include "intlen.c"
-#include "common.h"
+#ifndef COMMON_ITOA_C_GUARD
+# define COMMON_ITOA_C_GUARD 1
+# include <stdio.h>
+# include <stdlib.h>
+# include "rev.c"
+# include "intlen.c"
+# include "common.h"
 
 void itoa(char *dst, int src)
 {
@@ -30,23 +32,23 @@ void itoa(char *dst, int src)
 	       *wp = '0' + (src % 10);
 	  else
 	       *wp = '0' - (src % 10);
-#if COM_DLVL > 1
+# if COM_DLVL > 1
 	  COM_DBG("*wp: `%c`\n", *wp);
-#endif
+# endif
      }
      *wp++ = '\0';
-#if COM_DLVL > 1
+# if COM_DLVL > 1
      COM_DBG("len: %lu\n", len);
      COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
      COM_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
      COM_DBG("tmp: `%s'\n", tmp);
-#endif
+# endif
      rev(tmp);
-#if COM_DLVL > 1
+# if COM_DLVL > 1
      COM_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
      COM_DBG("sizeof(tmp)#2: %lu\n", sizeof(tmp));
      COM_DBG("tmp#2: `%s'\n", tmp);
-#endif
+# endif
      COM_DBG("tmp#3: `%s'\n", tmp);
      memcpy(dst, tmp, len);
 }
@@ -72,3 +74,4 @@ char *itoap(const int src)
 
      return dst;
 }
+#endif

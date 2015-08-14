@@ -13,12 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ****/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "cpeek.c"
-#include "concat.c"
-#include "common.h"
+#ifndef COMMON_STRING_C_GUARD
+# define COMMON_STRING_C_GUARD 1
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include "cpeek.c"
+# include "concat.c"
+# include "common.h"
 
 int *strndelim(const char *s, const char od, const char cd, int count[2])
 {
@@ -135,3 +137,4 @@ free:
 end:
      return r;
 }
+#endif

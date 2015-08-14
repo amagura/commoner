@@ -13,17 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ****/
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <string.h>
-#include <limits.h>
-#include "common.h"
+#ifndef COMMON_CONCAT_C_GUARD
+# define COMMON_CONCAT_C_GUARD 1
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdarg.h>
+# include <stdbool.h>
+# include <string.h>
+# include <limits.h>
+# include "common.h"
 
-#if COM_DEBUG
-# include "cpeek.c"
-#endif
+# if COM_DEBUG
+#  include "cpeek.c"
+# endif
 
 // XXX returned value needs free
 char *concat(const char *s1, ...)
@@ -43,11 +45,11 @@ char *concat(const char *s1, ...)
 	if (s || m >= INT_MAX) return NULL;
 	com_mtrace;
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
 	result = (char *)malloc(m + 1);
-#else
+# else
 	result = malloc(m + 1);
-#endif
+# endif
 	if (!result) return NULL;
 
 	memcpy(p = result, s1, n);
@@ -102,11 +104,11 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
      com_mtrace;
-#if defined(__cplusplus)
+# if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
-#else
+# else
      tmp = malloc(mdx + 1);
-#endif
+# endif
      if (!tmp) return sz;
      bzero(tmp, mdx + 1);
      bzero(dst, mdx + 1);
@@ -167,11 +169,11 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      if (s || mdx >= INT_MAX) return sz;
      com_mtrace;
 
-#if defined(__cplusplus)
+# if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
-#else
+# else
      tmp = malloc(mdx + 1);
-#endif
+# endif
      if (!tmp) return sz;
      bzero(tmp, mdx + 1);
 
@@ -195,12 +197,12 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 	  return sz;
      }
      COM_DBG("tmp: `%s'\n", tmp);
-#if defined(mempmove) && 0
+# if defined(mempmove) && 0
      p = mempmove(dst, tmp, (used > sz ? sz : used));
-#else
+# else
      memmove(dst, tmp, (used > sz ? sz : used));
      p = &dst[(used > sz ? sz : used)];
-#endif
+# endif
      free(tmp);
      *p = '\0';
      ++used;
@@ -214,9 +216,6 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 
      return (used > sz ? 0 : sz - used);
 }
-
-#ifndef COMMON_CONCAT_MACROS
-# define COMMON_CONCAT_MACROS 1
 
 # undef cat
 # define cat(...) (concat(__VA_ARGS__, (void *)NULL))

@@ -13,10 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ****/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "common.h"
+#ifndef COMMON_REPEAT_C_GUARD
+# define COMMON_REPEAT_C_GUARD 1
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include "common.h"
 
 void repeat(char *dst, const char s, size_t n)
 {
@@ -68,3 +70,4 @@ char *strprep(const char *s, int times)
      *wp++ = '\0';
      return copy;
 }
+#endif
