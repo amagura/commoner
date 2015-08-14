@@ -25,7 +25,9 @@ limitations under the License.
 # define COM_DEBUG 1
 #endif
 
-#include "../src/concat.h"
+#include "../src/mac.h"
+
+#include "../src/concat.c"
 #include "../src/repeat.c"
 
 #if defined(_GNU_SOURCE)
@@ -45,7 +47,7 @@ limitations under the License.
 
 
 
-START_TEST (catm_without_malloc)
+START_TEST (test_catm_return)
 {
 
      char s0[512];
@@ -58,7 +60,7 @@ START_TEST (catm_without_malloc)
 }
 END_TEST
 
-START_TEST (catm_with_malloc)
+START_TEST (test_catm_malloc)
 {
      com_mtrace;
      char *s1 = malloc(768*(sizeof(*s1)));
@@ -71,7 +73,24 @@ START_TEST (catm_with_malloc)
 }
 END_TEST
 
+Suite * concatm_suite()
+{
+     Suite *catm_s = suite_create("Concatm");
+     TCase *tc_core = tcase_create("Core");
+     tcase_add_test(tc_core, test_catm_return);
+     tcase_add_test(tc_core, test_catm_malloc);
+     suite_add_tcase(catm_s, tc_core);
+
+     return catm_s;
+}
+
 int main()
 {
-     return EXIT_SUCCESS;
+     int failed = 0;
+     SRunner *sr = srunner_create(concatm_suite());
+
+     srunner_run_all(sr, CK_NORMAL);
+     failed = srunner_ntests_failed(sr);
+     srunner_free(sr);
+     return failed == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

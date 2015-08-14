@@ -12,19 +12,19 @@ VFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
 
 SRCS = check_concat.c
 OBJS = $(SRCS:.c=.o)
-TESTS = $(OBJS:.o=)
+TESTS = $(SRCS:.c=)
 
 all: $(TESTS)
 
 ext: $(OBJS)
 
 check: all
-	$(foreach p,$(TESTS),mtrace MALLOC_TRACE="$(p:=.mog)" ./"$(p)")
+	$(foreach p,$(TESTS),mtrace MALLOC_TRACE="$(p:=.mog)" ./"$(p)"; )
 
 
 clean:
-	$(foreach f,$(TESTS),$(RM) "$(f)" "$(f:=.o)")
-
+	$(foreach f,$(TESTS),$(RM) "$(f)" "$(f:=.o)"; )
+	$(foreach wc,"*.vog *.mog",test -z "$(wildcard $(wc))" || $(RM) $(wildcard $(wc)); )
 
 valgrind: clean $(TESTS)
-	$(foreach t,$(TESTS),valgrind $(VFLAGS) ./"$(t)" &> "$(t:=.vog)")
+	$(foreach t,$(TESTS),valgrind $(VFLAGS) ./"$(t)" &> "$(t:=.vog)"; )
