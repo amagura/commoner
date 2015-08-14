@@ -21,12 +21,12 @@ limitations under the License.
 #include <limits.h>
 #include "common.h"
 
+#include "itoa.c"
+#include "repeat.c"
 #include "intlen.c"
 #include "cpeek.c"
-#include "itoa.c"
 #include "rev.c"
 #include "concat.c"
-#include "repeat.c"
 #include "str.c"
 
 #if defined(COMMON_NEEDS_A_MAIN)
