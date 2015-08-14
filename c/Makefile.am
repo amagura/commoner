@@ -6,13 +6,9 @@
 #  are permitted in any medium without royalty provided the copyright
 #  notice and this notice are preserved.  This file is offered as-is,
 #  without any warranty.
-bin_PROGRAMS = test
-test_SOURCES = common.c test.c common.h
-AM_CFLAGS =
-AM_CPPFLAGS =
-AM_LDFLAGS =
 
-AM_CFLAGS += -Wall -Wextra -O2
+SUBDIRS = src . test
+dist_doc_DATA = LICENSE AUTHORS
 
 if DEBUG
 AM_CFLAGS += -g -ggdb
