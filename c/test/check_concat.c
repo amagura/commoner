@@ -25,27 +25,8 @@ limitations under the License.
 # define COM_DEBUG 1
 #endif
 
-#include "../src/mac.h"
-
 #include "../src/concat.c"
 #include "../src/repeat.c"
-
-#if defined(_GNU_SOURCE)
-# include <mcheck.h>
-# define com_mtrace	\
-     do {		\
-	  mtrace();	\
-     } while(0)
-# define com_muntrace	\
-     do {		\
-	  muntrace();	\
-     } while(0)
-#else
-# define com_mtrace
-# define com_muntrace
-#endif
-
-
 
 START_TEST (test_catm_return)
 {
@@ -53,6 +34,7 @@ START_TEST (test_catm_return)
      char s0[512];
      size_t r = 0;
      com_mtrace;
+     bzero(s0, 512);
      repeat(s0, 'b', 256);
      com_muntrace;
      r = catm(s0, 512, s0, s0);
@@ -87,7 +69,8 @@ Suite * concatm_suite()
 int main()
 {
      int failed = 0;
-     SRunner *sr = srunner_create(concatm_suite());
+     Suite *s = concatm_suite();
+     SRunner *sr = srunner_create(s);
 
      srunner_run_all(sr, CK_NORMAL);
      failed = srunner_ntests_failed(sr);

@@ -10,15 +10,15 @@ LDFLAGS ?=
 LDFLAGS += -lcheck
 VFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
 
-SRCS = check_concat.c
+SRCS = check_concat.c test.c
 OBJS = $(SRCS:.c=.o)
-TESTS = $(SRCS:.c=)
+TESTS = $(OBJS:.o=)
 
-all: $(TESTS)
+all: $(TESTS) valgrind check
 
 ext: $(OBJS)
 
-check: all
+check: $(TESTS)
 	$(foreach p,$(TESTS),mtrace MALLOC_TRACE="$(p:=.mog)" ./"$(p)"; )
 
 
@@ -26,5 +26,5 @@ clean:
 	$(foreach f,$(TESTS),$(RM) "$(f)" "$(f:=.o)"; )
 	$(foreach wc,"*.vog *.mog",test -z "$(wildcard $(wc))" || $(RM) $(wildcard $(wc)); )
 
-valgrind: clean $(TESTS)
-	$(foreach t,$(TESTS),valgrind $(VFLAGS) ./"$(t)" &> "$(t:=.vog)"; )
+valgrind: $(TESTS)
+	$(foreach t,$(TESTS),valgrind $(VFLAGS) ./"$(t)" &> "$(t:=.vog)"; printf "\033[31mexited: $$?\033[0m\n" >> "$(t:=.vog)"; )
