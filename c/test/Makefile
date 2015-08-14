@@ -1,0 +1,30 @@
+#  Copyright 2015 Alexej Magura
+#
+#  Copying and distribution of this file, with or without modification,
+#  are permitted in any medium without royalty provided the copyright
+#  notice and this notice are preserved.  This file is offered as-is,
+#  without any warranty.
+
+CFLAGS ?= -O2 -Wall -Wextra -D_GNU_SOURCE -g -ggdb
+LDFLAGS ?=
+LDFLAGS += -lcheck
+VFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
+
+SRCS = check_concat.c
+OBJS = $(SRCS:.c=.o)
+TESTS = $(OBJS:.o=)
+
+all: $(TESTS)
+
+ext: $(OBJS)
+
+check: all
+	$(foreach p,$(TESTS),mtrace MALLOC_TRACE="$(p:=.mog)" ./"$(p)")
+
+
+clean:
+	$(foreach f,$(TESTS),$(RM) "$(f)" "$(f:=.o)")
+
+
+valgrind: clean $(TESTS)
+	$(foreach t,$(TESTS),valgrind $(VFLAGS) ./"$(t)" &> "$(t:=.vog)")
