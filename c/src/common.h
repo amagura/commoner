@@ -45,9 +45,25 @@ BEGIN_C_DECLS
 # include <stdio.h>
 # include <stdlib.h>
 
-#include "fun.h"
 #include "arch.h"
 #include "os.h"
+
+# if (defined(COM_CHECK)			\
+      && COM_CHECK				\
+      && defined(_GNU_SOURCE))
+#  include "mcheck.h"
+#  define com_mtrace	\
+     do {		\
+	  mtrace();	\
+     } while(0)
+#  define com_muntrace	\
+     do {		\
+	  muntrace();	\
+     } while(0)
+# else
+#  define com_mtrace
+#  define com_muntrace
+# endif
 
 # if !defined(COM_INCLUDE_STRING_H)
 #  define COM_INCLUDE_STRING_H 0
@@ -88,7 +104,7 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 # endif
 
 # if COM_DEBUG
-#  if defined(__linux__) || defined(__gnu_linux__)
+#  if defined(_GNU_SOURCE)
 #   include <mcheck.h>
 #  endif
 #  define COM_DBG(format, ...)					\
@@ -228,9 +244,6 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 	      (const void *)(COM_S),		\
 	      (size_t)(COM_L))			\
       + (size_t)(COM_L))
-
-END_C_DECLS
-#endif /* COMMON_MAC_H_GUARD */
 
 END_C_DECLS
 

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ****/
 #include <string.h>
-#include "cpeek.h"
+#include "common.h"
 
 char cpeek(const char *c, const char *s, const short fwd)
 {

@@ -14,8 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ****/
 #include <stdio.h>
-#include "itoa.h"
-#include "intlen.h"
+#include <stdlib.h>
+#include "rev.c"
+#include "intlen.c"
+#include "common.h"
 
 void itoa(char *dst, int src)
 {

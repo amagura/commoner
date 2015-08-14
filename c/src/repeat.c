@@ -16,8 +16,7 @@ limitations under the License.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "mac.h"
+#include "common.h"
 
 void repeat(char *dst, const char s, size_t n)
 {
@@ -26,7 +25,7 @@ void repeat(char *dst, const char s, size_t n)
 
      do {
 	  *wp = s;
-     } while(++wp != &dst[n - 1]);
+     } while (++wp != &dst[n - 1]);
 
      dst[n] = '\0';
      COM_DBG("dst: `%s'\n", dst);

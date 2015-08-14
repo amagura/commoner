@@ -19,12 +19,13 @@ limitations under the License.
 #include <stdbool.h>
 #include <string.h>
 #include <limits.h>
-#include "concat.h"
+#include "common.h"
 
-#if LCAL_COM_CHECK
-# include <mcheck.h>
+#if COM_DEBUG
+# include "cpeek.c"
 #endif
 
+// XXX returned value needs free
 char *concat(const char *s1, ...)
 {
 	va_list args;
@@ -40,10 +41,7 @@ char *concat(const char *s1, ...)
 	}
 	va_end(args);
 	if (s || m >= INT_MAX) return NULL;
-
-#if LCAL_COM_CHECK
-	mtrace();
-#endif
+	com_mtrace;
 
 #if defined(__cplusplus)
 	result = (char *)malloc(m + 1);
@@ -66,10 +64,8 @@ char *concat(const char *s1, ...)
 		free(result);
 		return NULL;
 	}
-#if LCAL_COM_CHECK
-	muntrace();
-#endif
 	*p = '\0';
+	com_muntrace;
 	return result;
 }
 
@@ -105,11 +101,7 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      }
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
-
-#if LCAL_COM_CHECK
-     mtrace();
-#endif
-
+     com_mtrace;
 #if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
 #else
@@ -150,11 +142,7 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
      COM_DBG("strlen(dst): %lu\n", strlen(dst));
      COM_DBG("used#2: %lu\n", used - 0);
-
-#if LCAL_COM_CHECK
-     muntrace();
-#endif
-
+     com_muntrace;
      return (used > sz ? 0 : sz - used);
 }
 
@@ -177,10 +165,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      }
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
-
-#if LCAL_COM_CHECK
-     mtrace();
-#endif
+     com_mtrace;
 
 #if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
@@ -225,10 +210,21 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
      COM_DBG("strlen(dst): %lu\n", strlen(dst));
      COM_DBG("used#2: %lu\n", used - 0);
-
-#if LCAL_COM_CHECK
-     muntrace();
-#endif
+     com_muntrace;
 
      return (used > sz ? 0 : sz - used);
 }
+
+#ifndef COMMON_CONCAT_MACROS
+# define COMMON_CONCAT_MACROS 1
+
+# undef cat
+# define cat(...) (concat(__VA_ARGS__, (void *)NULL))
+
+# undef catl
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+
+# undef catm
+# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
+
+#endif
