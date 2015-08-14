@@ -9,13 +9,16 @@
 
 TESTS = check_concat
 check_PROGRAMS = check_concat
-check_concat_SOURCES = check_concat.c $(top_builddir)/src/concat.h
+check_concat_SOURCES = check_concat.c
 check_concat_CFLAGS = @CHECK_CFLAGS@
-check_concat_LDADD = $(top_builddir)/src/libconcat.la @CHECK_LIBS@
+#check_concat_LDADD = $(top_builddir)/src/libconcat.la @CHECK_LIBS@
 
-AM_CFLAGS =
+AM_CFLAGS = -O2
+
 AM_LDFLAGS =
+
 AM_CPPFLAGS =
+
 
 AM_CFLAGS += -Wall -Wextra
 
@@ -44,9 +47,7 @@ AM_CFLAGS += -mtune=generic
 endif
 endif
 
-valgrind: clean test
-	for f in $(bin_PROGRAMS); do \
+#valgrind: clean test
+#	for f in $(bin_PROGRAMS); do \
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./"$$f" ;\
-	done
-
-check-local: check_concat
+#	done

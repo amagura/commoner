@@ -7,7 +7,7 @@
 #  notice and this notice are preserved.  This file is offered as-is,
 #  without any warranty.
 
-SUBDIRS = src . test
+SUBDIRS = test
 dist_doc_DATA = LICENSE AUTHORS
 
 if DEBUG
