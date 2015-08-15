@@ -20,11 +20,8 @@ int main()
 #  ifndef concat_01_IDX
 #   define concat_01_IDX 0
 #  elif concat_01_IDX == 0
+#   undef concat_01_IDX
 #   define concat_01_IDX 1
-#  elif concat_01_IDX == 1
-#   define concat_01_IDX 2
-#  elif concat_01_IDX == 2
-#   define concat_01_IDX 3
 #  endif
      s = malloc(sz*(sizeof(*s)));
      s0 = malloc(sz0*(sizeof(*s0)));
@@ -50,7 +47,7 @@ int main()
 //# elif concat_01_IDX == 2
 //     r = cat(s, sz, s, s, s);
 #  elif concat_01_IDX == 2
-     r = concatm(s, s, s, s);
+     r = concatm(s, sz, s, s, s);
 #  elif concat_01_IDX == 3
      r = concatl(s, sz, s, s, s);
 #  endif
