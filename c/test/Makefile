@@ -9,12 +9,12 @@ mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 mydir := $(abspath $(lastword $(dir $(MAKEFILE_LIST))))
 cwd := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
-CFLAGS ?= -O2 -Wall -Wextra -D_GNU_SOURCE -g -ggdb
+CFLAGS ?= -O2 -Wall -Wextra -D_GNU_SOURCE -g -ggdb -DCOM_DEBUG=1 -DCOM_TESTING=1
 LDFLAGS ?=
 LDFLAGS += -lcheck
-VFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
+VFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 
-SRCS = check_concat.c test.c
+SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 TESTS = $(OBJS:.o=)
 
@@ -23,8 +23,7 @@ all: $(TESTS) valgrind check
 ext: $(OBJS)
 
 check: $(TESTS)
-	$(foreach p,$(TESTS),mtrace MALLOC_TRACE="$(p:=.mog)" ./"$(p)"; )
-
+	$(foreach p,$(TESTS),mtrace MALLOC_TRACE="$(p:=.mog)" ./"$(p)" &>> "$(p:=.mog)"; )
 
 clean:
 	$(foreach f,$(TESTS),$(RM) "$(f)" "$(f:=.o)"; )
@@ -32,3 +31,7 @@ clean:
 
 valgrind: $(TESTS)
 	$(foreach t,$(TESTS),valgrind $(VFLAGS) ./"$(t)" &> "$(t:=.vog)"; printf "\033[31mexited: $$?\033[0m\n" >> "$(t:=.vog)"; )
+
+
+#run: $(TESTS)
+#	$(foreach p,$(TESTS),

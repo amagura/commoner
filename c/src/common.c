@@ -28,6 +28,9 @@ limitations under the License.
 #include "rev.c"
 #include "concat.c"
 #include "str.c"
+#include "mem.c"
+
+
 
 #if defined(COMMON_NEEDS_A_MAIN)
 int main()

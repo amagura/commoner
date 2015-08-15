@@ -75,6 +75,7 @@ BEGIN_C_DECLS
 void *memset PARAMS((void *s, int c, size_t n));
 void *memcpy PARAMS((void *dest, const void *src, size_t n));
 void *memmove PARAMS((void *dest, const void *src, size_t n));
+char *strchr PARAMS((const char *s, int c));
 # endif
 
 # if !defined(COM_TESTING)
@@ -244,6 +245,17 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 	      (const void *)(COM_S),		\
 	      (size_t)(COM_L))			\
       + (size_t)(COM_L))
+
+#if 0
+inline int memlen(const char *s)
+{
+     char *a = NULL;
+     int r;
+     if ((a = strchr(s, '\0'))) {
+	  r = (int)(a - s);
+	  return r;
+     }
+#endif
 
 END_C_DECLS
 

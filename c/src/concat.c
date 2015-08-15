@@ -23,6 +23,8 @@ limitations under the License.
 # include <limits.h>
 # include "common.h"
 
+# include "mem.c"
+
 # if COM_DEBUG
 #  include "cpeek.c"
 # endif
@@ -34,7 +36,6 @@ char *concat(const char *s1, ...)
 	const char *s;
 	char *p, *result;
 	unsigned long l, m, n;
-
 	m = n = strlen(s1);
 	va_start(args, s1);
 	while ((s = va_arg(args, char *))) {

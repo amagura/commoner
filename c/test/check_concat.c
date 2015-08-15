@@ -36,8 +36,8 @@ START_TEST (test_catm_return)
      com_mtrace;
      bzero(s0, 512);
      repeat(s0, 'b', 256);
-     com_muntrace;
      r = catm(s0, 512, s0, s0);
+     com_muntrace;
      ck_assert_int_eq((int)r, 0);
 }
 END_TEST
