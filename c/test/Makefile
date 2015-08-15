@@ -29,6 +29,11 @@ clean:
 	$(foreach f,$(TESTS),$(RM) "$(f)" "$(f:=.o)"; )
 	$(foreach wc,*.vog *.mog,test -z "$(wildcard $(wc))" || $(RM) $(wildcard $(wc)); )
 
+qclean:
+	@$(foreach f,$(TESTS),$(RM) "$(f)" "$(f:=.o)"; )
+	@$(foreach wc,*.vog *.mog,test -z "$(wildcard $(wc))" || $(RM) $(wildcard $(wc)); )
+
+
 valgrind: $(TESTS)
 	$(foreach t,$(TESTS),valgrind $(VFLAGS) ./"$(t)" &> "$(t:=.vog)"; printf "\033[31mexited: $$?\033[0m\n" >> "$(t:=.vog)"; )
 
