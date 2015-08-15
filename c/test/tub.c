@@ -13,27 +13,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 ****/
+#ifndef COMMON_TUB_C_GUARD
+# define COMMON_TUB_C_GUARD 1
 
-#ifndef COM_TESTING
-# define COM_TESTING 1
-#endif
+# ifndef COM_TESTING
+#  define COM_TESTING 1
+# endif
 
-#ifndef COM_DEBUG
-# define COM_DEBUG 1
-#endif
+# ifndef COM_DEBUG
+#  define COM_DEBUG 1
+# endif
 
-#ifndef _GNU_SOURCE
-# define _GNU_SOURCE
-#endif
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
 
-#include <error.h>
-#include <errno.h>
-#include <unistd.h>
-#include <sys/syscall.h>
-#include <linux/random.h>
-#include "../src/concat.c"
+# include <error.h>
+# include <errno.h>
+# include <unistd.h>
+# include <sys/syscall.h>
+# include <linux/random.h>
+# include "../src/concat.c"
 
-static char *getentropyp(size_t buflen)
+char *getentropyp(size_t buflen)
 {
      char *buf = malloc(buflen);
      int ret;
@@ -50,7 +52,7 @@ failure:
 }
 
 
-static int getentropy(void *buf, size_t buflen)
+int getentropy(void *buf, size_t buflen)
 {
      int ret;
      if (buflen > 256)
@@ -64,3 +66,4 @@ failure:
      errno = EIO;
      return -1;
 }
+#endif

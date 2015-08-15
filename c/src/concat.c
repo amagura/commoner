@@ -29,7 +29,8 @@ limitations under the License.
 #  include "cpeek.c"
 # endif
 
-char *concat(const char *s1, ...) __attribute__((sentinel));
+char *concat(const char *s1, ...) __attribute__((sentinel))
+     __attribute__((deprecated("use concatl or concatm instead")));
 
 // XXX returned value needs free
 char *concat(const char *s1, ...)
