@@ -2,17 +2,12 @@
 *.o
 *.\#*
 
-# binaries
-bin/test
-test
-
 # automake stuff
 autom4te.cache
 config.log
 config.status
 aclocal.m4
 Makefile.in
-Makefile
 .deps
 configure
 build-aux
@@ -22,3 +17,5 @@ build-aux
 PROFILE-*
 nohup.out
 test.sh
+*.vog
+*.mog
