@@ -14,7 +14,8 @@ LDFLAGS ?=
 LDFLAGS += -lcheck
 VFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 
-SRCS = $(wildcard *.c)
+BLKLIST = tub.c
+SRCS = $(filter-out $(BLKLIST),$(wildcard *.c))
 OBJS = $(SRCS:.c=.o)
 TESTS = $(OBJS:.o=)
 

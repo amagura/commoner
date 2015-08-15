@@ -13,40 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 ****/
-
-#ifndef COM_TESTING
-# define COM_TESTING 1
-#endif
-
-#ifndef COM_DEBUG
-# define COM_DEBUG 1
-#endif
-
-#ifndef _GNU_SOURCE
-# define _GNU_SOURCE
-#endif
-
-#include <error.h>
-#include <errno.h>
-#include <unistd.h>
-#include <sys/syscall.h>
-#include <linux/random.h>
+#include "tub.c"
 #include "../src/concat.c"
-
-int getentropy(void *buf, size_t buflen)
-{
-     int ret;
-     if (buflen > 256)
-	  goto failure;
-     ret = syscall(SYS_getrandom, buf, buflen, 0);
-     if (ret < 0)
-	  return ret;
-     if (ret == (int)buflen)
-	  return 0;
-failure:
-     errno = EIO;
-     return -1;
-}
 
 int main()
 {
@@ -57,7 +25,7 @@ int main()
      size_t r;
 # include "concat.01.c"
 # include "concat.01.c"
-# include "concat.01.c"
-# include "concat.01.c"
+//# include "concat.01.c"
+//# include "concat.01.c"
      return EXIT_SUCCESS;
 }

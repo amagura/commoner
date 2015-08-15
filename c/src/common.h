@@ -79,6 +79,10 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 char *strchr PARAMS((const char *s, int c));
 # endif
 
+# if !defined(COM_USE_MEMPMOVE)
+#  define COM_USE_MEMPMOVE 0
+# endif
+
 # if !defined(COM_TESTING)
 #  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
 # endif

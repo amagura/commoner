@@ -206,7 +206,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 	  return sz;
      }
      COM_DBG("tmp: `%s'\n", tmp);
-# if defined(mempmove) && 0
+# if defined(mempmove) && COM_USE_MEMPMOVE
      p = mempmove(dst, tmp, (used > sz ? sz : used));
 # else
      memmove(dst, tmp, (used > sz ? sz : used));
