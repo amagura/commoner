@@ -18,7 +18,7 @@ SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 TESTS = $(OBJS:.o=)
 
-all: $(TESTS) valgrind check
+all: ext $(TESTS) valgrind check
 
 ext: $(OBJS)
 
