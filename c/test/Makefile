@@ -5,6 +5,10 @@
 #  notice and this notice are preserved.  This file is offered as-is,
 #  without any warranty.
 
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+mydir := $(abspath $(lastword $(dir $(MAKEFILE_LIST))))
+cwd := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+
 CFLAGS ?= -O2 -Wall -Wextra -D_GNU_SOURCE -g -ggdb
 LDFLAGS ?=
 LDFLAGS += -lcheck
