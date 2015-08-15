@@ -29,6 +29,8 @@ limitations under the License.
 #  include "cpeek.c"
 # endif
 
+char *concat(const char *s1, ...) __attribute__((sentinel));
+
 // XXX returned value needs free
 char *concat(const char *s1, ...)
 {
@@ -88,6 +90,9 @@ char *concat(const char *s1, ...)
  * XXX A failure is indicated by a return value _equal to
  * the destination buffers size_, which may make errors somewhat
  * harder to spot! */
+
+size_t concatl(char *dst, size_t sz, const char *s1, ...) __attribute__((sentinel));
+
 size_t concatl(char *dst, size_t sz, const char *s1, ...)
 {
      va_list args;
@@ -152,6 +157,8 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
 /* concatm is a little different:
  * unlike `concatl' or `concat', concatm _moves_ memory: that is, the destination
  * pointer can be passed as an argument. */
+size_t concatm(char *dst, size_t sz, const char *s1, ...) __attribute__((sentinel));
+
 size_t concatm(char *dst, size_t sz, const char *s1, ...)
 {
      va_list args;
@@ -168,6 +175,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      }
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
+
      com_mtrace;
 
 # if defined(__cplusplus)

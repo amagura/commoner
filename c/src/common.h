@@ -47,11 +47,12 @@ BEGIN_C_DECLS
 
 #include "arch.h"
 #include "os.h"
+#include "cc.h"
 
 # if (defined(COM_CHECK)			\
       && COM_CHECK				\
       && defined(_GNU_SOURCE))
-#  include "mcheck.h"
+#  include <mcheck.h>
 #  define com_mtrace	\
      do {		\
 	  mtrace();	\
