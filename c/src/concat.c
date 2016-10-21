@@ -29,8 +29,11 @@ limitations under the License.
 #  include "cpeek.c"
 # endif
 
+
+// XXX OBSOLETE
+# if 0
 char *concat(const char *s1, ...) __attribute__((sentinel))
-     __attribute__((deprecated("use concatl or concatm instead")));
+     __attribute__((warn_unused_result));
 
 // XXX returned value needs free
 char *concat(const char *s1, ...)
@@ -74,6 +77,7 @@ char *concat(const char *s1, ...)
 	com_muntrace;
 	return result;
 }
+# endif
 
 /* unlike `concat', which returns a
  * new pointer that must then be copied
@@ -226,9 +230,6 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 
      return (used > sz ? 0 : sz - used);
 }
-
-# undef cat
-# define cat(...) (concat(__VA_ARGS__, (void *)NULL))
 
 # undef catl
 # define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
