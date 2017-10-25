@@ -1,5 +1,5 @@
-; argc* inline so that argv* won't actually call it
-;; but will still take advantage of its code.
+;; declare argc* inline so that argv* won't have to actually call it
+;; to take advantage of its functionality.
 (declaim (inline argc*))
 
 (defun argc* ()
