@@ -34,7 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           nil)
       (if (< .nth. (argc*)) ; make sure that we have enough args to get .nth. arg
           (or #+clisp (nth .nth. *args*)
-                        #+sbcl  (nth .nth. *posix-argv*)
+              #+sbcl  (nth .nth. *posix-argv*)
               #+abcl  (nth .nth. *command-line-argument-list*)
               nil)
           (error "error: position ~A is out of bounds: list has ~A ~A."
