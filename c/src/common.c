@@ -24,16 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <limits.h>
 #include "common.h"
 
-#include "itoa.c"
-#include "repeat.c"
-#include "intlen.c"
-#include "cpeek.c"
-#include "rev.c"
-#include "concat.c"
+#include "int.c"
 #include "str.c"
-#include "mem.c"
-
-
 
 #if defined(COMMON_NEEDS_A_MAIN)
 int main()

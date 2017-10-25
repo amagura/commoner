@@ -21,8 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include "repeat.c"
 # include "cpeek.c"
+# include "rev.c"
 # include "concat.c"
+# include "mem.c"
 # include "common.h"
 
 int *strndelim(const char *s, const char od, const char cd, int count[2])
