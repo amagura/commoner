@@ -1,3 +1,26 @@
+#-clisp (require :uiop)
+#+clisp (ql:quickload 'uiop)
+
+(labels ((abspath (path-string)
+         (uiop:unix-namestring
+           (uiop:merge-pathnames*
+             (uiop:parse-unix-namestring path-string))))
+
+       (dirname (path)
+         (first (last (pathname-directory path))))
+
+       (strcat (&rest strings)
+         (let ((result ""))
+           (dolist (str strings)
+             (setf result (format nil "~A~A" result str)))))
+
+       (file-beside-current-file (path)
+           (strcat
+             (abspath (strcat "./" *load-truename*))
+             path))
+
+  (pprint (file-beside-current-file "stdlib.lisp"))))
+
 ;(defun odd (list)
   ;"returns the items appearing at odd indices within a list"
   ;(do ((l list (cddr l))

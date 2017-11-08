@@ -5,6 +5,13 @@
            ;(format nil "../~A" ,%x%)
            ;(STARTDIR "")))))
 
+(load (format nil "~A/stdlib.lisp" (first (last (pathname-directory *load-truename*)))))
+
+(dolist (try (list *load-truename*
+               *load-pathname*
+               *default-pathname-defaults*))
+  (pprint try))
+
 (defun STARTDIR (&optional subdir &key :as-macro)
   (let ((body '(if (not (null subdir))
                    ;; concatenate two strings, which represent filesystem locations
