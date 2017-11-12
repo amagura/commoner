@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # include "mem.c"
 # include "common.h"
 
-inline int char *getend(const char *s)
+inline char *getend(const char *s)
 {
 # if defined(_GNU_SOURCE)
 	return strchr(s, '\0');
