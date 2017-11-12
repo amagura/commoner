@@ -31,8 +31,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 int *strndelim(const char *s, const char od, const char cd, int count[2])
 {
      memset(count, 0, sizeof(*count)*2);
+# if defined(_GNU_SOURCE)
      char *c = strchr(s, '\0');
-
+# else
+     char *c = &s[strlen(s)];
+# endif
      if (c == s)
 	  return NULL;
 
