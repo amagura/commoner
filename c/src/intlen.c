@@ -19,6 +19,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef COMMON_INTLEN_C_GUARD
 # define COMMON_INTLEN_C_GUARD 1
 # include "common.h"
+# include <stdint.h>
+
+uintmax_t uintm_len(uintmax_t idx)
+{
+	uintmax_t r = 0;
+	while (idx) {
+		++r;
+		idx /= 10;
+	}
+	return r;
+}
 
 int intlen(int idx)
 {

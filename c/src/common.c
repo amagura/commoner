@@ -24,7 +24,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <limits.h>
 #include "common.h"
 
-#include "int.c"
+//#include "int.c"
+#include "intlen.c"
+#include "itoa.c"
 #include "str.c"
 
 #if defined(COMMON_NEEDS_A_MAIN)
