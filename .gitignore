@@ -2,15 +2,43 @@
 *.o
 *.\#*
 
-# automake stuff
-autom4te.cache
-config.log
-config.status
-aclocal.m4
+################
+# AutoTools
+################
+# http://www.gnu.org/software/automake
+
 Makefile.in
-.deps
-configure
-build-aux
+/ar-lib
+/mdate-sh
+/py-compile
+/test-driver
+/ylwrap
+
+# http://www.gnu.org/software/autoconf
+
+/autom4te.cache
+/autoscan.log
+/autoscan-*.log
+/aclocal.m4
+/compile
+/config.guess
+/config.h.in
+/config.sub
+/configure
+/configure.scan
+/depcomp
+/install-sh
+/missing
+/stamp-h1
+
+# https://www.gnu.org/software/libtool/
+
+/ltmain.sh
+
+# http://www.gnu.org/software/texinfo
+
+/texinfo.tex
+
 
 # misc
 /tmp
@@ -19,3 +47,17 @@ nohup.out
 test.sh
 *.vog
 *.mog
+
+###################
+# CMake files
+###################
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
