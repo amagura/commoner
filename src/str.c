@@ -27,10 +27,13 @@
 # include "rev.c"
 # include "concat.c"
 
-/////////////////////////////////////////
-// End of defunct mem.c
-/////////////////////////////////////////
-
+// I just don't see the point in having an `atend' function.  Testing for the
+// end of a string is quite simple.
+# if 0
+bool atend(const char *s)
+{
+     return (strend(s) == NULL
+# endif
 /* does not change the contents of s0 or change
  * the memory location that s0 points to.
  *
@@ -43,6 +46,9 @@ const char *strend(const char *const s0)
 # else
      const char *endp = (const char *)&s0[strlen(s0)];
 # endif
+     /* FIXME: this shouldn't return NULL for both when s0 is NULL and when *s0
+      * is '\0'.
+      */
      if (s0 != NULL && *s0 != '\0')
           return (s0 == endp ? s0 : endp);
      return NULL;
