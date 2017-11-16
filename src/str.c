@@ -21,33 +21,82 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+
+# include "common.h"
 # include "repeat.c"
-# include "cpeek.c"
 # include "rev.c"
 # include "concat.c"
-# include "mem.c"
-# include "common.h"
 
-int *strndelim(const char *s, const char od, const char cd, int count[2])
+/////////////////////////////////////////
+// End of defunct mem.c
+/////////////////////////////////////////
+
+/* does not change the contents of s0 or change
+ * the memory location that s0 points to.
+ *
+ * returns the end of s0 (not the null terminator)
+ */
+const char *strend(const char *const s0)
+{
+# if defined(_GNU_SOURCE)
+     const char *endp = strchr(s0, '\0') - 1;
+# else
+     const char *endp = (const char *)&s0[strlen(s0)];
+# endif
+     if (s0 != NULL && *s0 != '\0')
+          return (s0 == endp ? s0 : endp);
+     return NULL;
+}
+
+# if defined(COM_EXPOSE_OLD_CPEEK)
+char old_cpeek(const char *c, const char *s, const short fwd)
+{
+     if (fwd > 0) {
+	  if (*c == '\0'
+# if defined(_GNU_SOURCE)
+	      || c == strchr(s, '\0') - 1
+# else
+	      || c == &s[strlen(s)]
+# endif
+	       )
+	       return *c;
+	  else
+	       return *(c + 1);
+     }
+     return (c == s) ? *c : *(c - 1);
+}
+# endif
+
+const char cpeek(const char *const sp0, const char *const head)
+{
+     if (!head)
+          return (*sp0 == '\0' || sp0 == strend(sp0) ? *sp0 : *(sp0 + 1));
+     else
+          return (sp0 == head) ? *sp0 : *(sp0 - 1);
+}
+
+int *strndelim(const char *s0, const char od, const char cd, int count[2])
 {
      memset(count, 0, sizeof(*count)*2);
 # if defined(_GNU_SOURCE)
-     char *c = strchr(s, '\0');
+     char *c = strchr(s0, '\0');
 # else
-     char *tmp = strdup(s);
-     char *c = &tmp[strlen(tmp)];
+     char *c = (char *)&s0[strlen(s0)];
 # endif
-     if (c == s)
+     if (c == s0) // we are looking at the end of the string
           goto fail;
 
      do {
-          if (c != s && cpeek(c, s, 0) == '\\')
+          /* FIXME: this was recently changed from the old cpeek
+           * to the newer cpeek, but it has __not__ been tested!!
+           */
+          if (c != s0 && cpeek(c, s0) == '\\')
                continue;
           if (*c == cd)
                ++count[1];
           else if (*c == od)
                ++count[0];
-     } while (c-- != s);
+     } while (c-- != s0);
 
      if (od == cd && count[1] > 0) {
           if (count[1] % 2 == 1)
@@ -57,17 +106,9 @@ int *strndelim(const char *s, const char od, const char cd, int count[2])
                count[1] *= 0.5;
           }
      }
-# if !defined(_GNU_SOURCE)
-     free(tmp);
-# endif
-
      return count;
 fail:
-# if !defined(_GNU_SOURCE)
-     free(tmp);
-# endif
      return NULL;
-
 }
 
 char *strwodqp(const char *src)
@@ -155,5 +196,27 @@ free:
      free(newp);
 end:
      return r;
+}
+
+/////////////////////////////////////////
+// Taken from defunct mem.c
+/////////////////////////////////////////
+int memlen(const char *s)
+{
+     char *a = NULL;
+     if ((a = strchr(s, '\0')))
+	  return (int)(a - s);
+     return -1;
+}
+
+char *strterm(char *s, size_t sz)
+{
+     char *tmp = NULL;
+     tmp = s;
+     s += sz;
+     --s; --s;
+     *s = '\0';
+     s = tmp;
+     return s;
 }
 #endif

@@ -33,6 +33,7 @@ void rev(char *s)
      }
 }
 
+/* remember to free the returned pointer */
 char *revp(const char *s)
 {
      int idx = 0;

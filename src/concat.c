@@ -26,13 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # include <limits.h>
 # include "common.h"
 
-# include "mem.c"
-
-# if COM_DEBUG
-#  include "cpeek.c"
-# endif
-
-
 // XXX OBSOLETE
 # if 0
 char *concat(const char *s1, ...) __attribute__((sentinel))

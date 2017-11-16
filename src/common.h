@@ -1,20 +1,20 @@
 /****
-COMMON; common.h
+  COMMON; common.h
 
-Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****/
 #ifndef COMMON_COMMON_H_GUARD
 # define COMMON_COMMON_H_GUARD 1
@@ -48,9 +48,46 @@ BEGIN_C_DECLS
 # include <stdio.h>
 # include <stdlib.h>
 
-# include "arch.h"
-# include "os.h"
-# include "cc.h"
+/////////////////////////////////////////
+// PUBLIC Functions
+/////////////////////////////////////////
+
+/** functions hosted by str.c **/
+
+/* from defunct mem.c */
+int memlen PARAMS((const char *s));
+char *strterm PARAMS((char *s, size_t sz));
+
+const char *strend PARAMS((const char *const s0));
+# if defined(COM_EXPOSE_OLD_CPEEK)
+char old_cpeek PARAMS((const char *c, const char *s, const short fwd));
+# endif
+const char cpeek PARAMS((const char *const sp0, const char *const head));
+
+/** functions hosted by repeat.c **/
+void repeat PARAMS((char *dst, const char s, size_t n));
+// XXX repeats strings instead of characters
+int strrep PARAMS((char *dst, const char *s, size_t n));
+char *strprep PARAMS((const char *s, int times));
+
+/** functions hosted by rev.c **/
+void rev PARAMS((char *s));
+char *revp PARAMS((const char *s));
+void revn PARAMS((char *s, size_t n));
+char *revnp PARAMS((char *s, size_t n));
+
+/** functions hosted by concat.c **/
+
+/* it is worth noting that the original concat
+ * is still available in concat.c
+ * it is, however, commented out.
+ */
+size_t concatl PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
+size_t concatm PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
+
+/////////////////////////////////////////
+// PUBLIC Macros
+/////////////////////////////////////////
 
 # if (defined(COM_CHECK)			\
       && COM_CHECK				\

@@ -16,18 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****/
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <string.h>
-#include <limits.h>
-#include "common.h"
-
-//#include "int.c"
-#include "intlen.c"
-#include "itoa.c"
 #include "str.c"
+#include "int.c"
 
 #if defined(COMMON_NEEDS_A_MAIN)
 int main()
