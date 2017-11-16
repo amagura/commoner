@@ -47,6 +47,7 @@ BEGIN_C_DECLS
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdint.h>
 
 /////////////////////////////////////////
 // PUBLIC Functions
