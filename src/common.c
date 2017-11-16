@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****/
 #include "str.c"
 #include "int.c"
+#include "os.c"
 
 #if defined(COMMON_NEEDS_A_MAIN)
 int main()

@@ -85,6 +85,19 @@ char *revnp PARAMS((char *s, size_t n));
 size_t concatl PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
 size_t concatm PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
 
+/** functions hosted by int.c **/
+uintmax_t uintm_len PARAMS((uintmax_t idx));
+int intlen PARAMS((int idx));
+int intlenc PARAMS((const int idx));
+size_t intlenm PARAMS((int src));
+
+/* from defunct itoa.c */
+void itoa PARAMS((char *dst, int src));
+char *itoap PARAMS((const int src));
+
+/** functions hosted by os.c **/
+size_t flen PARAMS((FILE *fp));
+
 /////////////////////////////////////////
 // PUBLIC Macros
 /////////////////////////////////////////
