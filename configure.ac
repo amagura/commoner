@@ -2,12 +2,13 @@ AC_PREREQ([2.69])
 AC_INIT([Commoner], [1.0.0], [amagura28@gmail.com],,[https://github.com/amagura/common/issues])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+AC_USE_SYSTEM_EXTENSIONS
 
 AM_INIT_AUTOMAKE([foreign -Wall])
+AM_AR_PROG
+
 LT_INIT
-
-
-AC_USE_SYSTEM_EXTENSIONS
 
 # Check for programs
 AC_PROG_CC
