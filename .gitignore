@@ -47,6 +47,7 @@ nohup.out
 test.sh
 *.vog
 *.mog
+src/commoner.h # built during compilation
 
 ###################
 # CMake files
