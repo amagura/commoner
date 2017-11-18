@@ -13,6 +13,7 @@ install:
 script:
   - autoreconf -fi
   - ./configure
+  - cd src
   - make
 after_success:
   - true
