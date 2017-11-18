@@ -38,6 +38,12 @@ bool atend(const char *s)
  * the memory location that s0 points to.
  *
  * returns the end of s0 (not the null terminator)
+ *
+ * XXX returns NULL if s0 is NULL
+ * and returns s0 as-is if s0 points to '\0'
+ *
+ * compare the return value to s0: if they are the same
+ * then s0 pointed to '\0'
  */
 const char *strend(const char *const s0)
 {
@@ -51,7 +57,7 @@ const char *strend(const char *const s0)
       */
      if (s0 != NULL && *s0 != '\0')
           return (s0 == endp ? s0 : endp);
-     return NULL;
+     return s0 == NULL ? NULL : s0;
 }
 
 # if defined(COM_EXPOSE_OLD_CPEEK)
@@ -75,7 +81,7 @@ char old_cpeek(const char *c, const char *s, const short fwd)
 
 const char cpeek(const char *const sp0, const char *const head)
 {
-     if (!head)
+     if (!head) // FIXME this is less than ideal usage of strend...
           return (*sp0 == '\0' || sp0 == strend(sp0) ? *sp0 : *(sp0 + 1));
      else
           return (sp0 == head) ? *sp0 : *(sp0 - 1);
