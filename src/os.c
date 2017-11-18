@@ -23,11 +23,15 @@
 # include <stdio.h>
 # include "os.h"
 
+/* returns the number of lines in a file; sets the FILE pointer back to the head
+ * of `fp' when done.
+ */
 size_t flen(FILE *fp)
 {
      size_t r;
      while ((EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp, "%*c"))))
           ++r;
+     fseek(fp, 0, SEEK_SET);
      return r;
 }
 #endif
