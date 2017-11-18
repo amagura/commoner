@@ -13,6 +13,11 @@ Makefile.in
 /py-compile
 /test-driver
 /ylwrap
+m4/libtool.m4
+m4/ltoptions.m4
+m4/ltversion.m4
+m4/lt~obsolete.m4
+src/config.h.*
 
 # http://www.gnu.org/software/autoconf
 
