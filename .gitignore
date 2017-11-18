@@ -6,7 +6,7 @@
 # AutoTools
 ################
 # http://www.gnu.org/software/automake
-
+build-aux
 Makefile.in
 /ar-lib
 /mdate-sh
