@@ -1,3 +1,4 @@
+/* vim: set ft=c: */
 /****
 COMMON; os.h
 
