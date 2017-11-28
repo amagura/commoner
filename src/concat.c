@@ -227,11 +227,4 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 
      return (used > sz ? 0 : sz - used);
 }
-
-# undef catl
-# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
-
-# undef catm
-# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
-
 #endif

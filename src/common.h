@@ -103,6 +103,8 @@ size_t flen PARAMS((FILE *fp));
 /////////////////////////////////////////
 // PUBLIC Macros
 /////////////////////////////////////////
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
 
 # if (defined(COM_CHECK)			\
       && COM_CHECK				\
