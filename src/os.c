@@ -22,7 +22,29 @@
 # define COMMON_OS_C_GUARD 1
 
 # include <stdio.h>
+# include <dirent.h>
+# include <errno.h>
 # include "os.h"
+
+/* XXX returns:
+ * 1 if true
+ * 0 if false
+ * errno on error.
+ */
+int direxists(char *pth)
+{
+     DIR *dir = opendir(pth);
+     if (dir) {
+          /* `dir' exists */
+          closedir(dir);
+          return 1;
+     } else if (ENOENT == errno) {
+          /* `dir' doesn't exist */
+          return 0;
+     } else {
+          return errno;
+     }
+}
 
 /* returns the number of lines in a file; sets the FILE pointer back to the head
  * of `fp' when done.

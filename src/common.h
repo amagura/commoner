@@ -98,6 +98,7 @@ void itoa PARAMS((char *dst, int src));
 char *itoap PARAMS((const int src));
 
 /** functions hosted by os.c **/
+int di
 size_t flen PARAMS((FILE *fp));
 
 /////////////////////////////////////////
