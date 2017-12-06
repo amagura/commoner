@@ -24,7 +24,27 @@
 # include <dirent.h>
 # include <errno.h>
 # include <stdbool.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <string.h>
 # include "os.h"
+
+/* On success: *pth is set to the realpath to *pth and 0 is returned.
+   On failure: *pth is set to NULL and errno is returned.
+   */
+
+int rpath(char *pth)
+{
+     char buf[PATH_MAX + 1];
+     /* FIXME, we should check for realpath */
+     char *ptr = realpath(pth, buf);
+     if (errno) {
+          pth = NULL;
+          return errno;
+     }
+     memmove(pth, ptr, sizeof(PATH_MAX + 1)); // NOTE may cause mem leaks?
+     return 0;
+}
 
 /* XXX returns:
  * 1 if true
@@ -38,7 +58,7 @@ int direxists(char *pth)
           /* `dir' exists */
           closedir(dir);
           return true;
-     } else if (ENOENT == errno) {
+     } else if (errno == ENOENT) {
           /* `dir' doesn't exist */
           return false;
      } else {
