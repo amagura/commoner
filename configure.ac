@@ -12,7 +12,12 @@ LT_INIT
 
 # Check for programs
 AC_PROG_CC
+AC_PROG_AWK
+AC_PROG_CPP
 AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
 
 # FIXME: Replace `main' with a function in `-lcheck':
 AC_CHECK_LIB([check], [main])
@@ -27,7 +32,7 @@ AC_TYPE_SIZE_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([bzero memmove mempcpy memset strchr strdup strol])
+AC_CHECK_FUNCS([bzero memmove mempcpy memset realpath strchr strdup strtol])
 
 # Produce output.
 AC_CONFIG_FILES([Makefile src/Makefile])
