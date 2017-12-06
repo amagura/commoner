@@ -23,7 +23,7 @@
 # include <stdlib.h>
 # include <string.h>
 
-# include "common.h"
+# include "commoner.h"
 # include "repeat.c"
 # include "rev.c"
 # include "concat.c"

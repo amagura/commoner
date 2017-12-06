@@ -25,7 +25,7 @@
 # include <stdbool.h>
 # include <string.h>
 # include <limits.h>
-# include "common.h"
+# include "commoner.h"
 
 // XXX OBSOLETE
 # if 0

@@ -22,7 +22,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include "common.h"
+# include "commoner.h"
 
 void repeat(char *dst, const char s, size_t n)
 {

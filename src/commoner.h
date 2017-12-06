@@ -1,5 +1,5 @@
 /****
-  COMMON; common.h
+  COMMON; commoner.h
 
   Copyright (C) 2015, 2016, 2017 Alexej G. Magura
 

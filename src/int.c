@@ -20,7 +20,7 @@
 #ifndef COMMON_INT_C_GUARD
 # define COMMON_INT_C_GUARD 1
 # include <stdint.h>
-# include "common.h"
+# include "commoner.h"
 
 uintmax_t uintm_len(uintmax_t idx)
 {
