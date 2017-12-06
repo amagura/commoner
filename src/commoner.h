@@ -51,58 +51,6 @@ BEGIN_C_DECLS
 # include <stdint.h>
 
 /////////////////////////////////////////
-// PUBLIC Functions
-/////////////////////////////////////////
-
-/** functions hosted by str.c **/
-
-/* from defunct mem.c */
-int memlen PARAMS((const char *s));
-char *strterm PARAMS((char *s, size_t sz));
-
-const char *strend PARAMS((const char *const s0));
-# if defined(COM_EXPOSE_OLD_CPEEK)
-char old_cpeek PARAMS((const char *c, const char *s, const short fwd));
-# endif
-const char cpeek PARAMS((const char *const sp0, const char *const head));
-
-/** functions hosted by repeat.c **/
-void repeat PARAMS((char *dst, const char s, size_t n));
-// XXX repeats strings instead of characters
-int strrep PARAMS((char *dst, const char *s, size_t n));
-char *strprep PARAMS((const char *s, int times));
-
-/** functions hosted by rev.c **/
-void rev PARAMS((char *s));
-char *revp PARAMS((const char *s));
-void revn PARAMS((char *s, size_t n));
-char *revnp PARAMS((char *s, size_t n));
-
-/** functions hosted by concat.c **/
-
-/* it is worth noting that the original concat
- * is still available in concat.c
- * it is, however, commented out.
- */
-size_t concatl PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
-size_t concatm PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
-
-/** functions hosted by int.c **/
-uintmax_t uintm_len PARAMS((uintmax_t idx));
-int intlen PARAMS((int idx));
-int intlenc PARAMS((const int idx));
-size_t intlenm PARAMS((int src));
-
-/* from defunct itoa.c */
-void itoa PARAMS((char *dst, int src));
-char *itoap PARAMS((const int src));
-
-/** functions hosted by os.c **/
-int rpath PARAMS((char *pth));
-int direxists PARAMS((char *pth));
-size_t flen PARAMS((FILE *fp));
-
-/////////////////////////////////////////
 // PUBLIC Macros
 /////////////////////////////////////////
 # define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
@@ -320,6 +268,60 @@ inline int memlen(const char *s)
 	  return r;
      }
 #endif
+
+/////////////////////////////////////////
+// PUBLIC Functions
+/////////////////////////////////////////
+
+/** functions hosted by str.c **/
+
+/* from defunct mem.c */
+int memlen PARAMS((const char *s));
+char *strterm PARAMS((char *s, size_t sz));
+
+const char *strend PARAMS((const char *const s0));
+# if defined(COM_EXPOSE_OLD_CPEEK)
+char old_cpeek PARAMS((const char *c, const char *s, const short fwd));
+# endif
+const char cpeek PARAMS((const char *const sp0, const char *const head));
+
+/** functions hosted by repeat.c **/
+void repeat PARAMS((char *dst, const char s, size_t n));
+// XXX repeats strings instead of characters
+int strrep PARAMS((char *dst, const char *s, size_t n));
+char *strprep PARAMS((const char *s, int times));
+
+/** functions hosted by rev.c **/
+void rev PARAMS((char *s));
+char *revp PARAMS((const char *s));
+void revn PARAMS((char *s, size_t n));
+char *revnp PARAMS((char *s, size_t n));
+
+/** functions hosted by concat.c **/
+
+/* it is worth noting that the original concat
+ * is still available in concat.c
+ * it is, however, commented out.
+ */
+size_t concatl PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
+size_t concatm PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
+
+/** functions hosted by int.c **/
+uintmax_t uintm_len PARAMS((uintmax_t idx));
+int intlen PARAMS((int idx));
+int intlenc PARAMS((const int idx));
+size_t intlenm PARAMS((int src));
+
+/* from defunct itoa.c */
+void itoa PARAMS((char *dst, int src));
+char *itoap PARAMS((const int src));
+
+/** functions hosted by os.c **/
+int subdir PARAMS((char **dirs, size_t max));
+int rpath PARAMS((char *pth));
+int direxists PARAMS((char *pth));
+size_t flen PARAMS((FILE *fp));
+
 
 END_C_DECLS
 

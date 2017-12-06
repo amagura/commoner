@@ -5,4 +5,19 @@ libcommoner_la_SOURCES = commoner.c
 libcommoner_la_LDFLAGS = -version-info '0:0:0'
 include_HEADERS = commoner.h
 
+AM_CFLAGS =
+AM_CPPFLAGS =
+AM_LDFLAGS =
+
+if DEBUG
+AM_CFLAGS += -g -ggdb
+AM_CPPFLAGS += -DCOM_DEBUG=1
+endif
+
+if !DEBUG
+if NO_DEBUG
+AM_CPPFLAGS += -DCOM_DEBUG=0
+endif
+endif
+
 clean-local:

@@ -85,7 +85,6 @@ BEGIN_C_DECLS
 #  endif
 # endif
 
-
 END_C_DECLS
 
 #endif /* COMMMON_COMPAT_OS_H_GUARD */

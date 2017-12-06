@@ -27,7 +27,15 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <string.h>
+# include "commoner.h"
 # include "os.h"
+
+int subdir(char **dirs, size_t max)
+{
+     char *src = *dirs;
+     COM_DBG("*src: '%s'\n", *src);
+     return 0;
+}
 
 /* On success: *pth is set to the realpath to *pth and 0 is returned.
    On failure: *pth is set to NULL and errno is returned.

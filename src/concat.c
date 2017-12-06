@@ -149,7 +149,7 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
 
      COM_DBG("dst: `%s'\n", dst);
      COM_DBG("*p: `%c'\n", *p);
-     COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
+     COM_DBG("*--p: `%c'\n", cpeek(p, dst));
      COM_DBG("strlen(dst): %lu\n", strlen(dst));
      COM_DBG("used#2: %lu\n", used - 0);
      com_muntrace;
@@ -220,7 +220,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 
      COM_DBG("dst: `%s'\n", dst);
      COM_DBG("*p: `%c'\n", *p);
-     COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
+     COM_DBG("*--p: `%c'\n", cpeek(p, dst));
      COM_DBG("strlen(dst): %lu\n", strlen(dst));
      COM_DBG("used#2: %lu\n", used - 0);
      com_muntrace;

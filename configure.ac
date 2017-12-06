@@ -34,6 +34,23 @@ AC_TYPE_SIZE_T
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([bzero memmove mempcpy memset realpath strchr strdup strtol])
 
+#########
+# Options
+#########
+AC_ARG_ENABLE([debug],
+              [  --enable-debug		turn on debugging (default: disabled)],
+              [case "${enableval}" in
+               yes) debug=true ;;
+               no) debug=false ;;
+               *) AC_MSG_WARN([bad value '${enableval}' for --enable-debug]) ;;
+             esac],[debug=no])
+AC_MSG_NOTICE([debug: $debug])
+
+test "x$debug" = "xno" && no_debug=false
+test "x$debug" = "xfalse" && no_debug=true
+AM_CONDITIONAL([DEBUG], [test "x$debug" = "xtrue"])
+AM_CONDITIONAL([NO_DEBUG], [test "x$debug" != "xtrue"])
+
 # Produce output.
 AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
