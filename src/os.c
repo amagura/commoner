@@ -1,4 +1,3 @@
-
 /****
   COMMON; os.c, OS/FS related functions
 
@@ -24,6 +23,7 @@
 # include <stdio.h>
 # include <dirent.h>
 # include <errno.h>
+# include <stdbool.h>
 # include "os.h"
 
 /* XXX returns:
@@ -37,10 +37,10 @@ int direxists(char *pth)
      if (dir) {
           /* `dir' exists */
           closedir(dir);
-          return 1;
+          return true;
      } else if (ENOENT == errno) {
           /* `dir' doesn't exist */
-          return 0;
+          return false;
      } else {
           return errno;
      }
