@@ -86,43 +86,463 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 char *strchr PARAMS((const char *s, int c));
 # endif
 
+
+/* FIXME: this should be moved to config.h */
 # if !defined(COM_USE_MEMPMOVE)
 #  define COM_USE_MEMPMOVE 0
 # endif
 
+/* FIXME: this should be moved to config.h */
 # if !defined(COM_TESTING)
 #  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
 # endif
 
+/* FIXME: this should be moved to config.h */
 # if !defined(COM_DEBUG)
 #  define COM_DEBUG 0 // XXX change this to turn debug messages on/off
 # endif
 
+/* FIXME: this should be moved to config.h */
 # if COM_DEBUG
 #  if !defined(COM_DLVL)
 #   define COM_DLVL (COM_DEBUG + 1) // XXX change this to increase/decrease debug verbosity
 #  endif
 # endif
+  COMMON; commoner.h
 
+  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+
+  This file is a part of Commoner
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+****/
+#ifndef COMMON_COMMON_H_GUARD
+# define COMMON_COMMON_H_GUARD 1
+/* BEGIN_C_DECLS should be used at the beginning of your declarations,
+so that C++ compilers don't mangle their names.  Use END_C_DECLS at
+the end of C declarations. */
+# undef BEGIN_C_DECLS
+# undef END_C_DECLS
+# ifdef __cplusplus
+#  define BEGIN_C_DECLS extern "C" {
+#  define END_C_DECLS }
+# else
+#  define BEGIN_C_DECLS /* empty */
+#  define END_C_DECLS /* empty */
+# endif
+
+/* PARAMS is a macro used to wrap function prototypes, so that
+  compilers that don't understand ANSI C prototypes still work,
+  and ANSI C compilers can issue warnings about type mismatches. */
+# undef PARAMS
+# if defined (__STDC__) || defined (_AIX) \
+       || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
+       || defined(WIN32) || defined(__cplusplus)
+#  define PARAMS(protos) protos
+# else
+#  define PARAMS(protos) ()
+# endif
+
+BEGIN_C_DECLS
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdint.h>
+
+/////////////////////////////////////////
+// PUBLIC Macros
+/////////////////////////////////////////
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
+
+# if (defined(COM_CHECK)			\
+      && COM_CHECK				\
+      && defined(_GNU_SOURCE))
+#  include <mcheck.h>
+#  define com_mtrace	\
+     do {		\
+	  mtrace();	\
+     } while(0)
+#  define com_muntrace	\
+     do {		\
+	  muntrace();	\
+     } while(0)
+# else
+#  define com_mtrace
+#  define com_muntrace
+# endif
+
+# if !defined(COM_INCLUDE_STRING_H)
+#  define COM_INCLUDE_STRING_H 0
+# endif
+
+# if COM_INCLUDE_STRING_H
+#  include <string.h>
+# else
+void *memset PARAMS((void *s, int c, size_t n));
+void *memcpy PARAMS((void *dest, const void *src, size_t n));
+void *memmove PARAMS((void *dest, const void *src, size_t n));
+char *strchr PARAMS((const char *s, int c));
+# endif
+
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_USE_MEMPMOVE)
+#  define COM_USE_MEMPMOVE 0
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_TESTING)
+#  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_DEBUG)
+#  define COM_DEBUG 0 // XXX change this to turn debug messages on/off
+# endif
+
+  COMMON; commoner.h
+
+  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+
+  This file is a part of Commoner
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+****/
+#ifndef COMMON_COMMON_H_GUARD
+# define COMMON_COMMON_H_GUARD 1
+/* BEGIN_C_DECLS should be used at the beginning of your declarations,
+so that C++ compilers don't mangle their names.  Use END_C_DECLS at
+the end of C declarations. */
+# undef BEGIN_C_DECLS
+# undef END_C_DECLS
+# ifdef __cplusplus
+#  define BEGIN_C_DECLS extern "C" {
+#  define END_C_DECLS }
+# else
+#  define BEGIN_C_DECLS /* empty */
+#  define END_C_DECLS /* empty */
+# endif
+
+/* PARAMS is a macro used to wrap function prototypes, so that
+  compilers that don't understand ANSI C prototypes still work,
+  and ANSI C compilers can issue warnings about type mismatches. */
+# undef PARAMS
+# if defined (__STDC__) || defined (_AIX) \
+       || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
+       || defined(WIN32) || defined(__cplusplus)
+#  define PARAMS(protos) protos
+# else
+#  define PARAMS(protos) ()
+# endif
+
+BEGIN_C_DECLS
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdint.h>
+
+/////////////////////////////////////////
+// PUBLIC Macros
+/////////////////////////////////////////
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
+
+# if (defined(COM_CHECK)			\
+      && COM_CHECK				\
+      && defined(_GNU_SOURCE))
+#  include <mcheck.h>
+#  define com_mtrace	\
+     do {		\
+	  mtrace();	\
+     } while(0)
+#  define com_muntrace	\
+     do {		\
+	  muntrace();	\
+     } while(0)
+# else
+#  define com_mtrace
+#  define com_muntrace
+# endif
+
+# if !defined(COM_INCLUDE_STRING_H)
+#  define COM_INCLUDE_STRING_H 0
+# endif
+
+# if COM_INCLUDE_STRING_H
+#  include <string.h>
+# else
+void *memset PARAMS((void *s, int c, size_t n));
+void *memcpy PARAMS((void *dest, const void *src, size_t n));
+void *memmove PARAMS((void *dest, const void *src, size_t n));
+char *strchr PARAMS((const char *s, int c));
+# endif
+
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_USE_MEMPMOVE)
+#  define COM_USE_MEMPMOVE 0
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_TESTING)
+#  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_DEBUG)
+#  define COM_DEBUG 0 // XXX change this to turn debug messages on/off
+# endif
+
+  COMMON; commoner.h
+
+  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+
+  This file is a part of Commoner
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+****/
+#ifndef COMMON_COMMON_H_GUARD
+# define COMMON_COMMON_H_GUARD 1
+/* BEGIN_C_DECLS should be used at the beginning of your declarations,
+so that C++ compilers don't mangle their names.  Use END_C_DECLS at
+the end of C declarations. */
+# undef BEGIN_C_DECLS
+# undef END_C_DECLS
+# ifdef __cplusplus
+#  define BEGIN_C_DECLS extern "C" {
+#  define END_C_DECLS }
+# else
+#  define BEGIN_C_DECLS /* empty */
+#  define END_C_DECLS /* empty */
+# endif
+
+/* PARAMS is a macro used to wrap function prototypes, so that
+  compilers that don't understand ANSI C prototypes still work,
+  and ANSI C compilers can issue warnings about type mismatches. */
+# undef PARAMS
+# if defined (__STDC__) || defined (_AIX) \
+       || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
+       || defined(WIN32) || defined(__cplusplus)
+#  define PARAMS(protos) protos
+# else
+#  define PARAMS(protos) ()
+# endif
+
+BEGIN_C_DECLS
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdint.h>
+
+/////////////////////////////////////////
+// PUBLIC Macros
+/////////////////////////////////////////
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
+
+# if (defined(COM_CHECK)			\
+      && COM_CHECK				\
+      && defined(_GNU_SOURCE))
+#  include <mcheck.h>
+#  define com_mtrace	\
+     do {		\
+	  mtrace();	\
+     } while(0)
+#  define com_muntrace	\
+     do {		\
+	  muntrace();	\
+     } while(0)
+# else
+#  define com_mtrace
+#  define com_muntrace
+# endif
+
+# if !defined(COM_INCLUDE_STRING_H)
+#  define COM_INCLUDE_STRING_H 0
+# endif
+
+# if COM_INCLUDE_STRING_H
+#  include <string.h>
+# else
+void *memset PARAMS((void *s, int c, size_t n));
+void *memcpy PARAMS((void *dest, const void *src, size_t n));
+void *memmove PARAMS((void *dest, const void *src, size_t n));
+char *strchr PARAMS((const char *s, int c));
+# endif
+
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_USE_MEMPMOVE)
+#  define COM_USE_MEMPMOVE 0
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_TESTING)
+#  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_DEBUG)
+#  define COM_DEBUG 0 // XXX change this to turn debug messages on/off
+# endif
+
+  COMMON; commoner.h
+
+  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+
+  This file is a part of Commoner
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+****/
+#ifndef COMMON_COMMON_H_GUARD
+# define COMMON_COMMON_H_GUARD 1
+/* BEGIN_C_DECLS should be used at the beginning of your declarations,
+so that C++ compilers don't mangle their names.  Use END_C_DECLS at
+the end of C declarations. */
+# undef BEGIN_C_DECLS
+# undef END_C_DECLS
+# ifdef __cplusplus
+#  define BEGIN_C_DECLS extern "C" {
+#  define END_C_DECLS }
+# else
+#  define BEGIN_C_DECLS /* empty */
+#  define END_C_DECLS /* empty */
+# endif
+
+/* PARAMS is a macro used to wrap function prototypes, so that
+  compilers that don't understand ANSI C prototypes still work,
+  and ANSI C compilers can issue warnings about type mismatches. */
+# undef PARAMS
+# if defined (__STDC__) || defined (_AIX) \
+       || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
+       || defined(WIN32) || defined(__cplusplus)
+#  define PARAMS(protos) protos
+# else
+#  define PARAMS(protos) ()
+# endif
+
+BEGIN_C_DECLS
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdint.h>
+
+/////////////////////////////////////////
+// PUBLIC Macros
+/////////////////////////////////////////
+# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
+
+# if (defined(COM_CHECK)			\
+      && COM_CHECK				\
+      && defined(_GNU_SOURCE))
+#  include <mcheck.h>
+#  define com_mtrace	\
+     do {		\
+	  mtrace();	\
+     } while(0)
+#  define com_muntrace	\
+     do {		\
+	  muntrace();	\
+     } while(0)
+# else
+#  define com_mtrace
+#  define com_muntrace
+# endif
+
+# if !defined(COM_INCLUDE_STRING_H)
+#  define COM_INCLUDE_STRING_H 0
+# endif
+
+# if COM_INCLUDE_STRING_H
+#  include <string.h>
+# else
+void *memset PARAMS((void *s, int c, size_t n));
+void *memcpy PARAMS((void *dest, const void *src, size_t n));
+void *memmove PARAMS((void *dest, const void *src, size_t n));
+char *strchr PARAMS((const char *s, int c));
+# endif
+
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_USE_MEMPMOVE)
+#  define COM_USE_MEMPMOVE 0
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_TESTING)
+#  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
+# endif
+
+/* FIXME: this should be moved to config.h */
+# if !defined(COM_DEBUG)
+#  define COM_DEBUG 0 // XXX change this to turn debug messages on/off
+# endif
+
+/* FIXME: this should be moved to config.h */
 # if !defined(PACKAGE_VERSION)
 #  define PACKAGE_VERSION ""
 # endif
 
+/* FIXME: this should be moved to config.h */
 # if !defined(PACKAGE)
 #  define PACKAGE "common"
 # endif
 
+/* FIXME: this should be moved to config.h */
 # if !defined(COM_PROGNAME)
 #  define COM_PROGNAME PACKAGE
 # endif
 
-# if COM_DEBUG
+/* FIXME: this should be moved to config.h */
+# if COM_DEBUG || COMNR_INTERNAL_DEBUG
 #  if defined(_GNU_SOURCE)
 #   include <mcheck.h>
 #  endif
 #  define COM_DBG(format, ...)					\
      do {							\
-	  fprintf(stderr, "## (%s)(%s)%d\n",			\
+	  fprintf(stderr, "## (%s)(%s)-%d\n",			\
 		  COM_PROGNAME, __FILE__, __LINE__);		\
 	  fprintf(stderr, "#  `%s'\n", __FUNCTION__);		\
 	  fprintf(stderr, (format), ##__VA_ARGS__);		\
@@ -130,7 +550,7 @@ char *strchr PARAMS((const char *s, int c));
      } while(0)
 #  define COM_SDBG(format, exp)				\
      do {						\
-	  fprintf(stderr, "## (%s)(%s)%d\n",		\
+	  fprintf(stderr, "## (%s)(%s)-%d\n",		\
 		  COM_PROGNAME, __FILE__, __LINE__);	\
 	  fprintf(stderr, "#  `%s`\n", __FUNCTION__);	\
 	  fprintf(stderr, (format), (exp));		\
@@ -317,7 +737,7 @@ void itoa PARAMS((char *dst, int src));
 char *itoap PARAMS((const int src));
 
 /** functions hosted by os.c **/
-int subdir PARAMS((char **dirs, size_t max));
+char *subdir PARAMS((char **dirs, size_t ssz));
 int rpath PARAMS((char *pth));
 int direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));

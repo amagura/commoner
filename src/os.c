@@ -30,11 +30,27 @@
 # include "commoner.h"
 # include "os.h"
 
-int subdir(char **dirs, size_t max)
+char *subdir(char **dirs, size_t ssz)
 {
-     char *src = *dirs;
-     COM_DBG("*src: '%s'\n", *src);
-     return 0;
+     char *src = dirs[0];
+     char *dst = dirs[1];
+     char *buf = malloc(ssz * sizeof(*buf));
+     char *tmp = NULL;
+     size_t sz0;
+
+     COM_DBG("src: '%s'\n", src);
+     COM_DBG("dst: '%s'\n", dst);
+
+     sz0 = catl(buf, ssz, src, dst);
+     if (sz0 != ssz && sz0 > 0) {
+          tmp = strdup(buf);
+          goto rok_free;
+     }
+     free(buf);
+     return NULL;
+rok_free:
+     free(buf);
+     return tmp;
 }
 
 /* On success: *pth is set to the realpath to *pth and 0 is returned.

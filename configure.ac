@@ -17,7 +17,7 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
+#AC_PROG_RANLIB # XXX deprecated by LT_INIT
 
 # FIXME: Replace `main' with a function in `-lcheck':
 AC_CHECK_LIB([check], [main])
@@ -44,10 +44,11 @@ AC_ARG_ENABLE([debug],
                no) debug=false ;;
                *) AC_MSG_WARN([bad value '${enableval}' for --enable-debug]) ;;
              esac],[debug=no])
-AC_MSG_NOTICE([debug: $debug])
 
-test "x$debug" = "xno" && no_debug=false
-test "x$debug" = "xfalse" && no_debug=true
+if test "x$debug" = "xtrue"; then
+  AC_DEFINE([COMNR_INTERAL_DEBUG], [1], [needs a description because fuck])
+fi
+
 AM_CONDITIONAL([DEBUG], [test "x$debug" = "xtrue"])
 AM_CONDITIONAL([NO_DEBUG], [test "x$debug" != "xtrue"])
 

@@ -11,13 +11,6 @@ AM_LDFLAGS =
 
 if DEBUG
 AM_CFLAGS += -g -ggdb
-AM_CPPFLAGS += -DCOM_DEBUG=1
-endif
-
-if !DEBUG
-if NO_DEBUG
-AM_CPPFLAGS += -DCOM_DEBUG=0
-endif
 endif
 
 clean-local:
