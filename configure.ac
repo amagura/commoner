@@ -17,7 +17,6 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-#AC_PROG_RANLIB # XXX deprecated by LT_INIT
 
 # FIXME: Replace `main' with a function in `-lcheck':
 AC_CHECK_LIB([check], [main])
