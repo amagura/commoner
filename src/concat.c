@@ -1,5 +1,5 @@
 /****
-  COMMON; concat.c, (should be merged with similar files)
+  COMNRMON; concat.c, (should be merged with similar files)
 
   Copyright (C) 2015, 2016, 2017 Alexej G. Magura
 
@@ -17,8 +17,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 ****/
-#ifndef COMMON_CONCAT_C_GUARD
-# define COMMON_CONCAT_C_GUARD 1
+#ifndef COMNRMON_CONCAT_C_GUARD
+# define COMNRMON_CONCAT_C_GUARD 1
+# ifdef HAVE_CONFIG_H
+#  include <config.h>
+# endif
+
+# if defined(HAVE_BZERO) || defined(HAVE_BCOPY)
+#  include <strings.h>
+# endif
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdarg.h>
@@ -125,8 +133,8 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      p = mempcpy(p, (char *)s1, ndx);
 
      used += ndx;
-     COM_DBG("p: `%s`\n", p);
-     COM_DBG("used: %lu\n", used - 0);
+     COMNR_DBG("p: `%s`\n", p);
+     COMNR_DBG("used: %lu\n", used - 0);
 
      va_start(args, s1);
      while ((s = va_arg(args, char *))) {
@@ -141,17 +149,17 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
 	  return sz;
      }
 
-     COM_DBG("tmp: `%s'\n", tmp);
+     COMNR_DBG("tmp: `%s'\n", tmp);
      p = mempcpy(dst, tmp, (used > sz ? sz : used));
      free(tmp);
      *p = '\0';
      ++used;
 
-     COM_DBG("dst: `%s'\n", dst);
-     COM_DBG("*p: `%c'\n", *p);
-     COM_DBG("*--p: `%c'\n", cpeek(p, dst));
-     COM_DBG("strlen(dst): %lu\n", strlen(dst));
-     COM_DBG("used#2: %lu\n", used - 0);
+     COMNR_DBG("dst: `%s'\n", dst);
+     COMNR_DBG("*p: `%c'\n", *p);
+     COMNR_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
+     COMNR_DBG("used#2: %lu\n", used - 0);
      com_muntrace;
      return (used > sz ? 0 : sz - used);
 }
@@ -192,8 +200,8 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      p = mempcpy(p, (char *)s1, ndx);
 
      used += ndx;
-     COM_DBG("p: `%s`\n", p);
-     COM_DBG("used: %lu\n", used - 0);
+     COMNR_DBG("p: `%s`\n", p);
+     COMNR_DBG("used: %lu\n", used - 0);
 
      va_start(args, s1);
      while ((s = va_arg(args, char *))) {
@@ -207,8 +215,8 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 	  free(tmp);
 	  return sz;
      }
-     COM_DBG("tmp: `%s'\n", tmp);
-# if defined(mempmove) && COM_USE_MEMPMOVE
+     COMNR_DBG("tmp: `%s'\n", tmp);
+# if defined(mempmove) && COMNR_USE_MEMPMOVE
      p = mempmove(dst, tmp, (used > sz ? sz : used));
 # else
      memmove(dst, tmp, (used > sz ? sz : used));
@@ -218,11 +226,11 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      *p = '\0';
      ++used;
 
-     COM_DBG("dst: `%s'\n", dst);
-     COM_DBG("*p: `%c'\n", *p);
-     COM_DBG("*--p: `%c'\n", cpeek(p, dst));
-     COM_DBG("strlen(dst): %lu\n", strlen(dst));
-     COM_DBG("used#2: %lu\n", used - 0);
+     COMNR_DBG("dst: `%s'\n", dst);
+     COMNR_DBG("*p: `%c'\n", *p);
+     COMNR_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
+     COMNR_DBG("used#2: %lu\n", used - 0);
      com_muntrace;
 
      return (used > sz ? 0 : sz - used);

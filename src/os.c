@@ -95,7 +95,7 @@ int direxists(char *pth)
  */
 size_t flen(FILE *fp)
 {
-     size_t r;
+     size_t r = 0;
      while ((EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp, "%*c"))))
           ++r;
      fseek(fp, 0, SEEK_SET);

@@ -14,3 +14,5 @@ AM_CFLAGS += -g -ggdb
 endif
 
 clean-local:
+
+anew: clean all

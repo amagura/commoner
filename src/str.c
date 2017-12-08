@@ -81,7 +81,7 @@ char old_cpeek(const char *c, const char *s, const short fwd)
 # endif
 
 /* if head is NULL, then we look backwards */
-const char cpeek(const char *const sp0, const char *const head)
+char cpeek(const char *const sp0, const char *const head)
 {
      if (!head) // FIXME this is less than ideal usage of strend...
           return (*sp0 == '\0' || sp0 == strend(sp0) ? *sp0 : *(sp0 + 1));

@@ -31,7 +31,7 @@ AC_TYPE_SIZE_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([bzero memmove mempcpy memset realpath strchr strdup strtol])
+AC_CHECK_FUNCS([bzero bcopy memmove mempcpy memset realpath strchr strdup strtol])
 
 #########
 # Options
@@ -47,6 +47,8 @@ AC_ARG_ENABLE([debug],
 if test "x$debug" = "xtrue"; then
   AC_DEFINE([COMNR_INTERAL_DEBUG], [1], [needs a description because fuck])
 fi
+
+AC_DEFINE([COMNR_PROGNAME], [PACKAGE], [legacy macro used by a lot of debug macros in commoner])
 
 AM_CONDITIONAL([DEBUG], [test "x$debug" = "xtrue"])
 AM_CONDITIONAL([NO_DEBUG], [test "x$debug" != "xtrue"])
