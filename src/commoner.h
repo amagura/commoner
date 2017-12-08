@@ -115,20 +115,6 @@ BEGIN_C_DECLS
 	  fprintf(stderr, (COMNR_F), ##__VA_ARGS__);		\
 	  fprintf(stderr, "\n");				\
      } while(0)
-# else
-
-/* FIXME both commoner.h and internal.h define these macro
- * as empty when COMNR_INTERNAL_DEBUG and COMNR_EXTERNAL_DEBUG are not defined.
- * These macros should be defined in a common source that both can use.
- */
-#  define COMNR_DBG(COMNR_format, ...)
-#  define COMNR_SDBG(COMNR_format, COMNR_exp)
-#  define COMNR_ONDBG(...)
-#  define COMNR_XONDBG(COMNR_X)
-#  define comnr_ping
-#  define comnr_pong
-#  define comnr_neko
-# endif
 
 # define COMNR_ERROR(COMNR_format, ...)			\
      do {						\
