@@ -78,8 +78,7 @@ BEGIN_C_DECLS
 #  define COMNR_PROGNAME PACKAGE
 # endif
 
-# if defined(COMNR_EXTERNAL_DEBUG) || defined(COMNR_INTERNAL_DEBUG)
-#  define COMNR_DBG(COMNR_format, ...)					\
+# define COMNR_DBG(COMNR_format, ...)					\
      do {								\
 	  fprintf(stderr, "## (%s)(%s)%d\n",				\
 		  COMNR_PROGNAME, __FILE__, __LINE__);			\
@@ -87,7 +86,7 @@ BEGIN_C_DECLS
 	  fprintf(stderr, (COMNR_format), ##__VA_ARGS__);		\
 	  fprintf(stderr, "\n");					\
      } while(0)
-#  define COMNR_SDBG(COMNR_format, COMNR_exp)				\
+# define COMNR_SDBG(COMNR_format, COMNR_exp)				\
      do {								\
 	  fprintf(stderr, "## (%s)(%s)%d\n",				\
 		  COMNR_PROGNAME, __FILE__, __LINE__);			\
@@ -95,16 +94,16 @@ BEGIN_C_DECLS
 	  fprintf(stderr, (COMNR_format), (COMNR_exp));			\
 	  fprintf(stderr, "\n");					\
      } while(0)
-#  define COMNR_ONDBG(...) (__VA_ARGS__)
-#  define COMNR_XONDBG(COMNR_X) (COMNR_X)
-#  define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
-#  define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
-#  define comnr_neko(COMNR_F, ...)				\
+# define COMNR_ONDBG(...) (__VA_ARGS__)
+# define COMNR_XONDBG(COMNR_X) (COMNR_X)
+# define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
+# define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
+# define comnr_neko(COMNR_F, ...)				\
      do {							\
 	  fprintf(stderr,					\
 		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",		\
-		  "\033[91m❤\033[0m",			\
-		  "\033[91m❤\033[0m",			\
+		  "\033[91m❤\033[0m",				\
+		  "\033[91m❤\033[0m",				\
 		  __FILE__, __FUNCTION__, __LINE__);		\
 	  fprintf(stderr, "%s%s%s, %s%s%s~\n",			\
 		  "\033[32mn",					\
@@ -174,6 +173,7 @@ extern void bcopy PARAMS((const void *src, void *dest, size_t n));
 extern void *mempmove PARAMS((void *dest, const void *src, size_t n));
 extern void *mempcpy PARAMS((void *dest, const void *src, size_t n));
 int stoll PARAMS((long long *dst, const char *s0));
+int comnr_init PARAMS((void));
 
 /** functions hosted by str.c **/
 
@@ -222,10 +222,6 @@ char *subdir PARAMS((char **dirs, size_t ssz));
 int rpath PARAMS((char *pth));
 int direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));
-
-inline void comnr_init(void)
-{
-}
 
 
 END_C_DECLS
