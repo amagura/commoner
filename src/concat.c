@@ -1,5 +1,5 @@
 /****
-  COMNRMON; concat.c, (should be merged with similar files)
+  COMMONER; concat.c, (should be merged with similar files)
 
   Copyright (C) 2015, 2016, 2017 Alexej G. Magura
 
@@ -17,8 +17,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 ****/
-#ifndef COMNRMON_CONCAT_C_GUARD
-# define COMNRMON_CONCAT_C_GUARD 1
+#ifndef COMMONER_CONCAT_C_GUARD
+# define COMMONER_CONCAT_C_GUARD 1
 # ifdef HAVE_CONFIG_H
 #  include <config.h>
 # endif

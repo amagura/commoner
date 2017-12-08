@@ -1,5 +1,5 @@
 /****
-  COMMON; repeat.c, (should be merged with str.c)
+  COMMONER; repeat.c, (should be merged with str.c)
 
   Copyright (C) 2015, 2016, 2017 Alexej G. Magura
 
@@ -17,8 +17,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 ****/
-#ifndef COMMON_REPEAT_C_GUARD
-# define COMMON_REPEAT_C_GUARD 1
+#ifndef COMMONER_REPEAT_C_GUARD
+# define COMMONER_REPEAT_C_GUARD 1
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -34,10 +34,10 @@ void repeat(char *dst, const char s, size_t n)
      } while (++wp != &dst[n - 1]);
 
      dst[n] = '\0';
-     COM_DBG("dst: `%s'\n", dst);
-     COM_DBG("strlen(dst): %lu\n", strlen(dst));
-     COM_DBG("sizeof(dst): %lu\n", sizeof(dst));
-     COM_DBG("sizeof(void *): %lu\n", sizeof(void *));
+     COMNR_DBG("dst: `%s'\n", dst);
+     COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
+     COMNR_DBG("sizeof(dst): %lu\n", sizeof(dst));
+     COMNR_DBG("sizeof(void *): %lu\n", sizeof(void *));
 }
 
 int strrep(char *dst, const char *s, size_t n)

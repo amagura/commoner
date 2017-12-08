@@ -46,10 +46,6 @@ the end of C declarations. */
 
 BEGIN_C_DECLS
 
-# if HAVE_CONFIG_H
-#  include <config.h>
-# endif
-
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdint.h>
@@ -108,11 +104,23 @@ char *strchr PARAMS((const char *s, int c));
 #  endif
 # endif
 
+#if !defined(PACKAGE_VERSION)
+#  define PACKAGE_VERSION ""
+# endif
+
+# if !defined(PACKAGE)
+#  define PACKAGE "commoner"
+# endif
+
+# if !defined(COMNR_PROGNAME)
+#  define COMNR_PROGNAME PACKAGE
+# endif
+
 # if COM_DEBUG || COMNR_INTERNAL_DEBUG
 #  if defined(_GNU_SOURCE)
 #   include <mcheck.h>
 #  endif
-#  define COM_DBG(format, ...)					\
+#  define COMNR_DBG(format, ...)					\
      do {							\
 	  fprintf(stderr, "## (%s)(%s)%d\n",			\
 		  COMNR_PROGNAME, __FILE__, __LINE__);		\
@@ -226,31 +234,22 @@ void com_pong PARAMS((void));
 # endif
 
 # if !defined(HAVE_BZERO)
-#  define bzero(COMNR_B, COMNR_LEN)						\
-     (memset((void *)(COMNR_B), '\0', (size_t)(COMNR_LEN)), (void)0)
+inline void bzero(void *ptr, size_t sz)
+{memset(ptr, '\0', sz);}
 # endif
 
 # if !defined(HAVE_BCOPY)
-#  define bcopy(COMNR_B1, COMNR_B2, COMNR_LEN)				\
-     (memmove((void *)(COMNR_B2),					\
-	      (const void *)(COMNR_B1),					\
-	      (size_t)(COMNR_LEN)),					\
-      (void)0)
+inline void bcopy(void *src, void *dst, size_t len)
+{memmove(dst, src, len);}
 # endif
 
 # if !defined(HAVE_MEMPCPY)
-#  define mempcpy(COMNR_D, COMNR_S, COMNR_L)		\
-     (memcpy((void *)(COMNR_D),				\
-	     (const void *)(COMNR_S),			\
-	     (size_t)(COMNR_L))				\
-      + (size_t)(COMNR_L))
+inline void *mempcpy(void *dest, const void *src, size_t n)
+{return memcpy(dest, src, n);}
 # endif
 
-# define mempmove(COMNR_D, COMNR_S, COMNR_L)		\
-     (memmove((void *)(COMNR_D),			\
-	      (const void *)(COMNR_S),			\
-	      (size_t)(COMNR_L))			\
-      + (size_t)(COMNR_L))
+inline void *mempmove(void *dst, const void *src, size_t len)
+{return memmove(dst, src, len);}
 
 #if 0
 inline int memlen(const char *s)

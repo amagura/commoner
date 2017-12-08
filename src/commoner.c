@@ -17,9 +17,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 ****/
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
+
 #include "str.c"
 #include "int.c"
 #include "os.c"
+#include "commoner.h"
+
 
 #if defined(COMMON_NEEDS_A_MAIN)
 int main()

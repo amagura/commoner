@@ -1,5 +1,5 @@
 /****
-  COMMON; int.c, integer related functions
+  COMMONER; int.c, integer related functions
 
   Copyright (C) 2015, 2016, 2017 Alexej G. Magura
 
@@ -17,8 +17,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 ****/
-#ifndef COMMON_INT_C_GUARD
-# define COMMON_INT_C_GUARD 1
+#ifndef COMMONER_INT_C_GUARD
+# define COMMONER_INT_C_GUARD 1
 # include <stdint.h>
 # include "commoner.h"
 
@@ -77,30 +77,30 @@ void itoa(char *dst, int src)
 	       *wp = '0' + (src % 10);
 	  else
 	       *wp = '0' - (src % 10);
-# if COM_DLVL > 1
-	  COM_DBG("*wp: `%c`\n", *wp);
+# if COMNR_DLVL > 1
+	  COMNR_DBG("*wp: `%c`\n", *wp);
 # endif
      }
      *wp++ = '\0';
-# if COM_DLVL > 1
-     COM_DBG("len: %lu\n", len);
-     COM_DBG("strlen(tmp): %lu\n", strlen(tmp));
-     COM_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
-     COM_DBG("tmp: `%s'\n", tmp);
+# if COMNR_DLVL > 1
+     COMNR_DBG("len: %lu\n", len);
+     COMNR_DBG("strlen(tmp): %lu\n", strlen(tmp));
+     COMNR_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
+     COMNR_DBG("tmp: `%s'\n", tmp);
 # endif
      rev(tmp);
-# if COM_DLVL > 1
-     COM_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
-     COM_DBG("sizeof(tmp)#2: %lu\n", sizeof(tmp));
-     COM_DBG("tmp#2: `%s'\n", tmp);
+# if COMNR_DLVL > 1
+     COMNR_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
+     COMNR_DBG("sizeof(tmp)#2: %lu\n", sizeof(tmp));
+     COMNR_DBG("tmp#2: `%s'\n", tmp);
 # endif
-     COM_DBG("tmp#3: `%s'\n", tmp);
+     COMNR_DBG("tmp#3: `%s'\n", tmp);
      memcpy(dst, tmp, len);
 }
 
 char *itoap(const int src)
 {
-     COM_DBG("src: %d\n", src);
+     COMNR_DBG("src: %d\n", src);
      size_t len = intlenm(src);
      int idx = src;
      char *dst = malloc(len);
@@ -115,7 +115,7 @@ char *itoap(const int src)
      }
      wp = revnp(dst, len);
      *wp = '\0';
-     COM_DBG("dst: `%s'\n", dst);
+     COMNR_DBG("dst: `%s'\n", dst);
 
      return dst;
 }

@@ -1,5 +1,5 @@
 /****
-  COMMON; os.c, OS/FS related functions
+  COMMONER; os.c, OS/FS related functions
 
   Copyright (C) 2015, 2016, 2017 Alexej G. Magura
 
@@ -17,8 +17,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 ****/
-#ifndef COMMON_OS_C_GUARD
-# define COMMON_OS_C_GUARD 1
+#ifndef COMMONER_OS_C_GUARD
+# define COMMONER_OS_C_GUARD 1
 
 # include <stdio.h>
 # include <dirent.h>
@@ -38,8 +38,8 @@ char *subdir(char **dirs, size_t ssz)
      char *tmp = NULL;
      size_t sz0;
 
-     COM_DBG("src: '%s'\n", src);
-     COM_DBG("dst: '%s'\n", dst);
+     COMNR_DBG("src: '%s'\n", src);
+     COMNR_DBG("dst: '%s'\n", dst);
 
      sz0 = catl(buf, ssz, src, dst);
      if (sz0 != ssz && sz0 > 0) {
