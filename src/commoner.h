@@ -78,7 +78,8 @@ BEGIN_C_DECLS
 #  define COMNR_PROGNAME PACKAGE
 # endif
 
-# define COMNR_DBG(COMNR_format, ...)					\
+# if defined(COMNR_EXTERNAL_DEBUG) || defined(COMNR_INTERNAL_DEBUG)
+#  define COMNR_DBG(COMNR_format, ...)					\
      do {								\
 	  fprintf(stderr, "## (%s)(%s)%d\n",				\
 		  COMNR_PROGNAME, __FILE__, __LINE__);			\
@@ -86,7 +87,7 @@ BEGIN_C_DECLS
 	  fprintf(stderr, (COMNR_format), ##__VA_ARGS__);		\
 	  fprintf(stderr, "\n");					\
      } while(0)
-# define COMNR_SDBG(COMNR_format, COMNR_exp)				\
+#  define COMNR_SDBG(COMNR_format, COMNR_exp)				\
      do {								\
 	  fprintf(stderr, "## (%s)(%s)%d\n",				\
 		  COMNR_PROGNAME, __FILE__, __LINE__);			\
@@ -94,16 +95,16 @@ BEGIN_C_DECLS
 	  fprintf(stderr, (COMNR_format), (COMNR_exp));			\
 	  fprintf(stderr, "\n");					\
      } while(0)
-# define COMNR_ONDBG(...) (__VA_ARGS__)
-# define COMNR_XONDBG(COMNR_X) (COMNR_X)
-# define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
-# define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
-# define comnr_neko(COMNR_F, ...)				\
+#  define COMNR_ONDBG(...) (__VA_ARGS__)
+#  define COMNR_XONDBG(COMNR_X) (COMNR_X)
+#  define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
+#  define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
+#  define comnr_neko(COMNR_F, ...)				\
      do {							\
 	  fprintf(stderr,					\
 		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",		\
-		  "\033[91m❤\033[0m",				\
-		  "\033[91m❤\033[0m",				\
+		  "\033[91m❤\033[0m",			\
+		  "\033[91m❤\033[0m",			\
 		  __FILE__, __FUNCTION__, __LINE__);		\
 	  fprintf(stderr, "%s%s%s, %s%s%s~\n",			\
 		  "\033[32mn",					\
@@ -115,6 +116,20 @@ BEGIN_C_DECLS
 	  fprintf(stderr, (COMNR_F), ##__VA_ARGS__);		\
 	  fprintf(stderr, "\n");				\
      } while(0)
+# else
+
+/* FIXME both commoner.h and internal.h define these macro
+ * as empty when COMNR_INTERNAL_DEBUG and COMNR_EXTERNAL_DEBUG are not defined.
+ * These macros should be defined in a common source that both can use.
+ */
+#  define COMNR_DBG(COMNR_format, ...)
+#  define COMNR_SDBG(COMNR_format, COMNR_exp)
+#  define COMNR_ONDBG(...)
+#  define COMNR_XONDBG(COMNR_X)
+#  define comnr_ping
+#  define comnr_pong
+#  define comnr_neko
+# endif
 
 # define COMNR_ERROR(COMNR_format, ...)			\
      do {						\
@@ -207,6 +222,10 @@ char *subdir PARAMS((char **dirs, size_t ssz));
 int rpath PARAMS((char *pth));
 int direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));
+
+inline void comnr_init(void)
+{
+}
 
 
 END_C_DECLS

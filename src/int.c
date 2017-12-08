@@ -77,19 +77,19 @@ void itoa(char *dst, int src)
 	       *wp = '0' + (src % 10);
 	  else
 	       *wp = '0' - (src % 10);
-# if COMNR_DLVL > 1
+# if COMNR_INTERNAL_DLVL > 1
 	  COMNR_DBG("*wp: `%c`\n", *wp);
 # endif
      }
      *wp++ = '\0';
-# if COMNR_DLVL > 1
+# if COMNR_INTERNAL_DLVL > 1
      COMNR_DBG("len: %lu\n", len);
      COMNR_DBG("strlen(tmp): %lu\n", strlen(tmp));
      COMNR_DBG("sizeof(tmp): %lu\n", sizeof(tmp));
      COMNR_DBG("tmp: `%s'\n", tmp);
 # endif
      rev(tmp);
-# if COMNR_DLVL > 1
+# if COMNR_INTERNAL_DLVL > 1
      COMNR_DBG("strlen(tmp)#2: %lu\n", strlen(tmp));
      COMNR_DBG("sizeof(tmp)#2: %lu\n", sizeof(tmp));
      COMNR_DBG("tmp#2: `%s'\n", tmp);

@@ -48,6 +48,12 @@ BEGIN_C_DECLS
 
 # include <string.h>
 
+# if COMNR_INTERNAL_DEBUG
+#  if !defined(COMNR_INTERNAL_DLVL)
+#   define COMNR_INTERNAL_DLVL (COMNR_INTERNAL_DEBUG + 1) // XXX change this to increase/decrease debug verbosity
+#  endif
+# endif
+
 # if !defined(COMNR_INTERNAL_DEBUG)
 #  undef COMNR_DBG
 #  undef COMNR_SDBG
@@ -57,6 +63,10 @@ BEGIN_C_DECLS
 #  undef comnr_pong
 #  undef comnr_neko
 
+/* FIXME both commoner.h and internal.h define these macro
+ * as empty when COMNR_INTERNAL_DEBUG and COMNR_EXTERNAL_DEBUG are not defined.
+ * These macros should be defined in a common source that both can use.
+ */
 #  define COMNR_DBG(COMNR_format, ...)
 #  define COMNR_SDBG(COMNR_format, COMNR_exp)
 #  define COMNR_ONDBG(...)
