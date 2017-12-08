@@ -21,10 +21,17 @@
 # include <config.h>
 #endif
 
+#if HAVE_STRTONUM
+# include <bsd/stdlib.h>
+# include <limits.h>
+#endif
+
+#include "commoner.h"
+#include "internal.h"
+
 #include "str.c"
 #include "int.c"
 #include "os.c"
-#include "commoner.h"
 
 # if !defined(HAVE_BZERO)
 inline void bzero(void *ptr, size_t sz)
@@ -44,7 +51,22 @@ inline void *mempcpy(void *dest, const void *src, size_t n)
 inline void *mempmove(void *dest, const void *src, size_t n)
 {return memmove(dest, src, n);}
 
-#if defined(COMMON_NEEDS_A_MAIN)
+/* if *dst is NULL, remember to free it later */
+int stoll(long long *dst, const char *s0)
+{
+     if (dst == NULL)
+	  dst = malloc(1 * sizeof(*dst));
+
+# if HAVE_STRTONUM
+     *dst = strtonum(s0, INT_MIN, INT_MAX, NULL);
+# else
+     *dst = (long long)strtol(s0, NULL, 10);
+# endif
+     return (errno) ? errno : 0;
+}
+
+
+#if defined(COMMONER_NEEDS_A_MAIN)
 int main()
 {
      return EXIT_SUCCESS;

@@ -119,7 +119,7 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      }
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
-     com_mtrace;
+     comnr_mtrace;
 # if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
 # else
@@ -160,7 +160,7 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      COMNR_DBG("*--p: `%c'\n", cpeek(p, dst));
      COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
      COMNR_DBG("used#2: %lu\n", used - 0);
-     com_muntrace;
+     comnr_muntrace;
      return (used > sz ? 0 : sz - used);
 }
 
@@ -186,7 +186,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
 
-     com_mtrace;
+     comnr_mtrace;
 
 # if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
@@ -226,7 +226,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      COMNR_DBG("*--p: `%c'\n", cpeek(p, dst));
      COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
      COMNR_DBG("used#2: %lu\n", used - 0);
-     com_muntrace;
+     comnr_muntrace;
 
      return (used > sz ? 0 : sz - used);
 }

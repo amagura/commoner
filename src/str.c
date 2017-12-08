@@ -24,6 +24,7 @@
 # include <string.h>
 
 # include "commoner.h"
+# include "internal.h"
 # include "repeat.c"
 # include "rev.c"
 # include "concat.c"
