@@ -86,11 +86,8 @@ void *memmove PARAMS((void *dest, const void *src, size_t n));
 char *strchr PARAMS((const char *s, int c));
 # endif
 
-# if !defined(COM_USE_MEMPMOVE)
-#  define COM_USE_MEMPMOVE 0
-# endif
-
 # if !defined(COM_TESTING)
+
 #  define COM_TESTING 0 /* use this to enable functions that are not yet deemed stable */
 # endif
 
@@ -233,24 +230,6 @@ void com_pong PARAMS((void));
      } while(0)
 # endif
 
-# if !defined(HAVE_BZERO)
-inline void bzero(void *ptr, size_t sz)
-{memset(ptr, '\0', sz);}
-# endif
-
-# if !defined(HAVE_BCOPY)
-inline void bcopy(void *src, void *dst, size_t len)
-{memmove(dst, src, len);}
-# endif
-
-# if !defined(HAVE_MEMPCPY)
-inline void *mempcpy(void *dest, const void *src, size_t n)
-{return memcpy(dest, src, n);}
-# endif
-
-inline void *mempmove(void *dst, const void *src, size_t len)
-{return memmove(dst, src, len);}
-
 #if 0
 inline int memlen(const char *s)
 {
@@ -265,6 +244,12 @@ inline int memlen(const char *s)
 /////////////////////////////////////////
 // PUBLIC Functions
 /////////////////////////////////////////
+
+/** functions hosted by commoner.c **/
+extern void bzero PARAMS((void *src, size_t n));
+extern void bcopy PARAMS((const void *src, void *dest, size_t n));
+extern void *mempmove PARAMS((void *dest, const void *src, size_t n));
+extern void *mempcpy PARAMS((void *dest, const void *src, size_t n));
 
 /** functions hosted by str.c **/
 

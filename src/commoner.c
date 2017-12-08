@@ -26,6 +26,23 @@
 #include "os.c"
 #include "commoner.h"
 
+# if !defined(HAVE_BZERO)
+inline void bzero(void *ptr, size_t sz)
+{memset(ptr, '\0', sz);}
+# endif
+
+# if !defined(HAVE_BCOPY)
+inline void bcopy(const void *src, void *dest, size_t n)
+{memmove(dest, src, n);}
+# endif
+
+# if !defined(HAVE_MEMPCPY)
+inline void *mempcpy(void *dest, const void *src, size_t n)
+{return memcpy(dest, src, n);}
+# endif
+
+inline void *mempmove(void *dest, const void *src, size_t n)
+{return memmove(dest, src, n);}
 
 #if defined(COMMON_NEEDS_A_MAIN)
 int main()

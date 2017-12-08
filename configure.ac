@@ -1,6 +1,6 @@
 AC_PREREQ([2.69])
 AC_INIT([Commoner], [1.0.0], [amagura28@gmail.com],,[https://github.com/amagura/common/issues])
-AC_CONFIG_HEADERS([src/config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
@@ -22,7 +22,7 @@ AC_PROG_MAKE_SET
 AC_CHECK_LIB([check], [main])
 
 # Checks for header files
-AC_CHECK_HEADERS([limits.h stdint.h stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([mcheck.h limits.h stdint.h stdlib.h string.h unistd.h])
 
 # Check for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL

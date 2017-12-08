@@ -216,12 +216,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 	  return sz;
      }
      COMNR_DBG("tmp: `%s'\n", tmp);
-# if defined(mempmove) && COMNR_USE_MEMPMOVE
      p = mempmove(dst, tmp, (used > sz ? sz : used));
-# else
-     memmove(dst, tmp, (used > sz ? sz : used));
-     p = &dst[(used > sz ? sz : used)];
-# endif
      free(tmp);
      *p = '\0';
      ++used;
