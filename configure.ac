@@ -18,9 +18,6 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-# FIXME: Replace `main' with a function in `-lcheck':
-AC_CHECK_LIB([check], [main])
-
 # Checks for header files
 AC_CHECK_HEADERS([mcheck.h limits.h stdint.h stdlib.h string.h unistd.h])
 
@@ -34,7 +31,7 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNCS([bzero bcopy memmove mempcpy memset realpath strchr strdup strtol])
 AC_SEARCH_LIBS([strtonum],
                [bsd],
-               [AC_DEFINE([HAVE_STRTONUM], [1], [fuck you GNU])])
+               [AC_DEFINE([HAVE_STRTONUM], [1], [needs a description because the people at GNU are fucking morons])])
 #########
 # Options
 #########
@@ -47,7 +44,7 @@ AC_ARG_ENABLE([debug],
              esac],[debug=no])
 
 if test "x$debug" = "xtrue"; then
-  AC_DEFINE([COMNR_INTERAL_DEBUG], [1], [needs a description because fuck])
+  AC_DEFINE([COMNR_INTERNAL_DEBUG], [1], [needs a description because fuck])
 fi
 
 AC_DEFINE([COMNR_PROGNAME], [PACKAGE], [legacy macro used by a lot of debug macros in commoner])

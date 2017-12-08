@@ -96,8 +96,8 @@ BEGIN_C_DECLS
      } while(0)
 # define COMNR_ONDBG(...) (__VA_ARGS__)
 # define COMNR_XONDBG(COMNR_X) (COMNR_X)
-# define comnr_ping (COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!"))
-# define comnr_pong (COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!"))
+# define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
+# define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
 # define comnr_neko(COMNR_F, ...)				\
      do {							\
 	  fprintf(stderr,					\
