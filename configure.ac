@@ -32,11 +32,9 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([bzero bcopy memmove mempcpy memset realpath strchr strdup strtol])
-AC_CHECK_FUNCS([strtonum],
-               ,
-               AC_SEARCH_LIBS([strtonum],
-                              [bsd],
-                              [AC_DEFINE([HAVE_STRTONUM], [1])],))
+AC_SEARCH_LIBS([strtonum],
+               [bsd],
+               [AC_DEFINE([HAVE_STRTONUM], [1], [fuck you GNU])])
 #########
 # Options
 #########

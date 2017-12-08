@@ -65,7 +65,6 @@ int stoll(long long *dst, const char *s0)
      return (errno) ? errno : 0;
 }
 
-
 #if defined(COMMONER_NEEDS_A_MAIN)
 int main()
 {
