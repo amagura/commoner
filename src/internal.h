@@ -48,32 +48,55 @@ BEGIN_C_DECLS
 
 # include <string.h>
 
-# if COMNR_INTERNAL_DEBUG
-#  if !defined(COMNR_INTERNAL_DLVL)
-#   define COMNR_INTERNAL_DLVL (COMNR_INTERNAL_DEBUG + 1) // XXX change this to increase/decrease debug verbosity
+# if COINT_INTERNAL_DEBUG
+#  if !defined(COINT_INTERNAL_DLVL)
+#   define COINT_INTERNAL_DLVL (COINT_INTERNAL_DEBUG + 1) // XXX change this to increase/decrease debug verbosity
 #  endif
 # endif
 
-# if !defined(COMNR_INTERNAL_DEBUG)
-#  undef COMNR_DBG
-#  undef COMNR_SDBG
-#  undef COMNR_ONDBG
-#  undef COMNR_XONDBG
-#  undef comnr_ping
-#  undef comnr_pong
-#  undef comnr_neko
+# if defined(COINT_INTERNAL_DEBUG)
+#  define COINT_DBG(COINT_format, ...)					\
+     do {								\
+	  fprintf(stderr, "## (%s)(%s)%d\n",				\
+		  COINT_PROGNAME, __FILE__, __LINE__);			\
+	  fprintf(stderr, "#  `%s'\n", __FUNCTION__);			\
+	  fprintf(stderr, (COINT_format), ##__VA_ARGS__);		\
+	  fprintf(stderr, "\n");					\
+     } while(0)
+#  define COINT_SDBG(COINT_format, COINT_exp)				\
+     do {								\
+	  fprintf(stderr, "## (%s)(%s)%d\n",				\
+		  COINT_PROGNAME, __FILE__, __LINE__);			\
+	  fprintf(stderr, "#  `%s`\n", __FUNCTION__);			\
+	  fprintf(stderr, (COINT_format), (COINT_exp));			\
+	  fprintf(stderr, "\n");					\
+     } while(0)
+#  define COINT_ONDBG(...) (__VA_ARGS__)
+#  define COINT_XONDBG(COINT_X) (COINT_X)
+#  define coint_ping COINT_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
+#  define coint_pong COINT_DBG("\n$$$$ %s $$$$\n", "POLO!")
+#  define coint_neko(COINT_F, ...)				\
+     do {							\
+	  fprintf(stderr,					\
+		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",		\
+		  "\033[91m❤\033[0m",				\
+		  "\033[91m❤\033[0m",				\
+		  __FILE__, __FUNCTION__, __LINE__);		\
+	  fprintf(stderr, "%s%s%s, %s%s%s~\n",			\
+		  "\033[32mn",					\
+		  "\033[35my",					\
+		  "\033[31ma\033[0m",				\
+		  "\033[32mn",					\
+		  "\033[35my",					\
+		  "\033[31ma\033[33ma\033[0m");			\
+	  fprintf(stderr, (COINT_F), ##__VA_ARGS__);		\
+	  fprintf(stderr, "\n");				\
+     } while(0)
 
 /* FIXME both commoner.h and internal.h define these macro
- * as empty when COMNR_INTERNAL_DEBUG and COMNR_EXTERNAL_DEBUG are not defined.
+ * as empty when COINT_INTERNAL_DEBUG and COINT_EXTERNAL_DEBUG are not defined.
  * These macros should be defined in a common source that both can use.
  */
-#  define COMNR_DBG(COMNR_format, ...)
-#  define COMNR_SDBG(COMNR_format, COMNR_exp)
-#  define COMNR_ONDBG(...)
-#  define COMNR_XONDBG(COMNR_X)
-#  define comnr_ping
-#  define comnr_pong
-#  define comnr_neko
 # endif
 
 END_C_DECLS

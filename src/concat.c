@@ -119,7 +119,7 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      }
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
-     comnr_mtrace;
+     coint_mtrace;
 # if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
 # else
@@ -133,8 +133,8 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      p = mempcpy(p, (char *)s1, ndx);
 
      used += ndx;
-     COMNR_DBG("p: `%s`\n", p);
-     COMNR_DBG("used: %lu\n", used - 0);
+     COINT_DBG("p: `%s`\n", p);
+     COINT_DBG("used: %lu\n", used - 0);
 
      va_start(args, s1);
      while ((s = va_arg(args, char *))) {
@@ -149,18 +149,18 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
 	  return sz;
      }
 
-     COMNR_DBG("tmp: `%s'\n", tmp);
+     COINT_DBG("tmp: `%s'\n", tmp);
      p = mempcpy(dst, tmp, (used > sz ? sz : used));
      free(tmp);
      *p = '\0';
      ++used;
 
-     COMNR_DBG("dst: `%s'\n", dst);
-     COMNR_DBG("*p: `%c'\n", *p);
-     COMNR_DBG("*--p: `%c'\n", cpeek(p, dst));
-     COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
-     COMNR_DBG("used#2: %lu\n", used - 0);
-     comnr_muntrace;
+     COINT_DBG("dst: `%s'\n", dst);
+     COINT_DBG("*p: `%c'\n", *p);
+     COINT_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COINT_DBG("strlen(dst): %lu\n", strlen(dst));
+     COINT_DBG("used#2: %lu\n", used - 0);
+     coint_muntrace;
      return (used > sz ? 0 : sz - used);
 }
 
@@ -186,7 +186,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
 
-     comnr_mtrace;
+     coint_mtrace;
 
 # if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
@@ -200,8 +200,8 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      p = mempcpy(p, (char *)s1, ndx);
 
      used += ndx;
-     COMNR_DBG("p: `%s`\n", p);
-     COMNR_DBG("used: %lu\n", used - 0);
+     COINT_DBG("p: `%s`\n", p);
+     COINT_DBG("used: %lu\n", used - 0);
 
      va_start(args, s1);
      while ((s = va_arg(args, char *))) {
@@ -215,18 +215,18 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 	  free(tmp);
 	  return sz;
      }
-     COMNR_DBG("tmp: `%s'\n", tmp);
+     COINT_DBG("tmp: `%s'\n", tmp);
      p = mempmove(dst, tmp, (used > sz ? sz : used));
      free(tmp);
      *p = '\0';
      ++used;
 
-     COMNR_DBG("dst: `%s'\n", dst);
-     COMNR_DBG("*p: `%c'\n", *p);
-     COMNR_DBG("*--p: `%c'\n", cpeek(p, dst));
-     COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
-     COMNR_DBG("used#2: %lu\n", used - 0);
-     comnr_muntrace;
+     COINT_DBG("dst: `%s'\n", dst);
+     COINT_DBG("*p: `%c'\n", *p);
+     COINT_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COINT_DBG("strlen(dst): %lu\n", strlen(dst));
+     COINT_DBG("used#2: %lu\n", used - 0);
+     coint_muntrace;
 
      return (used > sz ? 0 : sz - used);
 }

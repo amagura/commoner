@@ -38,8 +38,8 @@ char *subdir(char **dirs, size_t ssz)
      char *tmp = NULL;
      size_t sz0;
 
-     COMNR_DBG("src: '%s'\n", src);
-     COMNR_DBG("dst: '%s'\n", dst);
+     COINT_DBG("src: '%s'\n", src);
+     COINT_DBG("dst: '%s'\n", dst);
 
      sz0 = catl(buf, ssz, src, dst);
      if (sz0 != ssz && sz0 > 0) {

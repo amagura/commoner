@@ -34,10 +34,10 @@ void repeat(char *dst, const char s, size_t n)
      } while (++wp != &dst[n - 1]);
 
      dst[n] = '\0';
-     COMNR_DBG("dst: `%s'\n", dst);
-     COMNR_DBG("strlen(dst): %lu\n", strlen(dst));
-     COMNR_DBG("sizeof(dst): %lu\n", sizeof(dst));
-     COMNR_DBG("sizeof(void *): %lu\n", sizeof(void *));
+     COINT_DBG("dst: `%s'\n", dst);
+     COINT_DBG("strlen(dst): %lu\n", strlen(dst));
+     COINT_DBG("sizeof(dst): %lu\n", sizeof(dst));
+     COINT_DBG("sizeof(void *): %lu\n", sizeof(void *));
 }
 
 int strrep(char *dst, const char *s, size_t n)
