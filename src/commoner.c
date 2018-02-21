@@ -27,6 +27,7 @@
 #endif
 
 #include <errno.h>
+#include <string.h>
 #include "commoner.h"
 
 # if !defined(HAVE_BZERO)
@@ -62,7 +63,7 @@ int stoll(long long *dst, const char *s0)
 }
 
 #if defined(COMMONER_NEEDS_A_MAIN)
-int main()
+int main(int argc, char **argv)
 {
      return EXIT_SUCCESS;
 }

@@ -51,22 +51,39 @@ char *subdir(char **dirs, size_t ssz)
 rok_free:
      free(buf);
      return tmp;
+
+}
+
+char *abs_path(const char *pth)
+{
+     if (pth == NULL) return NULL; /* no path given */
+     /* FIXME: we should check for realpath, and if it is not present,
+      * use an alternative
+      */
+     char *buf = realpath(pth, NULL);
+     if (errno)
+          return NULL;
+     return buf;
 }
 
 /* On success: *pth is set to the realpath to *pth and 0 is returned.
-   On failure: *pth is set to NULL and errno is returned.
+   On failure: *pth is set to NULL and either errno or -1 is returned.
    */
 
 int rpath(char *pth)
 {
-     char buf[PATH_MAX + 1];
-     /* FIXME, we should check for realpath */
-     char *ptr = realpath(pth, buf);
+     if (pth == NULL) return -1;
+     /* FIXME: we should check for realpath, and if it is not present,
+      * use an alternative
+      */
+     char *buf = malloc(PATH_MAX + 1);
+     realpath(pth, buf);
      if (errno) {
           pth = NULL;
           return errno;
      }
-     memmove(pth, ptr, sizeof(PATH_MAX + 1)); // NOTE may cause mem leaks?
+     memmove(pth, buf, sizeof(PATH_MAX + 1)); // NOTE may cause mem leaks?
+     free(buf);
      return 0;
 }
 

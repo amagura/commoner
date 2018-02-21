@@ -20,6 +20,7 @@
 #ifndef COMMONER_INT_C_GUARD
 # define COMMONER_INT_C_GUARD 1
 # include <stdint.h>
+# include <string.h>
 # include "commoner.h"
 
 uintmax_t uintm_len(uintmax_t idx)
