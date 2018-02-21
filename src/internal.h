@@ -93,6 +93,14 @@ BEGIN_C_DECLS
 	  fprintf(stderr, "\n");				\
      } while(0)
 
+# else
+#  define COINT_DBG(COINT_format, ...)
+#  define COINT_SDBG(COINT_format, COINT_exp)
+#  define COINT_ONDBG(...)
+#  define COINT_XONDBG(COINT_X)
+#  define coint_ping
+#  define coint_pong
+#  define coint_neko(COINT_F, ...)
 /* FIXME both commoner.h and internal.h define these macro
  * as empty when COINT_INTERNAL_DEBUG and COINT_EXTERNAL_DEBUG are not defined.
  * These macros should be defined in a common source that both can use.

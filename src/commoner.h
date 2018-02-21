@@ -78,75 +78,85 @@ BEGIN_C_DECLS
 #  define COMNR_PROGNAME PACKAGE
 # endif
 
-# define COMNR_DBG(COMNR_format, ...)					\
-     do {								\
-	  fprintf(stderr, "## (%s)(%s)%d\n",				\
-		  COMNR_PROGNAME, __FILE__, __LINE__);			\
-	  fprintf(stderr, "#  `%s'\n", __FUNCTION__);			\
-	  fprintf(stderr, (COMNR_format), ##__VA_ARGS__);		\
-	  fprintf(stderr, "\n");					\
+# if COMNR_DEBUG
+#  define COMNR_DBG(COMNR_format, ...)				\
+     do {								          \
+	  fprintf(stderr, "## (%s)(%s)%d\n",			\
+		  COMNR_PROGNAME, __FILE__, __LINE__);		\
+	  fprintf(stderr, "#  `%s'\n", __FUNCTION__);	\
+	  fprintf(stderr, (COMNR_format), ##__VA_ARGS__);	\
+	  fprintf(stderr, "\n");					     \
      } while(0)
-# define COMNR_SDBG(COMNR_format, COMNR_exp)				\
-     do {								\
-	  fprintf(stderr, "## (%s)(%s)%d\n",				\
-		  COMNR_PROGNAME, __FILE__, __LINE__);			\
-	  fprintf(stderr, "#  `%s`\n", __FUNCTION__);			\
-	  fprintf(stderr, (COMNR_format), (COMNR_exp));			\
-	  fprintf(stderr, "\n");					\
+#  define COMNR_SDBG(COMNR_format, COMNR_exp)          \
+     do {			     					     \
+	  fprintf(stderr, "## (%s)(%s)%d\n",		     \
+		  COMNR_PROGNAME, __FILE__, __LINE__);	     \
+	  fprintf(stderr, "#  `%s`\n", __FUNCTION__);	\
+	  fprintf(stderr, (COMNR_format), (COMNR_exp));	\
+	  fprintf(stderr, "\n");					     \
      } while(0)
-# define COMNR_ONDBG(...) (__VA_ARGS__)
-# define COMNR_XONDBG(COMNR_X) (COMNR_X)
-# define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
-# define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
-# define comnr_neko(COMNR_F, ...)				\
-     do {							\
-	  fprintf(stderr,					\
-		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",		\
+#  define COMNR_ONDBG(...) (__VA_ARGS__)
+#  define COMNR_XONDBG(COMNR_X) (COMNR_X)
+#  define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
+#  define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
+#  define comnr_neko(COMNR_F, ...)				\
+     do {							          \
+	  fprintf(stderr,					     \
+		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",	\
 		  "\033[91m❤\033[0m",				\
 		  "\033[91m❤\033[0m",				\
-		  __FILE__, __FUNCTION__, __LINE__);		\
-	  fprintf(stderr, "%s%s%s, %s%s%s~\n",			\
-		  "\033[32mn",					\
-		  "\033[35my",					\
+		  __FILE__, __FUNCTION__, __LINE__);	\
+	  fprintf(stderr, "%s%s%s, %s%s%s~\n",		\
+		  "\033[32mn",					     \
+		  "\033[35my",					     \
 		  "\033[31ma\033[0m",				\
-		  "\033[32mn",					\
-		  "\033[35my",					\
-		  "\033[31ma\033[33ma\033[0m");			\
-	  fprintf(stderr, (COMNR_F), ##__VA_ARGS__);		\
-	  fprintf(stderr, "\n");				\
+		  "\033[32mn",					     \
+		  "\033[35my",					     \
+		  "\033[31ma\033[33ma\033[0m");		\
+	  fprintf(stderr, (COMNR_F), ##__VA_ARGS__);	\
+	  fprintf(stderr, "\n");				     \
      } while(0)
-
-# define COMNR_ERROR(COMNR_format, ...)			\
-     do {						\
+# else
+#  define COMNR_DBG(COINT_format, ...)
+#  define COMNR_SDBG(COINT_format, COINT_exp)
+#  define COMNR_ONDBG(...)
+#  define COMNR_XONDBG(COINT_X)
+#  define comnr_ping
+#  define comnr_pong
+#  define comnr_neko(COINT_F, ...)
+# endif
+# define COMNR_ERROR(COMNR_format, ...)			     \
+     do {						                    \
 	  fprintf(stderr, "%s:err: ", COMNR_PROGNAME);	\
 	  fprintf(stderr, (COMNR_format), __VA_ARGS__);	\
-	  fprintf(stderr,				\
-		  "\nin %s:{%d}:%s()\n",		\
-		  __FILE__,				\
-		  __LINE__,				\
-		  __FUNCTION__);			\
+	  fprintf(stderr,				               \
+		  "\nin %s:{%d}:%s()\n",		               \
+		  __FILE__,				               \
+		  __LINE__,				               \
+		  __FUNCTION__);			               \
      } while(0)
-
-# define COMNR_FATAL(...)		\
-     do {				\
+# define COMNR_FATAL(...)     \
+     do {				     \
 	  fprintf(stderr,		\
 		  "%s: %s\n",		\
 		  (COMNR_PROGNAME),	\
 		  ##__VA_ARGS__);	\
-	  exit(EXIT_FAILURE);		\
+	  exit(EXIT_FAILURE);	\
      } while (0)
-# define comnr_usage(COMNR_format) (printf((COMNR_format), (COMNR_PROGNAME)));
-# define comnr_arg(COMNR_opt, COMNR_desc, COMNR_tabs) (printf("  %s%s%s\n", (COMNR_opt),(COMNR_tabs),(COMNR_desc)));
+# define comnr_usage(COMNR_format) \
+     (printf((COMNR_format), (COMNR_PROGNAME)));
+# define comnr_arg(COMNR_opt, COMNR_desc, COMNR_tabs) \
+     (printf("  %s%s%s\n", (COMNR_opt),(COMNR_tabs),(COMNR_desc)));
 # define comnr_arg_eol_tabs "\n\t\t\t\t"
-# define comnr_help(COMNR_usage, COMNR_tabs)		\
-     do {						\
-	  com_usage((COMNR_usage));			\
-	  com_arg("-h, --help",				\
-		  "print this message and exit",	\
-		  (COMNR_tabs));			\
-	  com_arg("-v, --version",			\
-		  "print program version and exit",	\
-		  (COMNR_tabs));			\
+# define comnr_help(COMNR_usage, COMNR_tabs)	     \
+     do {					          	     \
+	  com_usage((COMNR_usage));			     \
+	  com_arg("-h, --help",				     \
+		  "print this message and exit",	     \
+		  (COMNR_tabs));			          \
+	  com_arg("-v, --version",			     \
+		  "print program version and exit",     \
+		  (COMNR_tabs));			          \
      } while(0)
 
 /////////////////////////////////////////
@@ -159,7 +169,7 @@ extern void bcopy PARAMS((const void *src, void *dest, size_t n));
 extern void *mempmove PARAMS((void *dest, const void *src, size_t n));
 extern void *mempcpy PARAMS((void *dest, const void *src, size_t n));
 int stoll PARAMS((long long *dst, const char *s0));
-int comnr_init PARAMS((void));
+//int comnr_init PARAMS((void));
 
 /** functions hosted by str.c **/
 
