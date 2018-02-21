@@ -26,12 +26,9 @@
 # include <limits.h>
 #endif
 
+#include <errno.h>
 #include "commoner.h"
 #include "internal.h"
-
-#include "str.c"
-#include "int.c"
-#include "os.c"
 
 # if !defined(HAVE_BZERO)
 inline void bzero(void *ptr, size_t sz)

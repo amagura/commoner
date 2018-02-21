@@ -166,7 +166,7 @@ BEGIN_C_DECLS
 /** functions hosted by commoner.c **/
 extern void bzero PARAMS((void *src, size_t n));
 extern void bcopy PARAMS((const void *src, void *dest, size_t n));
-extern void *mempmove PARAMS((void *dest, const void *src, size_t n));
+void *mempmove PARAMS((void *dest, const void *src, size_t n));
 extern void *mempcpy PARAMS((void *dest, const void *src, size_t n));
 int stoll PARAMS((long long *dst, const char *s0));
 //int comnr_init PARAMS((void));

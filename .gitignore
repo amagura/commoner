@@ -1,6 +1,8 @@
 # object files
 *.o
 *.\#*
+*.la
+*.lo
 
 ################
 # AutoTools
