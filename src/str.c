@@ -212,6 +212,21 @@ end:
      return r;
 }
 
+# if 0
+int cmpstrs(int res, bool _case, const char *rc, ...) __attribute__((sentinel));
+int cmpstrs(int res, bool _case, const char *rc, ...)
+{
+     const char *base;
+     va_list args;
+     va_start(args, rc);
+     int idx = 1; // position of match in function call
+     while ((s0 = va_arg(args, const char *))) {
+          if (_case)
+               if ((strncasecmp(rc, base, res)) == 0) {
+               }
+          else
+               if ((
+# endif
 /////////////////////////////////////////
 // Taken from defunct mem.c
 /////////////////////////////////////////
