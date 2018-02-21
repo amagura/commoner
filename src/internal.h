@@ -48,6 +48,16 @@ BEGIN_C_DECLS
 
 # include <string.h>
 
+# if defined(COINT_MCHECK) \
+     && defined(HAVE_MCHECK_H)
+#  include <mcheck.h>
+#  define coint_mtrace mtrace()
+#  define coint_muntrace muntrace()
+# else
+#  define coint_mtrace
+#  define coint_muntrace
+# endif
+
 # if COINT_INTERNAL_DEBUG
 #  if !defined(COINT_INTERNAL_DLVL)
 #   define COINT_INTERNAL_DLVL (COINT_INTERNAL_DEBUG + 1) // XXX change this to increase/decrease debug verbosity
