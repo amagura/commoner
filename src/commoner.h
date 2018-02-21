@@ -49,6 +49,73 @@ BEGIN_C_DECLS
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdint.h>
+/////////////////////////////////////////
+// PRIVATE Macros
+/////////////////////////////////////////
+# if defined(COINT_MCHECK) \
+     && defined(HAVE_MCHECK_H)
+#  include <mcheck.h>
+#  define coint_mtrace mtrace()
+#  define coint_muntrace muntrace()
+# else
+#  define coint_mtrace
+#  define coint_muntrace
+# endif
+
+# if COINT_INTERNAL_DEBUG
+#  if !defined(COINT_INTERNAL_DLVL)
+#   define COINT_INTERNAL_DLVL (COINT_INTERNAL_DEBUG + 1) // XXX change this to increase/decrease debug verbosity
+#  endif
+# endif
+
+# if defined(COINT_INTERNAL_DEBUG)
+#  define COINT_DBG(COINT_format, ...)					\
+     do {								\
+	  fprintf(stderr, "## (%s)(%s)%d\n",				\
+		  COINT_PROGNAME, __FILE__, __LINE__);			\
+	  fprintf(stderr, "#  `%s'\n", __FUNCTION__);			\
+	  fprintf(stderr, (COINT_format), ##__VA_ARGS__);		\
+	  fprintf(stderr, "\n");					\
+     } while(0)
+#  define COINT_SDBG(COINT_format, COINT_exp)				\
+     do {								\
+	  fprintf(stderr, "## (%s)(%s)%d\n",				\
+		  COINT_PROGNAME, __FILE__, __LINE__);			\
+	  fprintf(stderr, "#  `%s`\n", __FUNCTION__);			\
+	  fprintf(stderr, (COINT_format), (COINT_exp));			\
+	  fprintf(stderr, "\n");					\
+     } while(0)
+#  define COINT_ONDBG(...) (__VA_ARGS__)
+#  define COINT_XONDBG(COINT_X) (COINT_X)
+#  define coint_ping COINT_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
+#  define coint_pong COINT_DBG("\n$$$$ %s $$$$\n", "POLO!")
+#  define coint_neko(COINT_F, ...)				\
+     do {							\
+	  fprintf(stderr,					\
+		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",		\
+		  "\033[91m❤\033[0m",			\
+		  "\033[91m❤\033[0m",			\
+		  __FILE__, __FUNCTION__, __LINE__);		\
+	  fprintf(stderr, "%s%s%s, %s%s%s~\n",			\
+		  "\033[32mn",					\
+		  "\033[35my",					\
+		  "\033[31ma\033[0m",				\
+		  "\033[32mn",					\
+		  "\033[35my",					\
+		  "\033[31ma\033[33ma\033[0m");			\
+	  fprintf(stderr, (COINT_F), ##__VA_ARGS__);		\
+	  fprintf(stderr, "\n");				\
+     } while(0)
+
+# else
+#  define COINT_DBG(COINT_format, ...)
+#  define COINT_SDBG(COINT_format, COINT_exp)
+#  define COINT_ONDBG(...)
+#  define COINT_XONDBG(COINT_X)
+#  define coint_ping
+#  define coint_pong
+#  define coint_neko(COINT_F, ...)
+# endif
 
 /////////////////////////////////////////
 // PUBLIC Macros

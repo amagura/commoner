@@ -28,7 +28,6 @@
 
 #include <errno.h>
 #include "commoner.h"
-#include "internal.h"
 
 # if !defined(HAVE_BZERO)
 inline void bzero(void *ptr, size_t sz)
