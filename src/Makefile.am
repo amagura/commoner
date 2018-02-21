@@ -65,6 +65,8 @@ tidy-local:
 	$(RM) *.py || true
 	$(RM) *.pyc || true
 	$(RM) no_common.h || true
+	$(RM) *~
+	$(RM) *-stamp*
 
 anew: clean all
 ready: clean all tidy-local
