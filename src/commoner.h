@@ -9,19 +9,19 @@
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-****/
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ ****/
 #ifndef COMMONER_COMMONER_H_GUARD
 # define COMMONER_COMMONER_H_GUARD 1
 /* BEGIN_C_DECLS should be used at the beginning of your declarations,
-so that C++ compilers don't mangle their names.  Use END_C_DECLS at
-the end of C declarations. */
+   so that C++ compilers don't mangle their names.  Use END_C_DECLS at
+   the end of C declarations. */
 # undef BEGIN_C_DECLS
 # undef END_C_DECLS
 # ifdef __cplusplus
@@ -33,12 +33,12 @@ the end of C declarations. */
 # endif
 
 /* PARAMS is a macro used to wrap function prototypes, so that
-  compilers that don't understand ANSI C prototypes still work,
-  and ANSI C compilers can issue warnings about type mismatches. */
+   compilers that don't understand ANSI C prototypes still work,
+   and ANSI C compilers can issue warnings about type mismatches. */
 # undef PARAMS
 # if defined (__STDC__) || defined (_AIX) \
-       || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
-       || defined(WIN32) || defined(__cplusplus)
+  || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
+  || defined(WIN32) || defined(__cplusplus)
 #  define PARAMS(protos) protos
 # else
 #  define PARAMS(protos) ()
@@ -53,7 +53,7 @@ BEGIN_C_DECLS
 // PRIVATE Macros
 /////////////////////////////////////////
 # if defined(COINT_MCHECK) \
-     && defined(HAVE_MCHECK_H)
+  && defined(HAVE_MCHECK_H)
 #  include <mcheck.h>
 #  define coint_mtrace mtrace()
 #  define coint_muntrace muntrace()
@@ -69,43 +69,43 @@ BEGIN_C_DECLS
 # endif
 
 # if defined(COINT_INTERNAL_DEBUG)
-#  define COINT_DBG(COINT_format, ...)					\
-     do {								\
-	  fprintf(stderr, "## (%s)(%s)%d\n",				\
-		  COINT_PROGNAME, __FILE__, __LINE__);			\
-	  fprintf(stderr, "#  `%s'\n", __FUNCTION__);			\
-	  fprintf(stderr, (COINT_format), ##__VA_ARGS__);		\
-	  fprintf(stderr, "\n");					\
-     } while(0)
-#  define COINT_SDBG(COINT_format, COINT_exp)				\
-     do {								\
-	  fprintf(stderr, "## (%s)(%s)%d\n",				\
-		  COINT_PROGNAME, __FILE__, __LINE__);			\
-	  fprintf(stderr, "#  `%s`\n", __FUNCTION__);			\
-	  fprintf(stderr, (COINT_format), (COINT_exp));			\
-	  fprintf(stderr, "\n");					\
-     } while(0)
+#  define COINT_DBG(COINT_format, ...)				\
+  do {								\
+    fprintf(stderr, "## (%s)(%s)%d\n",				\
+        COINT_PROGNAME, __FILE__, __LINE__);			\
+    fprintf(stderr, "#  `%s'\n", __FUNCTION__);			\
+    fprintf(stderr, (COINT_format), ##__VA_ARGS__);		\
+    fprintf(stderr, "\n");					\
+  } while(0)
+#  define COINT_SDBG(COINT_format, COINT_exp)			\
+  do {								\
+    fprintf(stderr, "## (%s)(%s)%d\n",				\
+        COINT_PROGNAME, __FILE__, __LINE__);			\
+    fprintf(stderr, "#  `%s`\n", __FUNCTION__);			\
+    fprintf(stderr, (COINT_format), (COINT_exp));		\
+    fprintf(stderr, "\n");					\
+  } while(0)
 #  define COINT_ONDBG(...) (__VA_ARGS__)
 #  define COINT_XONDBG(COINT_X) (COINT_X)
 #  define coint_ping COINT_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
 #  define coint_pong COINT_DBG("\n$$$$ %s $$$$\n", "POLO!")
-#  define coint_neko(COINT_F, ...)				\
-     do {							\
-	  fprintf(stderr,					\
-		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",		\
-		  "\033[91m❤\033[0m",			\
-		  "\033[91m❤\033[0m",			\
-		  __FILE__, __FUNCTION__, __LINE__);		\
-	  fprintf(stderr, "%s%s%s, %s%s%s~\n",			\
-		  "\033[32mn",					\
-		  "\033[35my",					\
-		  "\033[31ma\033[0m",				\
-		  "\033[32mn",					\
-		  "\033[35my",					\
-		  "\033[31ma\033[33ma\033[0m");			\
-	  fprintf(stderr, (COINT_F), ##__VA_ARGS__);		\
-	  fprintf(stderr, "\n");				\
-     } while(0)
+#  define coint_neko(COINT_F, ...)			\
+  do {                                                  \
+    fprintf(stderr,					\
+        "\n%s{neko-chan}%s(%s)(%s)(%d)\n",		\
+        "\033[91m❤\033[0m",                          \
+        "\033[91m❤\033[0m",			        \
+        __FILE__, __FUNCTION__, __LINE__);		\
+    fprintf(stderr, "%s%s%s, %s%s%s~\n",		\
+        "\033[32mn",					\
+        "\033[35my",					\
+        "\033[31ma\033[0m",				\
+        "\033[32mn",					\
+        "\033[35my",					\
+        "\033[31ma\033[33ma\033[0m");			\
+    fprintf(stderr, (COINT_F), ##__VA_ARGS__);		\
+    fprintf(stderr, "\n");				\
+  } while(0)
 
 # else
 #  define COINT_DBG(COINT_format, ...)
@@ -124,7 +124,7 @@ BEGIN_C_DECLS
 # define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
 
 # if defined(COMNR_MCHECK) \
-     && defined(HAVE_MCHECK_H)
+  && defined(HAVE_MCHECK_H)
 #  include <mcheck.h>
 #  define comnr_mtrace mtrace()
 #  define comnr_muntrace muntrace()
@@ -146,43 +146,47 @@ BEGIN_C_DECLS
 # endif
 
 # if COMNR_DEBUG
-#  define COMNR_DBG(COMNR_format, ...)				\
-     do {								          \
-	  fprintf(stderr, "## (%s)(%s)%d\n",			\
-		  COMNR_PROGNAME, __FILE__, __LINE__);		\
-	  fprintf(stderr, "#  `%s'\n", __FUNCTION__);	\
-	  fprintf(stderr, (COMNR_format), ##__VA_ARGS__);	\
-	  fprintf(stderr, "\n");					     \
-     } while(0)
-#  define COMNR_SDBG(COMNR_format, COMNR_exp)          \
-     do {			     					     \
-	  fprintf(stderr, "## (%s)(%s)%d\n",		     \
-		  COMNR_PROGNAME, __FILE__, __LINE__);	     \
-	  fprintf(stderr, "#  `%s`\n", __FUNCTION__);	\
-	  fprintf(stderr, (COMNR_format), (COMNR_exp));	\
-	  fprintf(stderr, "\n");					     \
-     } while(0)
+#  define COMNR_DBG(COMNR_format, ...)			\
+  do {							\
+    fprintf(stderr, "## (%s)(%s)%d\n",			\
+        COMNR_PROGNAME, __FILE__, __LINE__);		\
+    fprintf(stderr, "#  `%s'\n", __FUNCTION__);	        \
+    fprintf(stderr, (COMNR_format), ##__VA_ARGS__);	\
+    fprintf(stderr, "\n");				\
+  } while(0)
+#  define COMNR_SDBG(COMNR_format, COMNR_exp)           \
+  do {			     				\
+    fprintf(stderr, "## (%s)(%s)%d\n",                  \
+        COMNR_PROGNAME, __FILE__, __LINE__);	        \
+    fprintf(stderr, "#  `%s`\n", __FUNCTION__);	        \
+    fprintf(stderr, (COMNR_format), (COMNR_exp));	\
+    fprintf(stderr, "\n");				\
+  } while(0)
 #  define COMNR_ONDBG(...) (__VA_ARGS__)
 #  define COMNR_XONDBG(COMNR_X) (COMNR_X)
 #  define comnr_ping COMNR_DBG("\n^^^^ %s ^^^^\n", "MARCO!")
 #  define comnr_pong COMNR_DBG("\n$$$$ %s $$$$\n", "POLO!")
-#  define comnr_neko(COMNR_F, ...)				\
-     do {							          \
-	  fprintf(stderr,					     \
-		  "\n%s{neko-chan}%s(%s)(%s)(%d)\n",	\
-		  "\033[91m❤\033[0m",				\
-		  "\033[91m❤\033[0m",				\
-		  __FILE__, __FUNCTION__, __LINE__);	\
-	  fprintf(stderr, "%s%s%s, %s%s%s~\n",		\
-		  "\033[32mn",					     \
-		  "\033[35my",					     \
-		  "\033[31ma\033[0m",				\
-		  "\033[32mn",					     \
-		  "\033[35my",					     \
-		  "\033[31ma\033[33ma\033[0m");		\
-	  fprintf(stderr, (COMNR_F), ##__VA_ARGS__);	\
-	  fprintf(stderr, "\n");				     \
-     } while(0)
+#  define comnr_neko(COMNR_F, ...)		\
+  do {						\
+    fprintf(stderr,				\
+        "\n%s{neko-chan}%s(%s)(%s)(%d)\n",	\
+        "\033[91m❤\033[0m",			\
+        "\033[91m❤\033[0m",			\
+        __FILE__, __FUNCTION__, __LINE__);	\
+    fprintf(stderr, "%s%s%s, %s%s%s~\n",	\
+        "\033[32mn",				\
+        "\033[35my",                            \
+        "\033[31ma\033[0m",		      	\
+        "\033[32mn",				\
+        "\033[35my",				\
+        "\033[31ma\033[33ma\033[0m");		\
+    fprintf(stderr, (COMNR_F), ##__VA_ARGS__);  \
+    fprintf(stderr, "\n");			\
+  } while(0)
+#  define comnr_log(...)            \
+  do {                              \
+    fprintf(stderr, ##__VA_ARGS__); \
+  } while(0)
 # else
 #  define COMNR_DBG(COINT_format, ...)
 #  define COMNR_SDBG(COINT_format, COINT_exp)
@@ -191,40 +195,41 @@ BEGIN_C_DECLS
 #  define comnr_ping
 #  define comnr_pong
 #  define comnr_neko(COINT_F, ...)
+#  define comnr_log(...)
 # endif
-# define COMNR_ERROR(COMNR_format, ...)			     \
-     do {						                    \
-	  fprintf(stderr, "%s:err: ", COMNR_PROGNAME);	\
-	  fprintf(stderr, (COMNR_format), __VA_ARGS__);	\
-	  fprintf(stderr,				               \
-		  "\nin %s:{%d}:%s()\n",		               \
-		  __FILE__,				               \
-		  __LINE__,				               \
-		  __FUNCTION__);			               \
-     } while(0)
-# define COMNR_FATAL(...)     \
-     do {				     \
-	  fprintf(stderr,		\
-		  "%s: %s\n",		\
-		  (COMNR_PROGNAME),	\
-		  ##__VA_ARGS__);	\
-	  exit(EXIT_FAILURE);	\
-     } while (0)
+# define COMNR_ERROR(COMNR_format, ...)		      \
+  do {                                                \
+    fprintf(stderr, "%s:err: ", COMNR_PROGNAME);      \
+    fprintf(stderr, (COMNR_format), __VA_ARGS__);     \
+    fprintf(stderr,				      \
+        "\nin %s:{%d}:%s()\n",		              \
+        __FILE__,				      \
+        __LINE__,				      \
+        __FUNCTION__);			              \
+  } while(0)
+# define COMNR_FATAL(...) \
+  do {			  \
+    fprintf(stderr,	  \
+        "%s: %s\n",	  \
+        (COMNR_PROGNAME), \
+##__VA_ARGS__);	          \
+    exit(EXIT_FAILURE);	  \
+  } while (0)
 # define comnr_usage(COMNR_format) \
-     (printf((COMNR_format), (COMNR_PROGNAME)));
+  (printf((COMNR_format), (COMNR_PROGNAME)));
 # define comnr_arg(COMNR_opt, COMNR_desc, COMNR_tabs) \
-     (printf("  %s%s%s\n", (COMNR_opt),(COMNR_tabs),(COMNR_desc)));
+  (printf("  %s%s%s\n", (COMNR_opt),(COMNR_tabs),(COMNR_desc)));
 # define comnr_arg_eol_tabs "\n\t\t\t\t"
-# define comnr_help(COMNR_usage, COMNR_tabs)	     \
-     do {					          	     \
-	  com_usage((COMNR_usage));			     \
-	  com_arg("-h, --help",				     \
-		  "print this message and exit",	     \
-		  (COMNR_tabs));			          \
-	  com_arg("-v, --version",			     \
-		  "print program version and exit",     \
-		  (COMNR_tabs));			          \
-     } while(0)
+# define comnr_help(COMNR_usage, COMNR_tabs)	    \
+  do {					            \
+    com_usage((COMNR_usage));			    \
+    com_arg("-h, --help",		            \
+        "print this message and exit",	            \
+        (COMNR_tabs));			            \
+    com_arg("-v, --version",			    \
+        "print program version and exit",           \
+        (COMNR_tabs));			            \
+  } while(0)
 
 /////////////////////////////////////////
 // PUBLIC Functions
