@@ -14,3 +14,7 @@ anew: clean all
 clean-local:
 	$(RM) *stamp*
 	$(RM) *~
+
+dist-local:
+	update-version.sh
+
