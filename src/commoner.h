@@ -248,6 +248,8 @@ int stoll PARAMS((long long *dst, const char *s0));
 /* from defunct mem.c */
 int memlen PARAMS((const char *s));
 char *strterm PARAMS((char *s, size_t sz));
+void *memdup PARAMS((const void* src, size_t n));
+
 const char *strend PARAMS((const char *const s0));
 # if defined(COMNR_EXPOSE_OLD_CPEEK)
 char old_cpeek PARAMS((const char *c, const char *s, const short fwd));

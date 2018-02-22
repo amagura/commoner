@@ -248,4 +248,11 @@ char *strterm(char *s, size_t sz)
      s = tmp;
      return s;
 }
+
+void *memdup(const void *src, size_t n)
+{
+     void *tmp = malloc(n * sizeof(*tmp));
+     memcpy(tmp, src, n);
+     return tmp;
+}
 #endif
