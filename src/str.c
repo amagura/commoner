@@ -24,9 +24,6 @@
 # include <string.h>
 
 # include "commoner.h"
-# include "repeat.c"
-# include "rev.c"
-# include "concat.c"
 
 // I just don't see the point in having an `atend' function.  Testing for the
 // end of a string is quite simple.
@@ -251,7 +248,7 @@ char *strterm(char *s, size_t sz)
 
 void *memdup(const void *src, size_t n)
 {
-     void *tmp = malloc(n * sizeof(*tmp));
+     void *tmp = malloc(n);
      memcpy(tmp, src, n);
      return tmp;
 }

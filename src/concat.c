@@ -230,4 +230,12 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 
      return (used > sz ? 0 : sz - used);
 }
+
+#if 0
+void *shrnkcat(size_t src_size, size_t max, const char *s1, ...) __attribute__((sentinel));
+
+void *shrnkcat(size_t src_size, size_t max, const char *s1, ...)
+{
+     char *buf = malloc(max);
+#endif
 #endif
