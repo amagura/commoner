@@ -16,5 +16,5 @@ clean-local:
 	$(RM) *~
 
 dist-local:
-	update-version.sh
+	./update-version.sh
 
