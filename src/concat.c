@@ -236,6 +236,16 @@ void *shrnkcat(size_t src_size, size_t max, const char *s1, ...) __attribute__((
 
 void *shrnkcat(size_t src_size, size_t max, const char *s1, ...)
 {
+     va_list args;
+     const char *s = NULL;
+     char *p, *tmp;
+     p = tmp = NULL;
+     unsigned long ldx, mdx, ndx;
+     size_t used = 0;
+
+     mdx = ndx = strlen(s1);
+     va_start(args, s1);
+
      char *buf = malloc(max);
 #endif
 #endif

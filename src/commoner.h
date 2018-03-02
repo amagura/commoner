@@ -133,16 +133,12 @@ BEGIN_C_DECLS
 #  define comnr_muntrace
 # endif
 
-#if !defined(PACKAGE_VERSION)
-#  define PACKAGE_VERSION ""
-# endif
-
-# if !defined(PACKAGE)
-#  define PACKAGE "commoner"
-# endif
-
 # if !defined(COMNR_PROGNAME)
-#  define COMNR_PROGNAME PACKAGE
+#  define COMNR_PROGNAME "commoner"
+# endif
+
+# if !defined(COMMONER_VERSION)
+#  define COMMONER_VERSION 0x0110
 # endif
 
 # if COMNR_DEBUG
@@ -230,6 +226,17 @@ BEGIN_C_DECLS
         "print program version and exit",           \
         (COMNR_tabs));			            \
   } while(0)
+
+# define rstrdup(RSTRDUP_DEST, RSTRDUP_MAX, ...)                                                              \
+  do {                                                                                                        \
+    char *COMMONER_RSTRDUP_XYZ_ABC_tmp = malloc((RSTRDUP_MAX));                                               \
+    size_t COMMONER_RSTRDUP_XYZ_ABC_left;                                                                     \
+    COMMONER_RSTRDUP_XYZ_ABC_left = concatl(COMMONER_RSTRDUP_XYZ_ABC_tmp, (RSTRDUP_MAX), ##__VA_ARGS__, NULL);\
+    size_t COMMONER_RSTRDUP_XYZ_ABC_need = (RSTRDUP_MAX) - COMMONER_RSTRDUP_XYZ_ABC_left;                     \
+    COMMONER_RSTRDUP_XYZ_ABC_tmp = realloc(COMMONER_RSTRDUP_XYZ_ABC_tmp, COMMONER_RSTRDUP_XYZ_ABC_need);      \
+    memcpy((RSTRDUP_DEST), COMMONER_RSTRDUP_XYZ_ABC_tmp, COMMONER_RSTRDUP_XYZ_ABC_need);                      \
+    free(COMMONER_RSTRDUP_XYZ_ABC_tmp);                                                                       \
+  } while (0)
 
 /////////////////////////////////////////
 // PUBLIC Functions

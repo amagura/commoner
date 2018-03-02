@@ -22,6 +22,13 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <stdarg.h>
+
+# if COMMONER_VERSION == 0x100
+#  include <concat.c>
+#  include <repeat.c>
+#  include <rev.c>
+# endif
 
 # include "commoner.h"
 
