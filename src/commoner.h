@@ -234,7 +234,7 @@ BEGIN_C_DECLS
     COMMONER_RSTRDUP_XYZ_ABC_left = concatl(COMMONER_RSTRDUP_XYZ_ABC_tmp, (RSTRDUP_MAX), ##__VA_ARGS__, NULL);\
     size_t COMMONER_RSTRDUP_XYZ_ABC_need = (RSTRDUP_MAX) - COMMONER_RSTRDUP_XYZ_ABC_left;                     \
     COMMONER_RSTRDUP_XYZ_ABC_tmp = realloc(COMMONER_RSTRDUP_XYZ_ABC_tmp, COMMONER_RSTRDUP_XYZ_ABC_need);      \
-    memcpy((RSTRDUP_DEST), COMMONER_RSTRDUP_XYZ_ABC_tmp, COMMONER_RSTRDUP_XYZ_ABC_need);                      \
+    memmove((RSTRDUP_DEST), COMMONER_RSTRDUP_XYZ_ABC_tmp, COMMONER_RSTRDUP_XYZ_ABC_need);                      \
     free(COMMONER_RSTRDUP_XYZ_ABC_tmp);                                                                       \
   } while (0)
 
