@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdarg.h>
+# include <ctype.h>
 
 # if COMMONER_VERSION == 0x100
 #  include <concat.c>
@@ -50,19 +51,29 @@ bool atend(const char *s)
  * compare the return value to s0: if they are the same
  * then s0 pointed to '\0'
  */
-const char *strend(const char *const s0)
+char *strend(const char *s0)
 {
 # if defined(_GNU_SOURCE)
-     const char *endp = strchr(s0, '\0') - 1;
+     char *endp = strchr(s0, '\0') - 1;
 # else
-     const char *endp = (const char *)&s0[strlen(s0)];
+     char *endp = (char *)&s0[strlen(s0)] - 1;
 # endif
      /* FIXME: this shouldn't return NULL for both when s0 is NULL and when *s0
       * is '\0'.
       */
      if (s0 != NULL && *s0 != '\0')
-          return (s0 == endp ? s0 : endp);
-     return s0 == NULL ? NULL : s0;
+          return (s0 == endp ? (char *)s0 : endp);
+     return s0 == NULL ? NULL : (char *)s0;
+}
+
+void trim(char *s0)
+{
+     char *wp = NULL;
+     size_t len = strlen(s0);
+     for (wp = s0 + len - 1; isspace(*wp); --wp); /* shrink wp to not include trailing spaces */
+     wp[1] = '\0';
+     for (wp = s0; isspace(*wp); ++wp); /* shrink wp to not include leading spaces */
+     memmove(s0, wp, len - (size_t)(wp - s0) + 1);
 }
 
 # if defined(COM_EXPOSE_OLD_CPEEK)
