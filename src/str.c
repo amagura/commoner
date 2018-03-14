@@ -254,7 +254,6 @@ int cmpstrs(int res, bool _case, const char *rc, ...)
           else
                if ((
 # endif
-
 /////////////////////////////////////////
 // Taken from defunct mem.c
 /////////////////////////////////////////

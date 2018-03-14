@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([Commoner], [0.1.10], [amagura28@gmail.com],,[https://github.com/amagura/common/issues])
+AC_INIT([Commoner], [0.1.11], [amagura28@gmail.com],,[https://github.com/amagura/common/issues])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
