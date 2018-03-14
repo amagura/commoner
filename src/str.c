@@ -66,16 +66,6 @@ char *strend(const char *s0)
      return s0 == NULL ? NULL : (char *)s0;
 }
 
-void trim(char *s0)
-{
-     char *wp = NULL;
-     size_t len = strlen(s0);
-     for (wp = s0 + len - 1; isspace(*wp); --wp); /* shrink wp to not include trailing spaces */
-     wp[1] = '\0';
-     for (wp = s0; isspace(*wp); ++wp); /* shrink wp to not include leading spaces */
-     memmove(s0, wp, len - (size_t)(wp - s0) + 1);
-}
-
 # if defined(COM_EXPOSE_OLD_CPEEK)
 char old_cpeek(const char *c, const char *s, const short fwd)
 {
@@ -227,6 +217,28 @@ end:
      return r;
 }
 
+void trim(char *s0)
+{
+     char *wp = NULL;
+     size_t len = strlen(s0);
+     for (wp = s0 + len - 1; isspace(*wp); --wp); /* shrink wp to not include trailing spaces */
+     wp[1] = '\0';
+     for (wp = s0; isspace(*wp); ++wp); /* shrink wp to not include leading spaces */
+     memmove(s0, wp, len - (size_t)(wp - s0) + 1);
+}
+
+char *ptrim(const char *s0)
+{
+     char *wp = strdup(s0);
+     size_t len = strlen(s0);
+     char *tmp = wp + len - 1;
+     for (; isspace(*tmp); --tmp);
+     tmp[1] = '\0';
+     for (tmp = wp; isspace(*tmp); ++tmp);
+     memmove(wp, tmp, len - (size_t)(tmp - wp) + 1);
+     return wp;
+}
+
 # if 0
 int cmpstrs(int res, bool _case, const char *rc, ...) __attribute__((sentinel));
 int cmpstrs(int res, bool _case, const char *rc, ...)
@@ -242,6 +254,7 @@ int cmpstrs(int res, bool _case, const char *rc, ...)
           else
                if ((
 # endif
+
 /////////////////////////////////////////
 // Taken from defunct mem.c
 /////////////////////////////////////////

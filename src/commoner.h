@@ -257,8 +257,9 @@ int memlen PARAMS((const char *s));
 char *strterm PARAMS((char *s, size_t sz));
 void *memdup PARAMS((const void* src, size_t n));
 
-char *strend PARAMS((const char *s0));
-void trim PARAMS((char *s0));
+char *strend PARAMS((const char *s));
+void trim PARAMS((char *s));
+char *ptrim PARAMS((const char *s));
 # if defined(COMNR_EXPOSE_OLD_CPEEK)
 char old_cpeek PARAMS((const char *c, const char *s, const short fwd));
 # endif
