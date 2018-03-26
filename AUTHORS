@@ -12,6 +12,14 @@
 
   NOTE: Alexander Peslyak does not in any way, shape, or form endorse my use of his code.
 
-  The version that I used as the basis for the Common's concat family of functions, albeit slightly
+  The version that I used as the basis for Commoner's concat family of functions, albeit slightly
   different (if at all), can be found here:
   "http://openwall.info/wiki/_media/people/solar/software/public-domain-source-code/concat.c"
+
+* Ryan Reich (w^3 ryancreich dot info)
+  - Posted `random_at_most' function to Stack Overflow: the `randm' function is a slightly modified version; both of them are licensed under the terms of the Creative Commons license.
+
+  NOTE: Ryan Reich does not in any way, shape, or form endorse my use of his code.
+
+  The terms of the CC License can be found here:
+  https://creativecommons.org/licenses/by-sa/3.0/

@@ -27,6 +27,9 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <string.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <time.h>
 # include "commoner.h"
 # include "os.h"
 
@@ -118,4 +121,100 @@ size_t flen(FILE *fp)
      fseek(fp, 0, SEEK_SET);
      return r;
 }
+
+/* DO NOT USE */
+static int smkstmp(char *tmpfn, const char *templ)
+{
+     return -1;
+}
+
+# if COINT_INTERNAL_DEBUG
+#  pragma GCC push_options
+#  pragma GCC optimize ("O0")
+# endif
+int mkstmp(char *template)
+{
+     char *tmp, *XXXX;
+     uint64_t val;
+     int fd, xcnt, cnt, pos, tries = 62^3; // 238,328
+     pid_t pid;
+     char *wp = strdup(template);
+     char *endp = strend(wp);
+     size_t len = strlen(wp);
+     /* characters used to fill in the X's in template names */
+     const char filler[] =
+          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+     tmp = XXXX = NULL;
+     xcnt = cnt = pos = 0;
+     pid = getpid();
+     srand(time(NULL));
+     val += getrandom() * rand() * randm(RAND_MAX) ^ pid;
+
+/* The number of times to attempt to generate a temporary file.
+ * POSIX demands that this must be no smaller than TMP_MAX.
+ */
+# if ((62^3) < TMP_MAX)
+     tries = TMP_MAX;
+# endif
+
+     COINT_DBG("tries: '%d'\n", tries);
+
+     char *sp = strrchr(wp, 'X'); // make sure that we at least have one template X
+     if (sp == NULL) { // no period was found in template string
+          errno = EINVAL;
+          return -1;
+     }
+     /* Determine how many X's we have in wp. */
+     for (; sp != wp; --sp) {
+          if (*sp && *sp == 'X')
+               ++xcnt;
+          else
+               // leave loop as soon as we find the first non-X character
+               break;
+     }
+
+     /* build substring for strstr */
+     COINT_DBG("xcnt: '%d'\n", xcnt);
+     char *substr = repeatp('X', xcnt);
+     COINT_DBG("substr: '%s'\n", substr);
+     COINT_DBG("length of substr: '%d'\n", strlen(substr));
+
+     XXXX = strstr(wp, substr); /* find the head of the suffix in template */
+
+loop:
+     /* try to open a unique file that doesn't exist yet until we run out of attempts or succeed. */
+     for (int try = 0; try < tries; ++try) {
+          /* fill in the X's in template */
+          for (cnt = 0; cnt < xcnt; ++cnt) {
+               XXXX[cnt] = filler[val % 62]; // 62 is the number of characters in filler
+               val /= 62;
+               val += randm(RAND_MAX);
+          }
+          COINT_DBG("wp: '%s'\n", wp);
+# if !COINT_INTERNAL_MKSTMP_DRYRUN
+          fd = open(wp, O_RDWR | O_CREAT | O_EXCL, 0600);
+          if (fd >= 0) {
+               free(wp);
+               free(substr);
+               return fd;
+          } else if (errno != EEXIST) {
+               COINT_DBG("errno: '%d'\n", errno);
+               return -2;
+          } else if (errno == EEXIST) {
+               goto loop;
+          }
+# endif
+     }
+
+     free(wp);
+     free(substr);
+
+     /* ran out of tries */
+     errno = EAGAIN; // try again
+     return -1;
+}
+# if COINT_INTERNAL_DEBUG
+#  pragma GCC pop_options
+# endif
 #endif

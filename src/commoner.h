@@ -69,6 +69,9 @@ BEGIN_C_DECLS
 # endif
 
 # if defined(COINT_INTERNAL_DEBUG)
+#  if !defined(COINT_PROGNAME)
+#   define COINT_PROGNAME "commoner"
+#  endif
 #  define COINT_DBG(COINT_format, ...)				\
   do {								\
     fprintf(stderr, "## (%s)(%s)%d\n",				\
@@ -251,27 +254,29 @@ int stoll PARAMS((long long *dst, const char *s0));
 //int comnr_init PARAMS((void));
 
 /** functions hosted by str.c **/
+int chars PARAMS((const char *s, const char c));
+int charsterm PARAMS((const char *s, const char c, const char head, const char end));
+int charstermp PARAMS((const char *s, const char c, const char *endp));
+void trim PARAMS((char *s));
+char *ptrim PARAMS((const char *s));
+char *strend PARAMS((const char *s));
+# if defined(COMNR_EXPOSE_OLD_CPEEK)
+char old_cpeek PARAMS((const char *c, const char *s, const short fwd));
+# endif
+char cpeek PARAMS((const char *const sp0, const char *const head));
 
 /* from defunct mem.c */
 int memlen PARAMS((const char *s));
 char *strterm PARAMS((char *s, size_t sz));
 void *memdup PARAMS((const void* src, size_t n));
 
-char *strend PARAMS((const char *s));
-void trim PARAMS((char *s));
-char *ptrim PARAMS((const char *s));
-# if defined(COMNR_EXPOSE_OLD_CPEEK)
-char old_cpeek PARAMS((const char *c, const char *s, const short fwd));
-# endif
-char cpeek PARAMS((const char *const sp0, const char *const head));
-
-/** functions hosted by repeat.c **/
-void repeat PARAMS((char *dst, const char s, size_t n));
-// XXX repeats strings instead of characters
+/* from defunct repeat.c */
+int repeat PARAMS((char *dst, const char s, size_t n));
+char *repeatp PARAMS((const char s, int n));
 int strrep PARAMS((char *dst, const char *s, size_t n));
-char *strprep PARAMS((const char *s, int times));
+char *strprep PARAMS((const char *s, int n));
 
-/** functions hosted by rev.c **/
+/* from defunct rev.c */
 void rev PARAMS((char *s));
 char *revp PARAMS((const char *s));
 void revn PARAMS((char *s, size_t n));
@@ -291,6 +296,8 @@ uintmax_t uintm_len PARAMS((uintmax_t idx));
 int intlen PARAMS((int idx));
 int intlenc PARAMS((const int idx));
 size_t intlenm PARAMS((int src));
+long randm PARAMS((long max));
+uint64_t getrandom PARAMS(());
 
 /* from defunct itoa.c */
 void itoa PARAMS((char *dst, int src));
@@ -302,7 +309,7 @@ char *abs_path PARAMS((const char *pth));
 int rpath PARAMS((char *pth));
 int direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));
-
+int mkstmp PARAMS((char *tmpl));
 
 END_C_DECLS
 

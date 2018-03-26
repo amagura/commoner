@@ -19,8 +19,10 @@
 ****/
 #ifndef COMMONER_INT_C_GUARD
 # define COMMONER_INT_C_GUARD 1
+# include <stdlib.h>
 # include <stdint.h>
 # include <string.h>
+# include <sys/time.h>
 # include "commoner.h"
 
 uintmax_t uintm_len(uintmax_t idx)
@@ -63,7 +65,36 @@ size_t intlenm(int src)
      }
      return dst;
 }
+/* XXX The `randm' function is licensed under the terms of the Creative Commons License, said terms can be found here:
+ * https://creativecommons.org/licenses/by-sa/3.0/
+ *
+ * Please see NOTICE file for authorship details.
+ */
 
+/* assumes 0 <= max <= RAND_MAX */
+long randm(long max) {
+     /* max <= RAND_MAX < ULONG_MAX, so this is okay */
+     unsigned long nbin = (unsigned long) max + 1,
+                   nrand = (unsigned long) RAND_MAX + 1,
+                   binsz = nrand / nbin,
+                   defect = nrand % nbin;
+     long x0;
+     do {
+          x0 = random();
+     } // this is carefully written not to overflow
+     while (nrand - defect <= (unsigned long)x0);
+     // truncated division is intentional
+     return x0/binsz;
+}
+
+/* returns, hopefully, a bunch of random bits based on the current timestamp */
+uint64_t getrandom()
+{
+     struct timeval tv;
+     gettimeofday(&tv, NULL);
+     uint64_t bits = ((uint64_t) tv.tv_usec << 16) ^ tv.tv_sec;
+     return bits;
+}
 /////////////////////////////////////////
 // Taken from defunct itoa.c
 /////////////////////////////////////////
