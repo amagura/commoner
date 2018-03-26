@@ -136,6 +136,7 @@ int mkstmp(char *template)
 {
      char *tmp, *XXXX;
      uint64_t val;
+     // FIXME: `^' is not the power operator; it is bitwise XOR
      int fd, xcnt, cnt, pos, tries = 62^3; // 238,328
      pid_t pid;
      char *wp = strdup(template);
