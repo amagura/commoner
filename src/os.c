@@ -1,7 +1,7 @@
 /****
   COMMONER; os.c, OS/FS related functions
 
-  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -30,6 +30,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <time.h>
+# include <math.h>
 # include "commoner.h"
 # include "os.h"
 
@@ -116,17 +117,20 @@ int direxists(char *pth)
 size_t flen(FILE *fp)
 {
      size_t r = 0;
+     /* FIXME: this isn't portable to non-POSIX systems */
      while ((EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp, "%*c"))))
           ++r;
      fseek(fp, 0, SEEK_SET);
      return r;
 }
 
+# if 0
 /* DO NOT USE */
 static int smkstmp(char *tmpfn, const char *templ)
 {
      return -1;
 }
+# endif
 
 # if COINT_INTERNAL_DEBUG
 #  pragma GCC push_options
@@ -136,33 +140,35 @@ int mkstmp(char *template)
 {
      char *tmp, *XXXX;
      uint64_t val;
-     // FIXME: `^' is not the power operator; it is bitwise XOR
-     int fd, xcnt, cnt, pos, tries = 62^3; // 238,328
+     int fd, xcnt, cnt, pos,
+         tries = pow(62, 3);
      pid_t pid;
      char *wp = strdup(template);
      char *endp = strend(wp);
      size_t len = strlen(wp);
      /* characters used to fill in the X's in template names */
-     const char filler[] =
-          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+     const char filler[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
      tmp = XXXX = NULL;
      xcnt = cnt = pos = 0;
      pid = getpid();
      srand(time(NULL));
-     val += getrandom() * rand() * randm(RAND_MAX) ^ pid;
+     val = getrandom() * rand() * randm(RAND_MAX) ^ pid;
 
 /* The number of times to attempt to generate a temporary file.
  * POSIX demands that this must be no smaller than TMP_MAX.
  */
-# if ((62^3) < TMP_MAX)
+# if ((62*62*62) < TMP_MAX)
      tries = TMP_MAX;
 # endif
 
      COINT_DBG("tries: '%d'\n", tries);
 
-     char *sp = strrchr(wp, 'X'); // make sure that we at least have one template X
-     if (sp == NULL) { // no period was found in template string
+     /* find the last X in wp */
+     char *sp = strrchr(wp, 'X');
+     /* make sure that we at least have one template X */
+     if (sp == NULL) {
+          /* no period was found in template string */
           errno = EINVAL;
           return -1;
      }

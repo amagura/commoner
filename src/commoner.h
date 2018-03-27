@@ -1,7 +1,7 @@
 /****
   COMMON; commoner.h
 
-  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
 
   This file is a part of Commoner
 
