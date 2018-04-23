@@ -96,7 +96,7 @@ int rpath(char *pth)
  * 0 if false
  * errno on error.
  */
-int direxists(char *pth)
+bool direxists(char *pth)
 {
      DIR *dir = opendir(pth);
      if (dir) {
@@ -176,8 +176,7 @@ int mkstmp(char *template)
      for (; sp != wp; --sp) {
           if (*sp && *sp == 'X')
                ++xcnt;
-          else
-               // leave loop as soon as we find the first non-X character
+          else /* leave loop as soon as we find the first non-X character */
                break;
      }
 

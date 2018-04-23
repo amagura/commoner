@@ -307,7 +307,7 @@ char *itoap PARAMS((const int src));
 char *subdir PARAMS((char **dirs, size_t ssz));
 char *abs_path PARAMS((const char *pth));
 int rpath PARAMS((char *pth));
-int direxists PARAMS((char *pth));
+bool direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));
 int mkstmp PARAMS((char *tmpl));
 
