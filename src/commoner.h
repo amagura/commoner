@@ -49,6 +49,7 @@ BEGIN_C_DECLS
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdint.h>
+# include <stdbool.h>
 /////////////////////////////////////////
 // PRIVATE Macros
 /////////////////////////////////////////
@@ -305,7 +306,7 @@ char *itoap PARAMS((const int src));
 
 /** functions hosted by os.c **/
 char *subdir PARAMS((char **dirs, size_t ssz));
-char *abs_path PARAMS((const char *pth));
+char *abs_path PARAMS((int *err, const char *pth));
 int rpath PARAMS((char *pth));
 bool direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));

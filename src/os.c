@@ -58,35 +58,30 @@ rok_free:
 
 }
 
-char *abs_path(const char *pth)
+char *abs_path(int *err, const char *pth)
 {
      if (pth == NULL) return NULL; /* no path given */
      /* FIXME: we should check for realpath, and if it is not present,
       * use an alternative
       */
      char *buf = realpath(pth, NULL);
-     if (errno)
-          return NULL;
+
+     if (errno) {
+          *err = errno;
+     }
      return buf;
 }
 
-/* On success: *pth is set to the realpath to *pth and 0 is returned.
-   On failure: *pth is set to NULL and either errno or -1 is returned.
-   */
-
-int rpath(char *pth)
+int getdir(char *pth, size_t n)
 {
-     if (pth == NULL) return -1;
-     /* FIXME: we should check for realpath, and if it is not present,
-      * use an alternative
-      */
-     char *buf = malloc(PATH_MAX + 1);
-     realpath(pth, buf);
+     if (pth == NULL)
+          return -1;
+
+     char *buf = realpath(pth, NULL);
      if (errno) {
-          pth = NULL;
           return errno;
      }
-     memmove(pth, buf, sizeof(PATH_MAX + 1)); // NOTE may cause mem leaks?
+     memcpy(pth, buf, n);
      free(buf);
      return 0;
 }
