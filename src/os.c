@@ -58,21 +58,23 @@ rok_free:
 
 }
 
-char *abs_path(int *err, const char *pth)
+char *getdir(int *err, const char *pth)
 {
-     if (pth == NULL) return NULL; /* no path given */
+     if (pth == NULL)
+          return NULL;
+
+     char *tmp = realpath(pth, NULL);
      /* FIXME: we should check for realpath, and if it is not present,
       * use an alternative
       */
-     char *buf = realpath(pth, NULL);
 
      if (errno) {
           *err = errno;
      }
-     return buf;
+     return tmp;
 }
 
-int getdir(char *pth, size_t n)
+int rpath(char *pth, size_t n)
 {
      if (pth == NULL)
           return -1;

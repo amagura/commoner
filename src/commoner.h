@@ -242,6 +242,9 @@ BEGIN_C_DECLS
     free(COMMONER_RSTRDUP_XYZ_ABC_tmp);                                                                       \
   } while (0)
 
+# define abs_path(COMNR_AP_INT_ERR, COMNR_AP_CCHAR_PTH) \
+     getdir((COMNR_AP_INT_ERR), (COMNR_AP_CCHAR_PTH))
+
 /////////////////////////////////////////
 // PUBLIC Functions
 /////////////////////////////////////////
@@ -306,8 +309,8 @@ char *itoap PARAMS((const int src));
 
 /** functions hosted by os.c **/
 char *subdir PARAMS((char **dirs, size_t ssz));
-char *abs_path PARAMS((int *err, const char *pth));
-int rpath PARAMS((char *pth));
+char *getdir PARAMS((int *err, const char *pth));
+int rpath PARAMS((char *pth, size_t n));
 bool direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));
 int mkstmp PARAMS((char *tmpl));
