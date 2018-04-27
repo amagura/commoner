@@ -141,6 +141,10 @@ BEGIN_C_DECLS
 #  define COMNR_PROGNAME "commoner"
 # endif
 
+# if !defined(PROGNAME)
+#  define PROGNAME COMNR_PROGNAME
+# endif
+
 # if !defined(COMMONER_VERSION)
 #  define COMMONER_VERSION 0x0110
 # endif
@@ -149,7 +153,7 @@ BEGIN_C_DECLS
 #  define COMNR_DBG(COMNR_format, ...)			\
   do {							\
     fprintf(stderr, "## (%s)(%s)%d\n",			\
-        COMNR_PROGNAME, __FILE__, __LINE__);		\
+        PROGNAME, __FILE__, __LINE__);		\
     fprintf(stderr, "#  `%s'\n", __FUNCTION__);	        \
     fprintf(stderr, (COMNR_format), ##__VA_ARGS__);	\
     fprintf(stderr, "\n");				\
@@ -157,7 +161,7 @@ BEGIN_C_DECLS
 #  define COMNR_SDBG(COMNR_format, COMNR_exp)           \
   do {			     				\
     fprintf(stderr, "## (%s)(%s)%d\n",                  \
-        COMNR_PROGNAME, __FILE__, __LINE__);	        \
+        PROGNAME, __FILE__, __LINE__);	        \
     fprintf(stderr, "#  `%s`\n", __FUNCTION__);	        \
     fprintf(stderr, (COMNR_format), (COMNR_exp));	\
     fprintf(stderr, "\n");				\
@@ -199,7 +203,7 @@ BEGIN_C_DECLS
 # endif
 # define COMNR_ERROR(COMNR_format, ...)		      \
   do {                                                \
-    fprintf(stderr, "%s:err: ", COMNR_PROGNAME);      \
+    fprintf(stderr, "%s:err: ", PROGNAME);      \
     fprintf(stderr, (COMNR_format), __VA_ARGS__);     \
     fprintf(stderr,				      \
         "\nin %s:{%d}:%s()\n",		              \
@@ -211,12 +215,12 @@ BEGIN_C_DECLS
   do {			  \
     fprintf(stderr,	  \
         "%s: %s\n",	  \
-        (COMNR_PROGNAME), \
+        (PROGNAME), \
 ##__VA_ARGS__);	          \
     exit(EXIT_FAILURE);	  \
   } while (0)
 # define comnr_usage(COMNR_format) \
-  (printf((COMNR_format), (COMNR_PROGNAME)));
+  (printf((COMNR_format), (PROGNAME)));
 # define comnr_arg(COMNR_opt, COMNR_desc, COMNR_tabs) \
   (printf("  %s%s%s\n", (COMNR_opt),(COMNR_tabs),(COMNR_desc)));
 # define comnr_arg_eol_tabs "\n\t\t\t\t"
