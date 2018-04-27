@@ -2,7 +2,7 @@
 
 lib_LTLIBRARIES = libcommoner.la
 libcommoner_la_SOURCES = commoner.c int.c os.c str.c concat.c
-libcommoner_la_LDFLAGS = -version-info '0:1:14'
+libcommoner_la_LDFLAGS = -version-info '0:0:14'
 include_HEADERS = commoner.h
 noinst_HEADERS = os.h
 
