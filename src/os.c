@@ -69,7 +69,8 @@ char *getdir(int *err, const char *pth)
       */
 
      if (errno) {
-          *err = errno;
+          if (err)
+               *err = errno;
      }
      return tmp;
 }
