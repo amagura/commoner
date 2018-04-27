@@ -222,11 +222,11 @@ BEGIN_C_DECLS
 # define comnr_arg_eol_tabs "\n\t\t\t\t"
 # define comnr_help(COMNR_usage, COMNR_tabs)	    \
   do {					            \
-    com_usage((COMNR_usage));			    \
-    com_arg("-h, --help",		            \
+    comnr_usage((COMNR_usage));			    \
+    comnr_arg("-h, --help",		            \
         "print this message and exit",	            \
         (COMNR_tabs));			            \
-    com_arg("-v, --version",			    \
+    comnr_arg("-v, --version",			    \
         "print program version and exit",           \
         (COMNR_tabs));			            \
   } while(0)

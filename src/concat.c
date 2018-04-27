@@ -55,7 +55,7 @@ char *concat(const char *s1, ...)
 	}
 	va_end(args);
 	if (s || m >= INT_MAX) return NULL;
-	com_mtrace;
+	comnr_mtrace;
 
 # if defined(__cplusplus)
 	result = (char *)malloc(m + 1);
@@ -79,7 +79,7 @@ char *concat(const char *s1, ...)
 		return NULL;
 	}
 	*p = '\0';
-	com_muntrace;
+	comnr_muntrace;
 	return result;
 }
 # endif
