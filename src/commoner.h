@@ -153,7 +153,7 @@ BEGIN_C_DECLS
 #  define COMNR_DBG(COMNR_format, ...)			\
   do {							\
     fprintf(stderr, "## (%s)(%s)%d\n",			\
-        PROGNAME, __FILE__, __LINE__);		\
+        PROGNAME, __FILE__, __LINE__);		        \
     fprintf(stderr, "#  `%s'\n", __FUNCTION__);	        \
     fprintf(stderr, (COMNR_format), ##__VA_ARGS__);	\
     fprintf(stderr, "\n");				\
@@ -161,7 +161,7 @@ BEGIN_C_DECLS
 #  define COMNR_SDBG(COMNR_format, COMNR_exp)           \
   do {			     				\
     fprintf(stderr, "## (%s)(%s)%d\n",                  \
-        PROGNAME, __FILE__, __LINE__);	        \
+        PROGNAME, __FILE__, __LINE__);	                \
     fprintf(stderr, "#  `%s`\n", __FUNCTION__);	        \
     fprintf(stderr, (COMNR_format), (COMNR_exp));	\
     fprintf(stderr, "\n");				\
@@ -174,7 +174,7 @@ BEGIN_C_DECLS
   do {						\
     fprintf(stderr,				\
         "\n%s{neko-chan}%s(%s)(%s)(%d)\n",	\
-        "\033[91m❤\033[0m",			\
+        "\033[91m❤\033[0m",	                \
         "\033[91m❤\033[0m",			\
         __FILE__, __FUNCTION__, __LINE__);	\
     fprintf(stderr, "%s%s%s, %s%s%s~\n",	\
@@ -212,11 +212,10 @@ BEGIN_C_DECLS
         __FUNCTION__);			              \
   } while(0)
 # define COMNR_FATAL(...) \
-  do {			  \
-    fprintf(stderr,	  \
-        "%s: %s\n",	  \
-        (PROGNAME), \
-##__VA_ARGS__);	          \
+  do {                    \
+    prinft("%s: %s\n",	  \
+        (PROGNAME),       \
+        ##__VA_ARGS__);	  \
     exit(EXIT_FAILURE);	  \
   } while (0)
 # define comnr_usage(COMNR_format) \
@@ -246,8 +245,9 @@ BEGIN_C_DECLS
     free(COMMONER_RSTRDUP_XYZ_ABC_tmp);                                                                       \
   } while (0)
 
-# define abs_path(COMNR_AP_INT_ERR, COMNR_AP_CCHAR_PTH) \
-     getdir((COMNR_AP_INT_ERR), (COMNR_AP_CCHAR_PTH))
+/* provides legacy access to abs_path */
+# define abs_path(COMNR_AP_CCHAR_PTH) \
+     getdir((NULL), (COMNR_AP_CCHAR_PTH))
 
 /////////////////////////////////////////
 // PUBLIC Functions
@@ -318,6 +318,12 @@ int rpath PARAMS((char *pth, size_t n));
 bool direxists PARAMS((char *pth));
 size_t flen PARAMS((FILE *fp));
 int mkstmp PARAMS((char *tmpl));
+
+/** functions hosted by msg.c **/
+void die PARAMS((int *rc, const char *format, ...)) __attribute__((sentinel));
+void kys PARAMS((const char *format, ...)) __attribute__((sentinel));
+void croak PARAMS((int *rc, const char *msg, ...)) __attribute__((sentinel));
+void ribbt PARAMS((const char *msg, ...)) __attribute__((sentinel));
 
 END_C_DECLS
 
