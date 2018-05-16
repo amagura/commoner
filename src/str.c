@@ -95,17 +95,18 @@ char *ptrim(const char *s0)
      return wp;
 }
 
-# if 0
-int cmpstrs(int res, bool _case, const char *rc, ...) __attribute__((sentinel));
-int cmpstrs(int res, bool _case, const char *rc, ...)
+#if 0
+int cmpstrs(int res, bool _case, const char *s0, ...) __attribute__((sentinel));
+int cmpstrs(int res, bool _case, const char *s0, ...)
 {
      const char *base;
      va_list args;
-     va_start(args, rc);
+     va_start(args, s0);
      int idx = 1; // position of match in function call
-     while ((s0 = va_arg(args, const char *))) {
+     while ((base = va_arg(args, const char *))) {
           if (_case)
-               if ((strncasecmp(rc, base, res)) == 0) {
+               if ((strncasecmp(s0, base, res)) == 0) {
+                    break;
                }
           else
                if ((
