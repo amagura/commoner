@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in ##
 
 lib_LTLIBRARIES = libcommoner.la
-libcommoner_la_SOURCES = commoner.c int.c os.c str.c concat.c
+libcommoner_la_SOURCES = commoner.c int.c os.c str.c concat.c msg.c
 libcommoner_la_LDFLAGS = -version-info '0:0:0'
 include_HEADERS = commoner.h
 noinst_HEADERS = os.h
