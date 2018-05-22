@@ -111,6 +111,7 @@ int cmpstrs(size_t n, const char *base, ...)
           else
                ++missed;
      } while ((pmatch = va_arg(args, const char *)));
+     va_end(args);
 
      if (missed == idx)
           return -1;
@@ -134,6 +135,7 @@ int cmpcase(size_t n, const char *base, ...)
           else
                ++missed;
      } while ((pmatch = va_arg(args, const char *)));
+     va_end(args);
 
      if (missed == idx)
           return -1;
