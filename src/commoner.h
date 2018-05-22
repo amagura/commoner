@@ -267,6 +267,8 @@ int charsterm PARAMS((const char *s, const char c, const char head, const char e
 int charstermp PARAMS((const char *s, const char c, const char *endp));
 void trim PARAMS((char *s));
 char *ptrim PARAMS((const char *s));
+int cmpstrs PARAMS((size_t n, const char *base, ...)) __attribute__((sentinel));
+int cmpcase PARAMS((size_t n, const char *base, ...)) __attribute__((sentinel));
 char *strend PARAMS((const char *s));
 # if defined(COMNR_EXPOSE_OLD_CPEEK)
 char old_cpeek PARAMS((const char *c, const char *s, const short fwd));

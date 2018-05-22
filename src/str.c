@@ -95,22 +95,51 @@ char *ptrim(const char *s0)
      return wp;
 }
 
-#if 0
-int cmpstrs(int res, bool _case, const char *s0, ...) __attribute__((sentinel));
-int cmpstrs(int res, bool _case, const char *s0, ...)
+int cmpstrs(size_t n, const char *base, ...) __attribute__((sentinel));
+int cmpstrs(size_t n, const char *base, ...)
 {
-     const char *base;
+     const char *pmatch; /* potential match */
      va_list args;
-     va_start(args, s0);
-     int idx = 1; // position of match in function call
-     while ((base = va_arg(args, const char *))) {
-          if (_case)
-               if ((strncasecmp(s0, base, res)) == 0) {
-                    break;
-               }
+     va_start(args, base);
+     int idx = 0; /* position within va_args where the match occurs */
+     int missed = 0; /* number of positions that didn't match */
+
+     do {
+          ++idx;
+          if ((strncasecmp(base, pmatch, n)) == 0)
+               break;
           else
-               if ((
-# endif
+               ++missed;
+     } while ((pmatch = va_arg(args, const char *)));
+
+     if (missed == idx)
+          return -1;
+     else
+          return idx;
+}
+
+int cmpcase(size_t n, const char *base, ...) __attribute__((sentinel));
+int cmpcase(size_t n, const char *base, ...)
+{
+     const char *pmatch;
+     va_list args;
+     va_start(args, base);
+     int idx = 0;
+     int missed = 0;
+
+     do {
+          ++idx;
+          if ((strncmp(base, pmatch, n)) == 0)
+               break;
+          else
+               ++missed;
+     } while ((pmatch = va_arg(args, const char *)));
+
+     if (missed == idx)
+          return -1;
+     else
+          return idx;
+}
 
 // I just don't see the point in having an `atend' function.  Testing for the
 // end of a string is quite simple.
