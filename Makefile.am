@@ -17,10 +17,3 @@ clean-local:
 
 dist-local:
 	./update-version.sh
-
-uninstall-local:
-	cd $(libdir); \
-	  $(RM) $(wildcard *libcommoner*)
-	cd $(includedir); \
-	  $(RM) commoner.h
-
