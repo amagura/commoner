@@ -124,6 +124,7 @@ BEGIN_C_DECLS
 /////////////////////////////////////////
 // PUBLIC Macros
 /////////////////////////////////////////
+
 # define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
 # define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
 
@@ -267,8 +268,8 @@ int charsterm PARAMS((const char *s, const char c, const char head, const char e
 int charstermp PARAMS((const char *s, const char c, const char *endp));
 void trim PARAMS((char *s));
 char *ptrim PARAMS((const char *s));
-int cmpstrs PARAMS((size_t n, const char *base, ...)) __attribute__((sentinel));
-int cmpcase PARAMS((size_t n, const char *base, ...)) __attribute__((sentinel));
+int cmpstrs PARAMS((const char *base, size_t n, ...)) __attribute__((sentinel));
+int cmpcase PARAMS((const char *base, size_t n, ...)) __attribute__((sentinel));
 char *strend PARAMS((const char *s));
 # if defined(COMNR_EXPOSE_OLD_CPEEK)
 char old_cpeek PARAMS((const char *c, const char *s, const short fwd));

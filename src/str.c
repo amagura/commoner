@@ -95,8 +95,8 @@ char *ptrim(const char *s0)
      return wp;
 }
 
-int cmpstrs(size_t n, const char *base, ...) __attribute__((sentinel));
-int cmpstrs(size_t n, const char *base, ...)
+int cmpstrs(const char *base, size_t n, ...) __attribute__((sentinel));
+int cmpstrs(const char *base, size_t n, ...)
 {
      const char *pmatch; /* potential match */
      va_list args;
@@ -119,8 +119,8 @@ int cmpstrs(size_t n, const char *base, ...)
           return idx;
 }
 
-int cmpcase(size_t n, const char *base, ...) __attribute__((sentinel));
-int cmpcase(size_t n, const char *base, ...)
+int cmpcase(const char *base, size_t n, ...) __attribute__((sentinel));
+int cmpcase(const char *base, size_t n, ...)
 {
      const char *pmatch;
      va_list args;
