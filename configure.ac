@@ -17,18 +17,23 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+AC_PROG_CXX
+AC_PROG_RANLIB
 
 # Checks for header files
-AC_CHECK_HEADERS([mcheck.h limits.h stdint.h stdlib.h string.h unistd.h])
+AC_CHECK_HEADERS([mcheck.h limits.h stdint.h stdlib.h string.h unistd.h fcntl.h sys/time.h])
 
 # Check for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
 AC_C_INLINE
 AC_TYPE_SIZE_T
+AC_TYPE_PID_T
+AC_TYPE_UINT64_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([bzero bcopy memmove mempcpy memset realpath strchr strdup strtol])
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([bzero bcopy memmove mempcpy memset realpath strchr strdup strtol gettimeofday pow strncasecmp strrchr strstr])
 AC_SEARCH_LIBS([strtonum],
                [bsd],
                [AC_DEFINE([HAVE_STRTONUM], [1], [needs a description because the people at GNU are fucking morons])])
