@@ -100,7 +100,7 @@ int cmpstrs(const char *base, size_t n, ...)
 {
      const char *pmatch; /* potential match */
      va_list args;
-     va_start(args, base);
+     va_start(args, n);
      int idx = 0; /* position within va_args where the match occurs */
      int missed = 0; /* number of positions that didn't match */
 
@@ -124,7 +124,7 @@ int cmpcase(const char *base, size_t n, ...)
 {
      const char *pmatch;
      va_list args;
-     va_start(args, base);
+     va_start(args, n);
      int idx = 0;
      int missed = 0;
 
