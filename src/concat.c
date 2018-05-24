@@ -1,37 +1,39 @@
 /****
-COMMON; concat.c, (should be merged with similar files)
+  COMMONER; concat.c, (should be merged with similar files)
 
-Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  This file is a part of Commoner
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 ****/
-#ifndef COMMON_CONCAT_C_GUARD
-# define COMMON_CONCAT_C_GUARD 1
+#ifndef COMMONER_CONCAT_C_GUARD
+# define COMMONER_CONCAT_C_GUARD 1
+# ifdef HAVE_CONFIG_H
+#  include <config.h>
+# endif
+
+# if defined(HAVE_BZERO) || defined(HAVE_BCOPY)
+#  include <strings.h>
+# endif
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdarg.h>
 # include <stdbool.h>
 # include <string.h>
 # include <limits.h>
-# include "common.h"
-
-# include "mem.c"
-
-# if COM_DEBUG
-#  include "cpeek.c"
-# endif
-
+# include "commoner.h"
 
 // XXX OBSOLETE
 # if 0
@@ -53,7 +55,7 @@ char *concat(const char *s1, ...)
 	}
 	va_end(args);
 	if (s || m >= INT_MAX) return NULL;
-	com_mtrace;
+	comnr_mtrace;
 
 # if defined(__cplusplus)
 	result = (char *)malloc(m + 1);
@@ -77,7 +79,7 @@ char *concat(const char *s1, ...)
 		return NULL;
 	}
 	*p = '\0';
-	com_muntrace;
+	comnr_muntrace;
 	return result;
 }
 # endif
@@ -117,7 +119,7 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      }
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
-     com_mtrace;
+     coint_mtrace;
 # if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
 # else
@@ -131,8 +133,8 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      p = mempcpy(p, (char *)s1, ndx);
 
      used += ndx;
-     COM_DBG("p: `%s`\n", p);
-     COM_DBG("used: %lu\n", used - 0);
+     COINT_DBG("p: `%s`\n", p);
+     COINT_DBG("used: %lu\n", used - 0);
 
      va_start(args, s1);
      while ((s = va_arg(args, char *))) {
@@ -147,18 +149,18 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
 	  return sz;
      }
 
-     COM_DBG("tmp: `%s'\n", tmp);
+     COINT_DBG("tmp: `%s'\n", tmp);
      p = mempcpy(dst, tmp, (used > sz ? sz : used));
      free(tmp);
      *p = '\0';
      ++used;
 
-     COM_DBG("dst: `%s'\n", dst);
-     COM_DBG("*p: `%c'\n", *p);
-     COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
-     COM_DBG("strlen(dst): %lu\n", strlen(dst));
-     COM_DBG("used#2: %lu\n", used - 0);
-     com_muntrace;
+     COINT_DBG("dst: `%s'\n", dst);
+     COINT_DBG("*p: `%c'\n", *p);
+     COINT_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COINT_DBG("strlen(dst): %lu\n", strlen(dst));
+     COINT_DBG("used#2: %lu\n", used - 0);
+     coint_muntrace;
      return (used > sz ? 0 : sz - used);
 }
 
@@ -184,7 +186,7 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      va_end(args);
      if (s || mdx >= INT_MAX) return sz;
 
-     com_mtrace;
+     coint_mtrace;
 
 # if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
@@ -198,8 +200,8 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      p = mempcpy(p, (char *)s1, ndx);
 
      used += ndx;
-     COM_DBG("p: `%s`\n", p);
-     COM_DBG("used: %lu\n", used - 0);
+     COINT_DBG("p: `%s`\n", p);
+     COINT_DBG("used: %lu\n", used - 0);
 
      va_start(args, s1);
      while ((s = va_arg(args, char *))) {
@@ -213,31 +215,37 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 	  free(tmp);
 	  return sz;
      }
-     COM_DBG("tmp: `%s'\n", tmp);
-# if defined(mempmove) && COM_USE_MEMPMOVE
+     COINT_DBG("tmp: `%s'\n", tmp);
      p = mempmove(dst, tmp, (used > sz ? sz : used));
-# else
-     memmove(dst, tmp, (used > sz ? sz : used));
-     p = &dst[(used > sz ? sz : used)];
-# endif
      free(tmp);
      *p = '\0';
      ++used;
 
-     COM_DBG("dst: `%s'\n", dst);
-     COM_DBG("*p: `%c'\n", *p);
-     COM_DBG("*--p: `%c'\n", cpeek(p, dst, 0));
-     COM_DBG("strlen(dst): %lu\n", strlen(dst));
-     COM_DBG("used#2: %lu\n", used - 0);
-     com_muntrace;
+     COINT_DBG("dst: `%s'\n", dst);
+     COINT_DBG("*p: `%c'\n", *p);
+     COINT_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COINT_DBG("strlen(dst): %lu\n", strlen(dst));
+     COINT_DBG("used#2: %lu\n", used - 0);
+     coint_muntrace;
 
      return (used > sz ? 0 : sz - used);
 }
 
-# undef catl
-# define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
+#if 0
+void *shrnkcat(size_t src_size, size_t max, const char *s1, ...) __attribute__((sentinel));
 
-# undef catm
-# define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
+void *shrnkcat(size_t src_size, size_t max, const char *s1, ...)
+{
+     va_list args;
+     const char *s = NULL;
+     char *p, *tmp;
+     p = tmp = NULL;
+     unsigned long ldx, mdx, ndx;
+     size_t used = 0;
 
+     mdx = ndx = strlen(s1);
+     va_start(args, s1);
+
+     char *buf = malloc(max);
+#endif
 #endif

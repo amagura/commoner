@@ -19,7 +19,7 @@
 
 #define COM_TESTING 1
 #define COM_DEBUG 1
-#include "../src/common.c"
+#include "../src/commoner.h"
 
 int test_catl()
 {
