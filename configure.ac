@@ -18,7 +18,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_CXX
-AC_PROG_RANLIB
+LT_INIT
 
 # Checks for header files
 AC_CHECK_HEADERS([mcheck.h limits.h stdint.h stdlib.h string.h unistd.h fcntl.h sys/time.h])
