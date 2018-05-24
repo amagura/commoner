@@ -104,13 +104,13 @@ int cmpstrs(const char *base, size_t n, ...)
      int idx = 0; /* position within va_args where the match occurs */
      int missed = 0; /* number of positions that didn't match */
 
-     do {
+     while ((pmatch = va_arg(args, const char *))) {
           ++idx;
-          if ((strncasecmp(base, pmatch, n)) == 0)
+          if (strncasecmp(base, pmatch, n) == 0)
                break;
           else
                ++missed;
-     } while ((pmatch = va_arg(args, const char *)));
+     }
      va_end(args);
 
      if (missed == idx)
@@ -128,13 +128,14 @@ int cmpcase(const char *base, size_t n, ...)
      int idx = 0;
      int missed = 0;
 
-     do {
+     /* using a do-while loop here only makes sense if we call va_arg before it */
+     while ((pmatch = va_arg(args, const char *))) {
           ++idx;
-          if ((strncmp(base, pmatch, n)) == 0)
+          if (strncmp(base, pmatch, n) == 0)
                break;
           else
                ++missed;
-     } while ((pmatch = va_arg(args, const char *)));
+     }
      va_end(args);
 
      if (missed == idx)

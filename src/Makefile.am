@@ -2,17 +2,13 @@
 
 lib_LTLIBRARIES = libcommoner.la
 libcommoner_la_SOURCES = commoner.c int.c os.c str.c concat.c msg.c
-libcommoner_la_LDFLAGS = -version-info '0:0:0'
+libcommoner_la_LDFLAGS = -version-info '0:1:0'
 include_HEADERS = commoner.h
 noinst_HEADERS = os.h
 
-AM_CFLAGS =
+AM_CFLAGS = -g -ggdb
 AM_CPPFLAGS =
 AM_LDFLAGS =
-
-if DEBUG
-AM_CFLAGS += -g -ggdb
-endif
 
 clean-local: tidy-local
 
