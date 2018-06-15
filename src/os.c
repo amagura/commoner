@@ -142,7 +142,6 @@ int mkstmp(char *template)
          tries = pow(62, 3);
      pid_t pid;
      char *wp = strdup(template);
-     char *endp = strend(wp);
      size_t len = strlen(wp);
      /* characters used to fill in the X's in template names */
      const char filler[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
