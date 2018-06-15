@@ -323,8 +323,8 @@ size_t flen PARAMS((FILE *fp));
 int mkstmp PARAMS((char *tmpl));
 
 /** functions hosted by msg.c **/
-void die PARAMS((int *rc, const char *format, ...)) __attribute__((sentinel));
-void kys PARAMS((const char *format, ...)) __attribute__((sentinel));
+void die PARAMS((int *rc, const char *format, ...)) /*__attribute__((sentinel))*/;
+void kys PARAMS((const char *format, ...)) /*__attribute__((sentinel))*/;
 void croak PARAMS((int *rc, const char *msg, ...)) __attribute__((sentinel));
 void ribbt PARAMS((const char *msg, ...)) __attribute__((sentinel));
 

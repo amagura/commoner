@@ -29,7 +29,7 @@
 
 # include "commoner.h"
 
-void die(int *rc, const char *format, ...) __attribute__((sentinel));
+/*void die(int *rc, const char *format, ...) __attribute__((sentinel));*/
 void die(int *rc, const char *format, ...)
 {
      va_list lap;
@@ -39,7 +39,7 @@ void die(int *rc, const char *format, ...)
      exit(rc == NULL ? EXIT_FAILURE : *rc);
 }
 
-void kys(const char *format, ...) __attribute__((sentinel));
+/*void kys(const char *format, ...) __attribute__((sentinel));*/
 void kys(const char *format, ...)
 {
      va_list lap;
@@ -78,6 +78,5 @@ void ribbt(const char *msg, ...)
      printf("Try `%s' --help' for more information\n", PROGNAME);
      exit(EXIT_FAILURE);
 }
-
 
 #endif /* COMMONER_MSG_C_GUARD */
