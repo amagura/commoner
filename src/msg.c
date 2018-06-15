@@ -1,7 +1,7 @@
 /****
   COMMON; msg.c, Message/Output related functions
 
-  Copyright (C) 2015, 2016, 2017 Alexej G. Magura
+  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -21,6 +21,7 @@
 # define COMMONER_MSG_C_GUARD 1
 
 # include <stdarg.h>
+# include <string.h>
 
 # if HAVE_CONFIG_H
 #  include <config.h>
@@ -31,26 +32,20 @@
 void die(int *rc, const char *format, ...) __attribute__((sentinel));
 void die(int *rc, const char *format, ...)
 {
-     const char *msg;
-     va_list args;
-     va_start(args, format);
-     while ((msg = va_arg(args, const char *))) {
-          printf(format, msg);
-     }
-     va_end(args);
+     va_list lap;
+     va_start(lap, format);
+     vprintf(format, lap);
+     va_end(lap);
      exit(rc == NULL ? EXIT_FAILURE : *rc);
 }
 
 void kys(const char *format, ...) __attribute__((sentinel));
 void kys(const char *format, ...)
 {
-     const char *msg;
-     va_list args;
-     va_start(args, format);
-     while ((msg = va_arg(args, const char *))) {
-          printf(format, msg);
-     }
-     va_end(args);
+     va_list lap;
+     va_start(lap, format);
+     vprintf(format, lap);
+     va_end(lap);
      exit(EXIT_FAILURE);
 }
 
@@ -59,6 +54,7 @@ void croak(int *rc, const char *msg, ...)
 {
      const char *s0;
      printf("%s: %s\n", PROGNAME, msg);
+
      va_list args;
      va_start(args, msg);
      while ((s0 = va_arg(args, const char *))) {
