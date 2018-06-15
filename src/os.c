@@ -199,6 +199,7 @@ loop:
 # if !COINT_INTERNAL_MKSTMP_DRYRUN
           fd = open(wp, O_RDWR | O_CREAT | O_EXCL, 0600);
           if (fd >= 0) {
+               memcpy(template, wp, len);
                free(wp);
                free(substr);
                return fd;
