@@ -23,3 +23,10 @@
 
   The terms of the CC License can be found here:
   https://creativecommons.org/licenses/by-sa/3.0/
+
+* Todd C. Miller <Todd.Miller@courtesan.com>
+
+  - Wrote the implementations of strlcat and strlcpy included in commoner
+
+
+  NOTE: Todd Miller in no way endorses my use of his code.

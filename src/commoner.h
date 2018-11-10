@@ -255,6 +255,8 @@ BEGIN_C_DECLS
 /////////////////////////////////////////
 
 /** functions hosted by commoner.c **/
+extern size_t strlcat PARAMS((char *dst, const char *src, size_t siz));
+extern size_t strlcpy PARAMS((char *dst, const char *src, size_t dsize));
 extern void bzero PARAMS((void *src, size_t n));
 extern void bcopy PARAMS((const void *src, void *dest, size_t n));
 void *mempmove PARAMS((void *dest, const void *src, size_t n));
