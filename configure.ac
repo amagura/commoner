@@ -6,7 +6,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_USE_SYSTEM_EXTENSIONS
 
-AM_INIT_AUTOMAKE([foreign -Wall])
+AM_INIT_AUTOMAKE([foreign])
 AM_PROG_AR
 
 LT_INIT
@@ -67,5 +67,5 @@ AM_CONDITIONAL([DEBUG], [test "x$debug" = "xtrue"])
 AM_CONDITIONAL([NO_DEBUG], [test "x$debug" != "xtrue"])
 
 # Produce output.
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile])
 AC_OUTPUT

@@ -1,6 +1,4 @@
-dist_doc_data = LICENSE README.md AUTHORS
-
-SUBDIRS = src
+SUBDIRS = src doc
 
 DIST_SUBDIRS = $(SUBDIRS)
 
