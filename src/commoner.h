@@ -125,6 +125,7 @@ BEGIN_C_DECLS
 // PUBLIC Macros
 /////////////////////////////////////////
 
+/* XXX Do not use the cat? macros when debugging */
 # define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
 # define catm(...) (concatm(__VA_ARGS__, (void *)NULL))
 
@@ -301,8 +302,8 @@ char *revnp PARAMS((char *s, size_t n));
  * is still available in concat.c
  * it is, however, commented out.
  */
-size_t concatl PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
-size_t concatm PARAMS((char *dst, size_t sz, const char *s1, ...)) __attribute__((sentinel));
+size_t concatl PARAMS((char *dst, size_t dsize, const char *src0, ...)) __attribute__((sentinel));
+size_t concatm PARAMS((char *dst, size_t dsize, const char *src0, ...)) __attribute__((sentinel));
 
 /** functions hosted by int.c **/
 uintmax_t uintm_len PARAMS((uintmax_t idx));

@@ -1,8 +1,14 @@
-.TH libcommon 3
+.TH libcommoner 3 "November 13, 2018" "" "Programmer's Manual"
 .SH NAME
-libcommon - general purpose library
+libcommoner \- general purpose library
 .SH SYNOPSIS
-\fB#include <libcommon.h>\fR
+\fB#include <libcommoner.h>\fR
+
+.SH DESCRIPTION
+
+.SS "Macros"
+
+.SS "Inline Functions"
 
 .SS "Functions"
 
@@ -35,3 +41,20 @@ libcommon - general purpose library
 .ti -1c
 
 .\" concat
+
+
+.SH VERSIONS
+
+If you come across a system that libcommoner either doesn't work or misbehaves on, please inform me <amagura28*gmail*>, be sure to include the output from \fBuname -a\fR and the version of libcommoner you are trying to use.
+
+.SS Linux
+
+This library was built on a system running Linux 4.xx.xx, but should run on most Linux systems irrespective of kernel version.
+
+.SS BSD
+
+Libcommoner should work on BSD systems (particularly FreeBSD), but I have not tested it in any official capacity.
+
+.SS MSDOS/Windows
+
+Libcommoner does not explicitly support Microsoft systems, but patches are welcome.

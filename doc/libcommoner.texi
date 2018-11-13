@@ -1,0 +1,54 @@
+\input texinfo
+@c %**start of header
+@settitle Libcommoner User's Manual 1.0
+@setfilename libcommoner.info
+@c %**end of header
+@copying
+This manual is for libcommoner (version 0.1.20_1, updated 2018-11-13), which
+
+Copyright @copyright{} 2015-2018 Alexej G. Magura.
+
+@quotation
+This file is a part of (Lib)Commoner
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+@end quotation
+@end copying
+
+@titlepage
+@title Libcommoner
+@subtitle User's Manual
+@author Alexej G. Magura
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@ifnottex
+@node Top
+@top libcommoner
+
+Welcome to libcommoner's user manual
+@end ifnottex
+
+@menu
+@end menu
+
+@node Copying Conditions
+
+@page
+
+@c@page
+@c@vskip 0pt plus 1filll
+@c@insertcopying
+@bye

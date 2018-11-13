@@ -30,7 +30,6 @@
 #include <string.h>
 #include "commoner.h"
 
-
 # if !defined(HAVE_STRLCAT) && !defined(strlcat)
 /*
  * Appends src to string dst of size siz (unlike strncat, siz is the

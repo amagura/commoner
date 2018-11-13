@@ -101,56 +101,56 @@ char *concat(const char *s1, ...)
  * the destination buffers size_, which may make errors somewhat
  * harder to spot! */
 
-size_t concatl(char *dst, size_t sz, const char *s1, ...) __attribute__((sentinel));
+size_t concatl(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
 
-size_t concatl(char *dst, size_t sz, const char *s1, ...)
+size_t concatl(char *dst, size_t dsize, const char *src0, ...)
 {
      va_list args;
-     const char *s = NULL;
+     const char *src_x = NULL;
      char *p, *tmp;
      unsigned long ldx, mdx, ndx;
      size_t used = 0;
 
-     mdx = ndx = strlen(s1);
-     va_start(args, s1);
-     while ((s = va_arg(args, char *))) {
-	  ldx = strlen(s);
+     mdx = ndx = strlen(src0);
+     va_start(args, src0);
+     while ((src_x = va_arg(args, char *))) {
+	  ldx = strlen(src_x);
 	  if ((mdx += ldx) < ldx) break;
      }
      va_end(args);
-     if (s || mdx >= INT_MAX) return sz;
+     if (src_x || mdx >= INT_MAX) return dsize;
      coint_mtrace;
 # if defined(__cplusplus)
      tmp = (char *)malloc(mdx + 1);
 # else
      tmp = malloc(mdx + 1);
 # endif
-     if (!tmp) return sz;
+     if (!tmp) return dsize;
      bzero(tmp, mdx + 1);
      bzero(dst, mdx + 1);
 
      p = tmp;
-     p = mempcpy(p, (char *)s1, ndx);
+     p = mempcpy(p, (char *)src0, ndx);
 
      used += ndx;
      COINT_DBG("p: `%s`\n", p);
      COINT_DBG("used: %lu\n", used - 0);
 
-     va_start(args, s1);
-     while ((s = va_arg(args, char *))) {
-	  ldx = strlen(s);
+     va_start(args, src0);
+     while ((src_x = va_arg(args, char *))) {
+	  ldx = strlen(src_x);
 	  if ((ndx += ldx) < ldx || ndx > mdx) break;
-	  p = mempcpy(p, (char *)s, ldx);
+	  p = mempcpy(p, (char *)src_x, ldx);
 	  used += ldx;
      }
      va_end(args);
-     if (s || mdx != ndx || p != tmp + ndx) {
+     if (src_x || mdx != ndx || p != tmp + ndx) {
 	  free(tmp);
-	  return sz;
+	  return dsize;
      }
 
      COINT_DBG("tmp: `%s'\n", tmp);
-     p = mempcpy(dst, tmp, (used > sz ? sz : used));
+     p = mempcpy(dst, tmp, (used > dsize ? dsize : used));
      free(tmp);
      *p = '\0';
      ++used;
@@ -161,30 +161,30 @@ size_t concatl(char *dst, size_t sz, const char *s1, ...)
      COINT_DBG("strlen(dst): %lu\n", strlen(dst));
      COINT_DBG("used#2: %lu\n", used - 0);
      coint_muntrace;
-     return (used > sz ? 0 : sz - used);
+     return (used > dsize ? 0 : dsize - used);
 }
 
 /* concatm is a little different:
  * unlike `concatl' or `concat', concatm _moves_ memory: that is, the destination
  * pointer can be passed as an argument. */
-size_t concatm(char *dst, size_t sz, const char *s1, ...) __attribute__((sentinel));
+size_t concatm(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
 
-size_t concatm(char *dst, size_t sz, const char *s1, ...)
+size_t concatm(char *dst, size_t dsize, const char *src0, ...)
 {
      va_list args;
-     const char *s = NULL;
+     const char *src_x = NULL;
      char *p, *tmp;
      unsigned long ldx, mdx, ndx;
      size_t used = 0;
 
-     mdx = ndx = strlen(s1);
-     va_start(args, s1);
-     while ((s = va_arg(args, char *))) {
-	  ldx = strlen(s);
+     mdx = ndx = strlen(src0);
+     va_start(args, src0);
+     while ((src_x = va_arg(args, char *))) {
+	  ldx = strlen(src_x);
 	  if ((mdx += ldx) < ldx) break;
      }
      va_end(args);
-     if (s || mdx >= INT_MAX) return sz;
+     if (src_x || mdx >= INT_MAX) return dsize;
 
      coint_mtrace;
 
@@ -193,30 +193,30 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
 # else
      tmp = malloc(mdx + 1);
 # endif
-     if (!tmp) return sz;
+     if (!tmp) return dsize;
      bzero(tmp, mdx + 1);
 
      p = tmp;
-     p = mempcpy(p, (char *)s1, ndx);
+     p = mempcpy(p, (char *)src0, ndx);
 
      used += ndx;
      COINT_DBG("p: `%s`\n", p);
      COINT_DBG("used: %lu\n", used - 0);
 
-     va_start(args, s1);
-     while ((s = va_arg(args, char *))) {
-	  ldx = strlen(s);
+     va_start(args, src0);
+     while ((src_x = va_arg(args, char *))) {
+	  ldx = strlen(src_x);
 	  if ((ndx += ldx) < ldx || ndx > mdx) break;
-	  p = mempcpy(p, (char *)s, ldx);
+	  p = mempcpy(p, (char *)src_x, ldx);
 	  used += ldx;
      }
      va_end(args);
-     if (s || mdx != ndx || p != tmp + ndx) {
+     if (src_x || mdx != ndx || p != tmp + ndx) {
 	  free(tmp);
-	  return sz;
+	  return dsize;
      }
      COINT_DBG("tmp: `%s'\n", tmp);
-     p = mempmove(dst, tmp, (used > sz ? sz : used));
+     p = mempmove(dst, tmp, (used > dsize ? dsize : used));
      free(tmp);
      *p = '\0';
      ++used;
@@ -228,24 +228,25 @@ size_t concatm(char *dst, size_t sz, const char *s1, ...)
      COINT_DBG("used#2: %lu\n", used - 0);
      coint_muntrace;
 
-     return (used > sz ? 0 : sz - used);
+     return (used > dsize ? 0 : dsize - used);
 }
 
 #if 0
-void *shrnkcat(size_t src_size, size_t max, const char *s1, ...) __attribute__((sentinel));
+void *shrnkcat(size_t src_size, size_t max, const char *src0, ...) __attribute__((sentinel));
 
-void *shrnkcat(size_t src_size, size_t max, const char *s1, ...)
+void *shrnkcat(size_t src_size, size_t max, const char *src0, ...)
 {
      va_list args;
-     const char *s = NULL;
+     const char *src_x = NULL;
      char *p, *tmp;
      p = tmp = NULL;
      unsigned long ldx, mdx, ndx;
      size_t used = 0;
 
-     mdx = ndx = strlen(s1);
-     va_start(args, s1);
+     mdx = ndx = strlen(src0);
+     va_start(args, src0);
 
      char *buf = malloc(max);
+}
 #endif
 #endif

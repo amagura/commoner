@@ -1,4 +1,4 @@
-#info_TEXINFOS = libcommoner.texi
+info_TEXINFOS = libcommoner.texi
 dist_doc_data = LICENSE README AUTHORS
 #TEXTS =
 #man3_MANS = libcommoner.man
@@ -9,3 +9,7 @@ README:
 
 distclean-local:
 	$(RM) README
+	$(RM) LICENSE
+
+LICENSE:
+	cp "$(top_srcdir"/LICENSE LICENSE
