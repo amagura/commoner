@@ -21,6 +21,7 @@
 # include <config.h>
 #endif
 
+#include "commoner.h"
 #if HAVE_STRTONUM
 # include <bsd/stdlib.h>
 # include <limits.h>
@@ -28,7 +29,6 @@
 
 #include <errno.h>
 #include <string.h>
-#include "commoner.h"
 
 # if !defined(HAVE_STRLCAT) && !defined(strlcat)
 /*

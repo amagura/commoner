@@ -20,14 +20,15 @@
 #ifndef COMMONER_MSG_C_GUARD
 # define COMMONER_MSG_C_GUARD 1
 
-# include <stdarg.h>
-# include <string.h>
-
 # if HAVE_CONFIG_H
 #  include <config.h>
 # endif
 
 # include "commoner.h"
+# include <stdarg.h>
+# include <string.h>
+
+
 
 /*void die(int *rc, const char *format, ...) __attribute__((sentinel));*/
 void die(int *rc, const char *format, ...)

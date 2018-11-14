@@ -19,11 +19,16 @@
 ****/
 #ifndef COMMONER_INT_C_GUARD
 # define COMMONER_INT_C_GUARD 1
+
+# if HAVE_CONFIG_H
+#  include <config.h>
+# endif
+
+# include "commoner.h"
 # include <stdlib.h>
 # include <stdint.h>
 # include <string.h>
 # include <sys/time.h>
-# include "commoner.h"
 
 uintmax_t uintm_len(uintmax_t idx)
 {

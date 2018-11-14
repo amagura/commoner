@@ -20,6 +20,12 @@
 #ifndef COMMONER_OS_C_GUARD
 # define COMMONER_OS_C_GUARD 1
 
+# if HAVE_CONFIG_H
+#  include <config.h>
+# endif
+
+# include "commoner.h"
+# include "os.h"
 # include <stdio.h>
 # include <dirent.h>
 # include <errno.h>
@@ -31,8 +37,6 @@
 # include <fcntl.h>
 # include <time.h>
 # include <math.h>
-# include "commoner.h"
-# include "os.h"
 
 char *subdir(char **dirs, size_t ssz)
 {
@@ -136,7 +140,7 @@ static int smkstmp(char *tmpfn, const char *templ)
 # endif
 int mkstmp(char *template)
 {
-     char *tmp, *XXXX;
+     char /**tmp,*/ *XXXX;
      uint64_t val;
      int fd, xcnt, cnt, pos,
          tries = pow(62, 3);
@@ -146,7 +150,7 @@ int mkstmp(char *template)
      /* characters used to fill in the X's in template names */
      const char filler[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-     tmp = XXXX = NULL;
+     /*tmp =*/ XXXX = NULL;
      xcnt = cnt = pos = 0;
      pid = getpid();
      srand(time(NULL));

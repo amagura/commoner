@@ -19,10 +19,12 @@
 ****/
 #ifndef COMMONER_CONCAT_C_GUARD
 # define COMMONER_CONCAT_C_GUARD 1
+
 # ifdef HAVE_CONFIG_H
 #  include <config.h>
 # endif
 
+# include "commoner.h"
 # if defined(HAVE_BZERO) || defined(HAVE_BCOPY)
 #  include <strings.h>
 # endif
@@ -33,7 +35,6 @@
 # include <stdbool.h>
 # include <string.h>
 # include <limits.h>
-# include "commoner.h"
 
 // XXX OBSOLETE
 # if 0

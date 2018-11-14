@@ -19,6 +19,12 @@
 ****/
 #ifndef COMMON_STRING_C_GUARD
 # define COMMON_STRING_C_GUARD 1
+
+# if HAVE_CONFIG_H
+#  include <config.h>
+# endif
+
+# include "commoner.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -31,7 +37,6 @@
 #  include <rev.c>
 # endif
 
-# include "commoner.h"
 
 int chars(const char *s, const char c)
 {
