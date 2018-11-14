@@ -62,6 +62,11 @@ BEGIN_C_DECLS
 #  endif
 # endif
 
+# if COMMON__WINDOWS
+#  define COMNR__SYS_TYPE 1
+# endif
+/*# define COMNR__WINDOWS_SYS (COMMON__WINDOWS)*/
+
 # if !defined(COMMON__BSD)
 #  if defined(__NetBSD__)	   \
      || defined(__FreeBSD__)	   \
@@ -76,6 +81,10 @@ BEGIN_C_DECLS
 #  endif
 # endif
 
+# if COMMON__BSD
+#  define COMNR__SYS_TYPE 2
+# endif
+
 # if !defined(COMMON__LINUX)
 #  if defined(__linux__)	\
      || defined(__gnu_linux__)
@@ -83,6 +92,15 @@ BEGIN_C_DECLS
 #  else
 #   define COMMON_LINUX 0
 #  endif
+# endif
+
+# if COMMON__LINUX
+#  define COMNR__SYS_TYPE 3
+# endif
+
+# if !defined(COMNR__SYS_TYPE)
+// system type unknown
+#  define COMNR__SYS_TYPE -1
 # endif
 
 END_C_DECLS

@@ -113,17 +113,48 @@ bool direxists(char *pth)
      }
 }
 
-/* returns the number of lines in a file; sets the FILE pointer back to the head
+/* On success: returns the number of lines in a file; sets the FILE pointer back to the head
  * of `fp' when done.
+ * On failure: returns EOF
  */
 size_t flen(FILE *fp)
 {
-     size_t r = 0;
-     /* FIXME: this isn't portable to non-POSIX systems */
-     while ((EOF != (fscanf(fp, "%*[^\n]"), fscanf(fp, "%*c"))))
-          ++r;
+     if (fp == NULL)
+          return EOF;
+
+     size_t lines = 0;
+     int fp_ret;
+
+# if defined(HAVE_GETLINE)
+     char *line = NULL;
+     size_t len = 0;
+     ssize_t read;
+
+     while ((read = getline(&line, &len, fp)) != EOF) {
+          ++lines;
+     }
+     free(line);
+# else
+     while ((fscanf(fp, "%*[^\n]")) != EOF) {
+          fp_ret = fscanf(fp, "%*c");
+          ++lines;
+     }
+# endif
+# if 0
+     char *line = malloc(LINE_MAX);
+     size_t len = 0;
+     while (fgets(line, sizeof line, fp)) {
+          len = strlen(line);
+          if (len && ([len - 1 ] != '\n')) {
+               /* incomplete line */
+               continue;
+          }
+          ++lines;
+     }
+     free(line);
+# endif
      fseek(fp, 0, SEEK_SET);
-     return r;
+     return lines;
 }
 
 # if 0

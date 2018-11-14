@@ -46,6 +46,9 @@ AC_SEARCH_LIBS([strlcpy],
 AC_SEARCH_LIBS([strlcat],
                [bsd],
                [AC_DEFINE([HAVE_STRLCAT], [1], [Define to 1 if you have the 'strlcat' function])])
+AC_SEARCH_LIBS([getline],
+               [c],
+               [AC_DEFINE([HAVE_GETLINE], [1], [Define to 1 if you have the 'getline' function])])
 #########
 # Options
 #########
