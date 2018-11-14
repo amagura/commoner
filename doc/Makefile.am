@@ -8,7 +8,7 @@ dist_man_MANS = libcommoner.3
 dist-hook:
 	$(MKDIR_P) $(distdir)
 	cp -L $(srcdir)/LICENSE $(distdir)
-	cp -L $(srcdir)/README $(distdir)
+	cp -L $(srcdir)/README.md $(distdir)/README
 
 clean-local:
 	$(RM) libcommoner.info
