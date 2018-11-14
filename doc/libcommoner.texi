@@ -47,7 +47,7 @@ This manual is for Commoner (version @value{VERSION}, @value{UPDATED}).
 
 @menu
 * Introduction::        Why should I use this library?
-* Getting started::	Step-by-step guide to using the library.
+* Getting started::			Step-by-step guide to using the library.
 * Copying conditions::  Your rights.
 @end menu
 
@@ -63,7 +63,7 @@ This chapter explains how to get
 
 @node Copying conditions
 @chapter Copying conditions
-Commoner is free software; everyone is free to use it, in compliance with the Apache License and any sublicenses specified@footnote{these are included in the actual defintion for functions and are placed directly above macros} within Commoner's code.
+Commoner is free software; everyone is free to use it, in compliance with the Apache License@footnote{Version 2.0} and any sublicenses specified@footnote{These are included in the actual defintion for functions and are placed directly above macros} within Commoner's code.
 
 @noindent Presently, Commoner only has two items which are under the purview of separate licenses:
 
@@ -79,12 +79,19 @@ strlcpy (ISC)
 @end itemize
 
 @menu
-* Apache:: Version 2.0 (full-text)
+* Apache::
 * ISC::
 * BSD 3-C::
 @end menu
 
 @node Apache
+@page
+
+@menu
+* Full:: Full-text of the Apache License.
+@end menu
+
+@node Full
 @page
 @include LICENSE
 
@@ -118,14 +125,14 @@ This license is used by the implementation of @i{strlcat} included in Commoner (
 
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
- are met:
+ are met:@*@*
  1. Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
+    notice, this list of conditions and the following disclaimer.@*@*
  2. Redistributions in binary form must reproduce the above copyright
     notice, this list of conditions and the following disclaimer in the
-    documentation and/or other materials provided with the distribution.
+    documentation and/or other materials provided with the distribution.@*@*
  3. The name of the author may not be used to endorse or promote products
-    derived from this software without specific prior written permission.
+    derived from this software without specific prior written permission.@*@*
 
  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY

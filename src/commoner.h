@@ -46,6 +46,8 @@ limitations under the License.
 
 BEGIN_C_DECLS
 
+# define _POSIX_SOURCE 1
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdint.h>
