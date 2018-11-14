@@ -9,7 +9,7 @@ This manual is for libcommoner (version 0.1.20_1, updated 2018-11-13), which
 Copyright @copyright{} 2015-2018 Alexej G. Magura.
 
 @quotation
-This file is a part of (Lib)Commoner
+This file is a part of (lib)Commoner
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -42,11 +42,10 @@ Welcome to libcommoner's user manual
 @end ifnottex
 
 @menu
+* Copying Conditions::  Your rights.
 @end menu
 
-@node Copying Conditions
-
-@page
+@include licenses.texi
 
 @c@page
 @c@vskip 0pt plus 1filll
