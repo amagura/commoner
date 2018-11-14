@@ -1,5 +1,5 @@
 info_TEXINFOS = libcommoner.texi
-libcommoner_TEXINFOS = LICENSE licenses.texi
+libcommoner_TEXINFOS = LICENSE
 dist_doc_data = LICENSE README AUTHORS
 #TEXTS =
 #man3_MANS = libcommoner.man

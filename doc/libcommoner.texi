@@ -1,15 +1,17 @@
 \input texinfo
 @c %**start of header
+@include version.texi
 @settitle Libcommoner User's Manual 1.0
 @setfilename libcommoner.info
 @c %**end of header
 @copying
-This manual is for libcommoner (version 0.1.20_1, updated 2018-11-13), which
+This manual is for Commoner (version @value{VERSION}, updated @value{UPDATED}),
+which provides a comprehensive guide to using Commoner.
 
 Copyright @copyright{} 2015-2018 Alexej G. Magura.
 
 @quotation
-This file is a part of (lib)Commoner
+This file is a part of Commoner
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,26 +28,117 @@ limitations under the License.
 @end copying
 
 @titlepage
-@title Libcommoner
-@subtitle User's Manual
-@author Alexej G. Magura
+@title (lib)Commoner
+@subtitle Comprehensive User's Manual
+@author Alexej G. Magura @email{amagura28@@gmail.com}
 @page
 @vskip 0pt plus 1filll
 @insertcopying
 @end titlepage
 
+@contents
+
 @ifnottex
 @node Top
 @top libcommoner
 
-Welcome to libcommoner's user manual
+This manual is for Commoner (version @value{VERSION}, @value{UPDATED}).
 @end ifnottex
 
 @menu
-* Copying Conditions::  Your rights.
+* Introduction::        Why should I use this library?
+* Getting started::	Step-by-step guide to using the library.
+* Copying conditions::  Your rights.
 @end menu
 
-@include licenses.texi
+@node Introduction
+@chapter Introduction
+@cindex introduction, first
+This chapter explains how you can start using
+
+@node Getting started
+@chapter Getting started
+@cindex getting started, second
+This chapter explains how to get
+
+@node Copying conditions
+@chapter Copying conditions
+Commoner is free software; everyone is free to use it, in compliance with the Apache License and any sublicenses specified@footnote{these are included in the actual defintion for functions and are placed directly above macros} within Commoner's code.
+
+@noindent Presently, Commoner only has two items which are under the purview of separate licenses:
+
+@itemize @bullet
+@item
+Functions
+@itemize @minus
+@item
+strlcat (BSD 3-Clause)
+@item
+strlcpy (ISC)
+@end itemize
+@end itemize
+
+@menu
+* Apache:: Version 2.0 (full-text)
+* ISC::
+* BSD 3-C::
+@end menu
+
+@node Apache
+@page
+@include LICENSE
+
+@node ISC
+@page
+This license is used by the implementation of @i{strlcpy} included in Commoner (@t{src/commoner.c})
+
+@quotation
+Copyright @copyright{} 1998, 2015 Todd C. Miller @email{Todd.Miller@@courtesan.com}
+
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+
+ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+@end quotation
+
+@node BSD 3-C
+@page
+This license is used by the implementation of @i{strlcat} included in Commoner (@t{src/commoner.c})
+
+@quotation
+ Copyright @copyright{} 1998 Todd C. Miller @email{Todd.Miller@@courtesan.com}@*
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. The name of the author may not be used to endorse or promote products
+    derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+@end quotation
+
 
 @c@page
 @c@vskip 0pt plus 1filll
