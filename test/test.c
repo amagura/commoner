@@ -17,8 +17,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define COM_TESTING 1
-#define COM_DEBUG 1
+#define COMNR_TESTING 1
+#define COMNR_DEBUG 1
 #include "../src/commoner.h"
 
 int test_catl()
@@ -27,15 +27,15 @@ int test_catl()
      repeat(input, 'a', 256);
 
      int r = (int)catl(result, 256, input);
-     COM_DBG("result: `%s'\n", result);
+     COMNR_DBG("result: `%s'\n", result);
 
      bzero(result, 256);
      bzero(input, 256);
      repeat(input, 'b', 129);
      catm(result, 256, input);
      r += (int)catm(result, 256, result, input);
-     COM_DBG("r: %d\n", r);
-     COM_DBG("result#2: `%s'\n", result);
+     COMNR_DBG("r: %d\n", r);
+     COMNR_DBG("result#2: `%s'\n", result);
      return r;
 }
 
@@ -61,7 +61,7 @@ int test_itoas()
      int r = 0;
      int idx = 12345;
      char *s = itoap(idx);
-     COM_DBG("s: `%s'\n", s);
+     COMNR_DBG("s: `%s'\n", s);
      r += strcmp(s, "12345");
      free(s);
      s = malloc(intlenm(987654));
@@ -80,12 +80,12 @@ int test_intlen()
      ret = intlen(idx);
      result = intlenc(idx);
      rs = intlenm(idx);
-     COM_DBG("ret: %d, result: %d, rs: %lu\n", ret, result, (unsigned long)rs);
+     COMNR_DBG("ret: %d, result: %d, rs: %lu\n", ret, result, (unsigned long)rs);
      r += ret - result;
-     COM_DBG("r: %d\n", r);
+     COMNR_DBG("r: %d\n", r);
      r += ret - (int)(rs - 1);
-     COM_DBG("ret - (rs - 1): %d\n", ret - (int)(rs - 1));
-     COM_DBG("r#2: %d\n", r);
+     COMNR_DBG("ret - (rs - 1): %d\n", ret - (int)(rs - 1));
+     COMNR_DBG("r#2: %d\n", r);
      return r;
 }
 
@@ -95,13 +95,13 @@ int test_repeats()
      char *dst = strprep("hello", 3);
      size_t n = (sizeof("hello") - 1) * 3 + 1;
      r += strcmp("hellohellohello", dst);
-     COM_DBG("r: %d\n", r);
+     COMNR_DBG("r: %d\n", r);
      r += !(strlen("hellohellohello") == strlen(dst));
-     COM_DBG("r: %d\n", r);
+     COMNR_DBG("r: %d\n", r);
      free(dst);
      dst = malloc(n);
      strrep(dst, "hello", n);
-     COM_DBG("dst: `%s'\n", dst);
+     COMNR_DBG("dst: `%s'\n", dst);
      free(dst);
      return r;
 }
@@ -114,8 +114,8 @@ int test_strcdelim()
      idx = strndelim(s, '"', '"', c);
 
      if (idx) {
-	  COM_DBG("idx[0]: %d\n", c[0]);
-	  COM_DBG("idx[1]: %d\n", c[1]);
+	  COMNR_DBG("idx[0]: %d\n", c[0]);
+	  COMNR_DBG("idx[1]: %d\n", c[1]);
 	  r += c[0] - c[1];
      } else {
 	  r += 1;
@@ -123,8 +123,8 @@ int test_strcdelim()
 
      idx = strndelim(s1, '{', '}', c);
      if (idx) {
-	  COM_DBG("c[0]: %d\n", c[0]);
-	  COM_DBG("c[1]: %d\n", c[1]);
+	  COMNR_DBG("c[0]: %d\n", c[0]);
+	  COMNR_DBG("c[1]: %d\n", c[1]);
 	  r += c[0] - c[1] - 1;
      } else {
 	  r += 1;
@@ -140,12 +140,12 @@ int test_strwodq()
      char *s1 = malloc(n);
 
      r += strwodq(s1, s, n);
-     COM_DBG("s1: `%s'\n", s1);
+     COMNR_DBG("s1: `%s'\n", s1);
      free(s1);
 
      s1 = strwodqp(s);
      r += strcmp(s1, "hello");
-     COM_DBG("s1#2: `%s'\n", s1);
+     COMNR_DBG("s1#2: `%s'\n", s1);
      free(s1);
 
      return r;
@@ -154,19 +154,19 @@ int test_strwodq()
 int main()
 {
      int r = 0;
-     com_neko("r: %d\n", r);
+     comnr_neko("r: %d\n", r);
      r += test_catl();
-     com_neko("r: %d\n", r);
+     comnr_neko("r: %d\n", r);
      r += test_revs();
-     com_neko("r: %d\n", r);
+     comnr_neko("r: %d\n", r);
      r += test_itoas();
-     com_neko("r: %d\n", r);
+     comnr_neko("r: %d\n", r);
      r += test_intlen();
-     com_neko("r: %d\n", r);
+     comnr_neko("r: %d\n", r);
      r += test_repeats();
-     com_neko("r: %d\n", r);
+     comnr_neko("r: %d\n", r);
      r += test_strcdelim();
-     com_neko("r: %d\n", r);
+     comnr_neko("r: %d\n", r);
      r += test_strwodq();
      return (r == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 }

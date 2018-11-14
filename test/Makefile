@@ -9,9 +9,9 @@ mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 mydir := $(abspath $(lastword $(dir $(MAKEFILE_LIST))))
 cwd := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
-CFLAGS ?= -std=c11 -O2 -Wall -Wextra -D_GNU_SOURCE -g -ggdb -DCOM_DEBUG=1 -DCOM_TESTING=1
+CFLAGS ?= -std=c11 -O0 -Wall -Wextra -D_GNU_SOURCE -g -ggdb -DCOM_DEBUG=1 -DCOM_TESTING=1
 LDFLAGS ?=
-LDFLAGS += -lcheck
+LDFLAGS += -lcheck -lcommoner
 VFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 
 BLKLIST = tub.c
@@ -19,7 +19,10 @@ SRCS = $(filter-out $(BLKLIST),$(wildcard *.c))
 OBJS = $(SRCS:.c=.o)
 TESTS = $(OBJS:.o=)
 
-all: ext $(TESTS) valgrind check
+all: ext $(TESTS)
+
+expand:
+	$(CC) $(CFLAGS) $(CPPFLAGS) -E $(SRCS)
 
 ext: $(OBJS)
 

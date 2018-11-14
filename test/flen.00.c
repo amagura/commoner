@@ -22,9 +22,8 @@ int main()
      size_t lines = 0;
      FILE *lorem_fp = fopen("f/lorem.txt", "r");
      FILE *ipsum_fp = fopen("f/ipsum.txt", "r");
-     char *text[LINE_MAX];
-     size_t known = 0;
-# include "flen.01.c"
+     char *text = malloc(LINE_MAX);
+     size_t *known = malloc(sizeof *known);
 # include "flen.01.c"
 //# include "concat.01.c"
 //# include "concat.01.c"

@@ -14,6 +14,7 @@
  limitations under the License.
 ****/
 #include "../src/commoner.h"
+#include <stdlib.h>
 # if !defined(flen_00_IDX)
 int main()
 {
@@ -25,10 +26,14 @@ int main()
 #   define flen_01_IDX 1
 #  endif
      // get known-good number of lines
-     fscanf(known, "%zu", ipsum_fp);
+     /*fscanf(known, "%*[^\n]", ipsum_fp);*/
+     fread(text, 1, 2, ipsum_fp);
+     sscanf(text, "%zu", known);
      comnr_log("number of lines in lorem_fp is known to be: '%zu'", known);
-     /*fgets(text, sizeof text, ipsum_fp);*/
-     /*known =*/
+     fclose(ipsum_fp);
+     lines = flen(lorem_fp);
+     /*asm("nop");*/
+     COMNR_NOP();
 
 #  if flen_01_IDX == 0
      /*r = catm(s, sz, s0);*/

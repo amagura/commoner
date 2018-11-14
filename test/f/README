@@ -4,6 +4,6 @@
   * contains dummy text
 * ipsum.txt
   * contains information about lorem.txt:
-    - line 1: number of lines
-    - line 2: number of words
-    - line 3: number of bytes (file size and number of bytes in file)
+    - bytes 1-2: number of lines
+    - bytes 4-6: number of words
+    - bytes 8-11: number of bytes
