@@ -2,7 +2,7 @@
 /****
   COMMON; os.h
 
-  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
+  Copyright (C) 2015-2019 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -90,7 +90,7 @@ BEGIN_C_DECLS
      || defined(__gnu_linux__)
 #   define COMMON__LINUX 1
 #  else
-#   define COMMON_LINUX 0
+#   define COMMON__LINUX 0
 #  endif
 # endif
 

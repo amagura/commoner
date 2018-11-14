@@ -1,7 +1,7 @@
 /****
   COMMON; cc.h, C compiler compatibility
 
-  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
+  Copyright (C) 2015-2019 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -45,6 +45,75 @@ the end of C declarations. */
 #endif
 
 BEGIN_C_DECLS
+
+# if !defined(COMNR__CC_GNUC)
+#  if defined(__GNUC__)
+#   define COMNR__CC_GNUC 1
+#  else
+#   define COMNR__CC_GNUC 0
+#  endif
+# endif
+
+# if COMNR__CC_GNUC
+#  define COMNR__CC 1
+# endif
+
+# if !defined(COMNR__CC_CLANG)
+#  if defined(__clang__)
+#   define COMNR__CC_CLANG 1
+#  else
+#   define COMNR__CC_CLANG 0
+#  endif
+# endif
+
+# if COMNR__CC_CLANG
+#  define COMNR__CC 2
+# endif
+
+# if !defined(COMNR__CC_TINYC)
+#  if defined(__TINYC__) \
+     || defined(__tinyc__)
+#   define COMNR__CC_TINYC 1
+#  else
+#   define COMNR__CC_TINYC 0
+#  endif
+# endif
+
+# if COMNR__CC_TINYC
+#  define COMNR__CC 3
+# endif
+
+# if !defined(COMNR__CC_ARM)
+#  if defined(__CC_ARM)
+#   define COMNR__CC_ARM 1
+#  else
+#   define COMNR__CC_ARM 0
+#  endif
+# endif
+
+# if COMNR__CC_ARM
+#  define COMNR__CC 4
+# endif
+
+# if !defined(COMNR__CC_LCC)
+#  if defined(__LCC__)
+#   define COMNR__CC_LCC 1
+#  else
+#   define COMNR__CC_LCC 0
+#  endif
+# endif
+
+# if !defined(COMNR__CC_LLVM)
+#  if defined(__llvm__)
+#   define COMNR__CC_LLVM 1
+#  else
+#   define COMNR__CC_LLVM 0
+#  endif
+# endif
+
+# if COMNR__CC_LCC
+#  define COMNR__CC 5
+# endif
 
 END_C_DECLS
 

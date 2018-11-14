@@ -1,7 +1,7 @@
 /****
   COMMON; commoner.h
 
-  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
+  Copyright (C) 2015-2019 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -126,6 +126,7 @@ BEGIN_C_DECLS
 /////////////////////////////////////////
 // PUBLIC Macros
 /////////////////////////////////////////
+//# define COMNR_NOP() do { __asm__ __volatile__ ("nop"); } while (0)
 
 /* XXX Do not use the cat? macros when debugging */
 # define catl(...) (concatl(__VA_ARGS__, (void *)NULL))
@@ -258,6 +259,7 @@ BEGIN_C_DECLS
 /////////////////////////////////////////
 
 /** functions hosted by commoner.c **/
+extern void noop PARAMS(());
 extern size_t strlcat PARAMS((char *dst, const char *src, size_t siz));
 extern size_t strlcpy PARAMS((char *dst, const char *src, size_t dsize));
 extern void bzero PARAMS((void *src, size_t n));

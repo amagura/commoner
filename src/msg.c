@@ -1,7 +1,7 @@
 /****
   COMMON; msg.c, Message/Output related functions
 
-  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
+  Copyright (C) 2015-2019 Alexej G. Magura
 
   This file is a part of Commoner
 

@@ -1,7 +1,7 @@
 /****
   COMMONER; os.c, OS/FS related functions
 
-  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
+  Copyright (C) 2015-2019 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -134,13 +134,12 @@ size_t flen(FILE *fp)
           ++lines;
      }
      free(line);
-# else
+# elif !defined(COMNR_FLEN_USE_ALT)
      while ((fscanf(fp, "%*[^\n]")) != EOF) {
-          fp_ret = fscanf(fp, "%*c");
+          (void)fscanf(fp, "%*c"); // we don't care about the return value
           ++lines;
      }
-# endif
-# if 0
+# elif defined(COMNR_FLEN_USE_ALT)
      char *line = malloc(LINE_MAX);
      size_t len = 0;
      while (fgets(line, sizeof line, fp)) {

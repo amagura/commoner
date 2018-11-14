@@ -1,7 +1,7 @@
 /****
   COMMON; common.c, (include to include all of common-c)
 
-  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
+  Copyright (C) 2015-2019 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -29,6 +29,18 @@
 
 #include <errno.h>
 #include <string.h>
+
+void noop()
+{__asm__ __volatile__ ("nop");}
+/*inline void noop()*/
+/*{*/
+     // lets to add a throw-away function call
+     // at the position in a file
+     // where you want gdb to break on.
+     /*__asm nop*/
+     /*__asm__ __volatile__ ("nop");*/
+     /*asm("nop");*/
+/*}*/
 
 # if !defined(HAVE_STRLCAT) && !defined(strlcat)
 /*

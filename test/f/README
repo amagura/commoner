@@ -1,0 +1,9 @@
+# Files for use in tests
+
+* lorem.txt
+  * contains dummy text
+* ipsum.txt
+  * contains information about lorem.txt:
+    - line 1: number of lines
+    - line 2: number of words
+    - line 3: number of bytes (file size and number of bytes in file)

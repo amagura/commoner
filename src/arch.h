@@ -2,7 +2,7 @@
 /****
   COMMON; arch.h, CPU architecture header
 
-  Copyright (C) 2015, 2016, 2017, 2018 Alexej G. Magura
+  Copyright (C) 2015-2019 Alexej G. Magura
 
   This file is a part of Commoner
 
@@ -46,6 +46,117 @@ the end of C declarations. */
 #endif
 
 BEGIN_C_DECLS
+
+# if !defined(COMNR__HPPA)
+#  if defined(__hppa__)		\
+     || defined(__HPPA__)	\
+     || defined(__hppa)
+#   define COMNR__HPPA 1
+#  else
+#   define COMNR__HPPA 0
+#  endif
+# endif
+
+# if !defined(COMNR__SYSZ)
+#  if defined(__370__)			\
+     || defined(__THW_370__)		\
+     || defined(__s390__)		\
+     || defined(__s390x__)		\
+     || defined(__zarch__)		\
+     || defined(__SYSC_ZARCH__)
+#   define COMNR__SYSZ 1
+#  else
+#   define COMNR__SYSZ 0
+#  endif
+# endif
+
+# if !defined(COMNR__SPARC)
+#  if defined(__sparc__) \
+     || defined(__sparc)
+#   define COMNR__SPARC 1
+#  else
+#   define COMNR__SPARC 0
+#  endif
+# endif
+
+// Power PC
+# if !defined(COMNR__PPC)
+#  if defined(__powerpc)			\
+     || defined(__powerpc__)		\
+     || defined(__powerpc64__)	\
+     || defined(__POWERPC__)		\
+     || defined(__ppc__)			\
+     || defined(__ppc64__)		\
+     || defined(__PPC__)			\
+     || defined(__PPC64__)		\
+     || defined(_ARCH_PPC)		\
+     || defined(_ARCH_PPC64)		\
+     || defined(_M_PPC)			\
+     || defined(_ARCH_PPC)		\
+     || defined(_ARCH_PPC64)		\
+     || defined(__ppc)
+#   define COMNR__PPC 1
+#  else
+#   define COMNR__PPC 0
+#  endif
+# endif
+
+# if !defined(COMNR__MIPS)
+#  if defined(__mips__) 		\
+     || defined(mips) 		\
+     || defined(__mips)		\
+     || defined(__MIPS__)
+#   define COMNR__MIPS 1
+#  else
+#   define COMNR__MIPS 0
+#  endif
+# endif
+
+// Motorola 68k
+# if !defined(COMNR__M68K)
+#  if defined(__m68k__) 		\
+     || defined(M68000) 		\
+     || defined(__MC68K__)
+#   define COMNR__M68K 1
+#  else
+#   define COMNR__M68K 0
+#  endif
+# endif
+
+# if !defined(COMNR__IA64)
+#  if defined(__ia64__)		\
+     || defined(_IA64)		\
+     || defined(__IA64__)	\
+     || defined(__ia64)		\
+     || defined(_M_IA64)		\
+     || defined(__itanium__)
+#   define COMNR__IA64 1
+#  else
+#   define COMNR__IA64 0
+#  endif
+# endif
+
+# if !defined(COMNR__arm)
+#  if defined(__arm__)      			\
+     || defined(__thumb__)  			\
+     || defined(__TARGET_ARCH_ARM) 	\
+     || defined(__TARGET_ARCH_THUMB)	\
+     || defined(_ARM)				\
+     || defined(_M_ARM)				\
+     || defined(_M_ARMT)				\
+     || defined(__arm)
+#   define COMNR__ARM 1
+#  else
+#   define COMNR__ARM 0
+#  endif
+# endif
+
+# if !defined(COMNR__ARM64)
+#  if defined(__arch64__)
+#   define COMNR__ARM64 1
+#  else
+#   define COMNR__ARM64 0
+#  endif
 
 # if !defined(COMMON_alpha)
 #  if defined(__alpha__) \
