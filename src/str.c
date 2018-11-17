@@ -37,6 +37,66 @@
 #  include <rev.c>
 # endif
 
+# if !defined(CHAR_MAX)
+#  include <limits.h>
+# endif
+
+
+# if 0
+/*# define COMNR_BM_ALPHABET_LEN CHAR_MAX*/
+
+// bad character table
+void COMMONER_NS(pbm_bad)(char *str, uint8_t *pat, int32_t patlen)
+{
+     int idx;
+     void a()
+     {
+     };
+
+     int32_t *NOT_FOUND = &patlen;
+
+     /* initialize pat */
+     for (idx = 0; idx < COMNR_BM_ALPHABET_LEN; ++idx)
+          pat[idx] = *NOT_FOUND;
+     for (idx = 0; idx < patlen - 1; ++idx)
+          pat[str[idx]] = patlen - idx - 1;
+}
+
+
+char *COMMONER_NS(boyer_moore)(char *str, size_t ssz, char *pat, size_t patsz)
+{
+
+     if (patsz == 0)
+          return str;
+
+     /*int sdec, jdx;*/
+     /*sdec = jdx = 0;*/
+
+     /*char shift[patsz];*/
+     /*char bpos[patsz];*/
+     for
+
+     /* NOTE: patsz should include space for the NULL byte */
+
+     for
+     /*COMMONER_NS(bzero)(&shift, patsz);*/
+
+
+
+/*uint8_t COMMONER_NS(boyer_moore)(char *text, size_t tsize, char *pat, size_t psize)*/
+/*{*/
+     /*int idx;*/
+     /*// bad character shift*/
+     /*char *badc[CHAR_MAX];*/
+     /*// good suffix shift*/
+     /*char *goods[CHAR_MAX];*/
+
+     /*for (idx = 0; idx < CHAR_MAX; ++idx) {*/
+          /*text[*/
+
+
+     /*static void boyer_moore_pre(char *text, char **/
+# endif
 # if 0
 void COMMONER_NS(ceaser)(char *s, const int x)
 {
