@@ -30,7 +30,15 @@
 #include <errno.h>
 #include <string.h>
 
-void noop()
+inline char* COMMONER_NS(abs_path)(const char *pth)
+{
+     return COMMONER_NS(getdir)(NULL, pth);
+}
+
+inline void COMMONER_NS(noop)()
+{COMMONER_NS(nop)();}
+
+inline void COMMONER_NS(nop)()
 {__asm__ __volatile__ ("nop");}
 /*inline void noop()*/
 /*{*/
@@ -42,7 +50,7 @@ void noop()
      /*asm("nop");*/
 /*}*/
 
-# if !defined(HAVE_STRLCAT) && !defined(strlcat)
+# if !defined(HAVE_STRLCAT) && !defined(strlcat) || USE_COMMONER_NAMESPACE
 /*
  * Appends src to string dst of size siz (unlike strncat, siz is the
  * full size of dst, not space left).  At most siz-1 characters
@@ -50,7 +58,7 @@ void noop()
  * Returns strlen(src) + MIN(siz, strlen(initial dst)).
  * If retval >= siz, truncation occurred.
  */
-inline size_t strlcat(char *dst, const char *src, size_t siz)
+inline size_t COMMONER_NS(strlcat)(char *dst, const char *src, size_t siz)
 {
      /*-
       * SPDX-License-Identifier: BSD-3-Clause
@@ -106,13 +114,13 @@ inline size_t strlcat(char *dst, const char *src, size_t siz)
 }
 #endif
 
-# if !defined(HAVE_STRLCPY) && !defined(strlcpy)
+# if !defined(HAVE_STRLCPY) && !defined(strlcpy) || USE_COMMONER_NAMESPACE
 /*
  * Copy string src to buffer dst of size dsize.  At most dsize-1
  * chars will be copied.  Always NUL terminates (unless dsize == 0).
  * Returns strlen(src); if retval >= dsize, truncation occurred.
  */
-inline size_t strlcpy(char * __restrict dst, const char * __restrict src, size_t dsize)
+inline size_t COMMONER_NS(strlcpy)(char * __restrict dst, const char * __restrict src, size_t dsize)
 {
      /*
       * Copyright (c) 1998, 2015 Todd C. Miller <Todd.Miller@courtesan.com>
@@ -152,26 +160,26 @@ inline size_t strlcpy(char * __restrict dst, const char * __restrict src, size_t
 }
 #endif
 
-# if !defined(HAVE_BZERO) && !defined(bzero)
-inline void bzero(void *ptr, size_t sz)
+# if !defined(HAVE_BZERO) && !defined(bzero) || USE_COMMONER_NAMESPACE
+inline void COMMONER_NS(bzero)(void *ptr, size_t sz)
 {memset(ptr, '\0', sz);}
 # endif
 
-# if !defined(HAVE_BCOPY) && !defined(bcopy)
-inline void bcopy(const void *src, void *dest, size_t n)
+# if !defined(HAVE_BCOPY) && !defined(bcopy) || USE_COMMONER_NAMESPACE
+inline void COMMONER_NS(bcopy)(const void *src, void *dest, size_t n)
 {memmove(dest, src, n);}
 # endif
 
-# if !defined(HAVE_MEMPCPY) && !defined(mempcpy)
-inline void *mempcpy(void *dest, const void *src, size_t n)
+# if (!defined(HAVE_MEMPCPY) && !defined(mempcpy)) || USE_COMMONER_NAMESPACE
+inline void *COMMONER_NS(mempcpy)(void *dest, const void *src, size_t n)
 {return memcpy(dest, src, n);}
 # endif
 
-inline void *mempmove(void *dest, const void *src, size_t n)
+inline void *COMMONER_NS(mempmove)(void *dest, const void *src, size_t n)
 {return memmove(dest, src, n);}
 
 /* if *dst is NULL, remember to free it later */
-int stoll(long long *dst, const char *s0)
+int COMMONER_NS(stoll)(long long *dst, const char *s0)
 {
      if (dst == NULL)
 	  dst = malloc(1 * sizeof(*dst));

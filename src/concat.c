@@ -38,11 +38,11 @@
 
 // XXX OBSOLETE
 # if 0
-char *concat(const char *s1, ...) __attribute__((sentinel))
+char *COMMONER_NS(concat)(const char *s1, ...) __attribute__((sentinel))
      __attribute__((warn_unused_result));
 
 // XXX returned value needs free
-char *concat(const char *s1, ...)
+char *COMMONER_NS(concat)(const char *s1, ...)
 {
 	va_list args;
 	const char *s;
@@ -102,9 +102,9 @@ char *concat(const char *s1, ...)
  * the destination buffers size_, which may make errors somewhat
  * harder to spot! */
 
-size_t concatl(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
+size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
 
-size_t concatl(char *dst, size_t dsize, const char *src0, ...)
+size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src0, ...)
 {
      va_list args;
      const char *src_x = NULL;
@@ -127,11 +127,11 @@ size_t concatl(char *dst, size_t dsize, const char *src0, ...)
      tmp = malloc(mdx + 1);
 # endif
      if (!tmp) return dsize;
-     bzero(tmp, mdx + 1);
-     bzero(dst, mdx + 1);
+     COMMONER_NS(bzero)(tmp, mdx + 1);
+     COMMONER_NS(bzero)(dst, mdx + 1);
 
      p = tmp;
-     p = mempcpy(p, (char *)src0, ndx);
+     p = COMMONER_NS(mempcpy)(p, (char *)src0, ndx);
 
      used += ndx;
      COINT_DBG("p: `%s`\n", p);
@@ -141,7 +141,7 @@ size_t concatl(char *dst, size_t dsize, const char *src0, ...)
      while ((src_x = va_arg(args, char *))) {
 	  ldx = strlen(src_x);
 	  if ((ndx += ldx) < ldx || ndx > mdx) break;
-	  p = mempcpy(p, (char *)src_x, ldx);
+	  p = COMMONER_NS(mempcpy)(p, (char *)src_x, ldx);
 	  used += ldx;
      }
      va_end(args);
@@ -151,14 +151,14 @@ size_t concatl(char *dst, size_t dsize, const char *src0, ...)
      }
 
      COINT_DBG("tmp: `%s'\n", tmp);
-     p = mempcpy(dst, tmp, (used > dsize ? dsize : used));
+     p = COMMONER_NS(mempcpy)(dst, tmp, (used > dsize ? dsize : used));
      free(tmp);
      *p = '\0';
      ++used;
 
      COINT_DBG("dst: `%s'\n", dst);
      COINT_DBG("*p: `%c'\n", *p);
-     COINT_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COINT_DBG("*--p: `%c'\n", COMMONER_NS(cpeek)(p, dst));
      COINT_DBG("strlen(dst): %lu\n", strlen(dst));
      COINT_DBG("used#2: %lu\n", used - 0);
      coint_muntrace;
@@ -168,9 +168,9 @@ size_t concatl(char *dst, size_t dsize, const char *src0, ...)
 /* concatm is a little different:
  * unlike `concatl' or `concat', concatm _moves_ memory: that is, the destination
  * pointer can be passed as an argument. */
-size_t concatm(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
+size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
 
-size_t concatm(char *dst, size_t dsize, const char *src0, ...)
+size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src0, ...)
 {
      va_list args;
      const char *src_x = NULL;
@@ -195,10 +195,10 @@ size_t concatm(char *dst, size_t dsize, const char *src0, ...)
      tmp = malloc(mdx + 1);
 # endif
      if (!tmp) return dsize;
-     bzero(tmp, mdx + 1);
+     COMMONER_NS(bzero)(tmp, mdx + 1);
 
      p = tmp;
-     p = mempcpy(p, (char *)src0, ndx);
+     p = COMMONER_NS(mempcpy)(p, (char *)src0, ndx);
 
      used += ndx;
      COINT_DBG("p: `%s`\n", p);
@@ -208,7 +208,7 @@ size_t concatm(char *dst, size_t dsize, const char *src0, ...)
      while ((src_x = va_arg(args, char *))) {
 	  ldx = strlen(src_x);
 	  if ((ndx += ldx) < ldx || ndx > mdx) break;
-	  p = mempcpy(p, (char *)src_x, ldx);
+	  p = COMMONER_NS(mempcpy)(p, (char *)src_x, ldx);
 	  used += ldx;
      }
      va_end(args);
@@ -217,14 +217,14 @@ size_t concatm(char *dst, size_t dsize, const char *src0, ...)
 	  return dsize;
      }
      COINT_DBG("tmp: `%s'\n", tmp);
-     p = mempmove(dst, tmp, (used > dsize ? dsize : used));
+     p = COMMONER_NS(mempmove)(dst, tmp, (used > dsize ? dsize : used));
      free(tmp);
      *p = '\0';
      ++used;
 
      COINT_DBG("dst: `%s'\n", dst);
      COINT_DBG("*p: `%c'\n", *p);
-     COINT_DBG("*--p: `%c'\n", cpeek(p, dst));
+     COINT_DBG("*--p: `%c'\n", COMMONER_NS(cpeek)(p, dst));
      COINT_DBG("strlen(dst): %lu\n", strlen(dst));
      COINT_DBG("used#2: %lu\n", used - 0);
      coint_muntrace;
@@ -233,9 +233,9 @@ size_t concatm(char *dst, size_t dsize, const char *src0, ...)
 }
 
 #if 0
-void *shrnkcat(size_t src_size, size_t max, const char *src0, ...) __attribute__((sentinel));
+void *COMMONER_NS(shrnkcat)(size_t src_size, size_t max, const char *src0, ...) __attribute__((sentinel));
 
-void *shrnkcat(size_t src_size, size_t max, const char *src0, ...)
+void *COMMONER_NS(shrnkcat)(size_t src_size, size_t max, const char *src0, ...)
 {
      va_list args;
      const char *src_x = NULL;

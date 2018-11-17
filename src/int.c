@@ -30,7 +30,7 @@
 # include <string.h>
 # include <sys/time.h>
 
-uintmax_t uintm_len(uintmax_t idx)
+uintmax_t COMMONER_NS(uintm_len)(uintmax_t idx)
 {
 	uintmax_t r = 0;
 	while (idx) {
@@ -40,7 +40,7 @@ uintmax_t uintm_len(uintmax_t idx)
 	return r;
 }
 
-int intlen(int idx)
+int COMMONER_NS(intlen)(int idx)
 {
      int result = 0;
      while (idx) {
@@ -50,7 +50,7 @@ int intlen(int idx)
      return result;
 }
 
-int intlenc(const int idx)
+int COMMONER_NS(intlenc)(const int idx)
 {
      int copy = idx;
      int result = 0;
@@ -61,7 +61,7 @@ int intlenc(const int idx)
      return result;
 }
 
-size_t intlenm(int src)
+size_t COMMONER_NS(intlenm)(int src)
 {
      size_t dst = 1; /* XXX adds 1 for null-terminator */
      while (src) {
@@ -77,7 +77,7 @@ size_t intlenm(int src)
  */
 
 /* assumes 0 <= max <= RAND_MAX */
-long randm(long max) {
+long COMMONER_NS(randm)(long max) {
      /* max <= RAND_MAX < ULONG_MAX, so this is okay */
      unsigned long nbin = (unsigned long) max + 1,
                    nrand = (unsigned long) RAND_MAX + 1,
@@ -93,7 +93,7 @@ long randm(long max) {
 }
 
 /* returns, hopefully, a bunch of random bits based on the current timestamp */
-uint64_t getrandom()
+uint64_t COMMONER_NS(getrandom)()
 {
      struct timeval tv;
      gettimeofday(&tv, NULL);
@@ -103,9 +103,9 @@ uint64_t getrandom()
 /////////////////////////////////////////
 // Taken from defunct itoa.c
 /////////////////////////////////////////
-void itoa(char *dst, int src)
+void COMMONER_NS(itoa)(char *dst, int src)
 {
-     size_t len = intlenm(src);
+     size_t len = COMMONER_NS(intlenm)(src);
      char tmp[len];
      char *wp = tmp;
 
@@ -135,13 +135,13 @@ void itoa(char *dst, int src)
      memcpy(dst, tmp, len);
 }
 
-char *itoap(const int src)
+char *COMMONER_NS(itoap)(const int src)
 {
      COINT_DBG("src: %d\n", src);
-     size_t len = intlenm(src);
+     size_t len = COMMONER_NS(intlenm)(src);
      int idx = src;
      char *dst = malloc(len);
-     bzero(dst, len);
+     COMMONER_NS(bzero)(dst, len);
      char *wp = dst;
 
      for (; idx != 0; idx /= 10) {
@@ -150,7 +150,7 @@ char *itoap(const int src)
 	  else
 	       *wp++ = '0' - (idx % 10);
      }
-     wp = revnp(dst, len);
+     wp = COMMONER_NS(revnp)(dst, len);
      *wp = '\0';
      COINT_DBG("dst: `%s'\n", dst);
 

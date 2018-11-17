@@ -37,8 +37,56 @@
 #  include <rev.c>
 # endif
 
+# if 0
+void COMMONER_NS(ceaser)(char *s, const int x)
+{
+     char *wp = s;
+     const char *alpha[2] = {"abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
-int chars(const char *s, const char c)
+     for (; *wp; ++wp) {
+          if (!isalpha(*wp))
+               continue;
+
+          // get end of alpha[0] (lowend cannot be changed in any way)
+          const char * const lowend = COMMONER_NS(strend)(alpha[0]);
+          // get end of alpha[1]
+          const char * const upend = COMMONER_NS(strend)(alpha[1]);
+
+          const char * const end = isupper(*wp) ? upend : lowend;
+          int idx = (end == upend) ? 1 : 0;
+          const char * const head = &alpha[idx][0];
+
+          // wp is Z
+          if (wp == end) {
+               *wp = alpha[idx][x - 1]; // minus 1 for taking Z to A
+               // wp is not Z, but x takes it beyond Z
+          } else if ((*wp + x) > *end) {
+               int diff = *wp + x;
+               int ntmp = diff - *end;
+               *wp = alpha[idx][x - ntmp];
+          } else {
+               // deals with negative numbers
+               int z = x >= 0 ? x : x % 26;
+               if (z < 0) {
+                    int diff = *wp + x;
+                    if (diff < 'A') {
+                         diff -= 'A';
+                         diff = abs(diff);
+                    }
+
+                    goto next;
+               }
+               int low = tolower(*wp) - 'a' + z;
+               *wp = alpha[idx][low % 26];
+          }
+next:
+          0;
+
+     }
+}
+# endif
+
+int COMMONER_NS(chars)(const char *s, const char c)
 {
      int cnt = 0;
      const char *wp = s;
@@ -48,7 +96,7 @@ int chars(const char *s, const char c)
      return cnt;
 }
 
-int charstermp(const char *s, const char c, const char *endp)
+int COMMONER_NS(charstermp)(const char *s, const char c, const char *endp)
 {
      int cnt = 0;
      const char *wp = s;
@@ -66,7 +114,7 @@ int charstermp(const char *s, const char c, const char *endp)
      return cnt;
 }
 
-int charsterm(const char *s, const char c, const char head, const char end)
+int COMMONER_NS(charsterm)(const char *s, const char c, const char head, const char end)
 {
      int cnt = 0;
      const char *wp = s;
@@ -78,7 +126,7 @@ int charsterm(const char *s, const char c, const char head, const char end)
      return cnt;
 }
 
-void trim(char *s0)
+void COMMONER_NS(trim)(char *s0)
 {
      char *wp = NULL;
      size_t len = strlen(s0);
@@ -88,7 +136,7 @@ void trim(char *s0)
      memmove(s0, wp, len - (size_t)(wp - s0) + 1);
 }
 
-char *ptrim(const char *s0)
+char *COMMONER_NS(ptrim)(const char *s0)
 {
      char *wp = strdup(s0);
      size_t len = strlen(s0);
@@ -100,8 +148,8 @@ char *ptrim(const char *s0)
      return wp;
 }
 
-int cmpstrs(const char *base, size_t n, ...) __attribute__((sentinel));
-int cmpstrs(const char *base, size_t n, ...)
+int COMMONER_NS(cmpstrs)(const char *base, size_t n, ...) __attribute__((sentinel));
+int COMMONER_NS(cmpstrs)(const char *base, size_t n, ...)
 {
      const char *pmatch; /* potential match */
      va_list args;
@@ -124,8 +172,8 @@ int cmpstrs(const char *base, size_t n, ...)
           return idx;
 }
 
-int cmpcase(const char *base, size_t n, ...) __attribute__((sentinel));
-int cmpcase(const char *base, size_t n, ...)
+int COMMONER_NS(cmpcase)(const char *base, size_t n, ...) __attribute__((sentinel));
+int COMMONER_NS(cmpcase)(const char *base, size_t n, ...)
 {
      const char *pmatch;
      va_list args;
@@ -167,7 +215,7 @@ bool atend(const char *s)
  * compare the return value to s0: if they are the same
  * then s0 pointed to '\0'
  */
-char *strend(const char *s0)
+char *COMMONER_NS(strend)(const char *s0)
 {
 # if defined(_GNU_SOURCE)
      char *endp = strchr(s0, '\0') - 1;
@@ -183,7 +231,7 @@ char *strend(const char *s0)
 }
 
 # if defined(COM_EXPOSE_OLD_CPEEK)
-char old_cpeek(const char *c, const char *s, const short fwd)
+char COMMONER_NS(old_cpeek)(const char *c, const char *s, const short fwd)
 {
      if (fwd > 0) {
 	  if (*c == '\0'
@@ -202,7 +250,7 @@ char old_cpeek(const char *c, const char *s, const short fwd)
 # endif
 
 /* if head is NULL, then we look backwards */
-char cpeek(const char *const sp0, const char *const head)
+char COMMONER_NS(cpeek)(const char *const sp0, const char *const head)
 {
      if (!head) // FIXME this is less than ideal usage of strend...
           return (*sp0 == '\0' || sp0 == strend(sp0) ? *sp0 : *(sp0 + 1));
@@ -210,7 +258,7 @@ char cpeek(const char *const sp0, const char *const head)
           return (sp0 == head) ? *sp0 : *(sp0 - 1);
 }
 
-int *strndelim(const char *s0, const char od, const char cd, int count[2])
+int *COMMONER_NS(strndelim)(const char *s0, const char od, const char cd, int count[2])
 {
      memset(count, 0, sizeof(*count)*2);
 # if defined(_GNU_SOURCE)
@@ -225,7 +273,7 @@ int *strndelim(const char *s0, const char od, const char cd, int count[2])
           /* FIXME: this was recently changed from the old cpeek
            * to the newer cpeek, but it has __not__ been tested!!
            */
-          if (c != s0 && cpeek(c, s0) == '\\')
+          if (c != s0 && COMMONER_NS(cpeek)(c, s0) == '\\')
                continue;
           if (*c == cd)
                ++count[1];
@@ -246,14 +294,14 @@ fail:
      return NULL;
 }
 
-char *strwodqp(const char *src)
+char *COMMONER_NS(strwodqp)(const char *src)
 {
      size_t n = strlen(src) + 1;
      int c[2] = {0, 0}, even = 0;
      char *tmp, *token, *rest, *newp;
      tmp = token = rest = newp = NULL;
 
-     if (!strndelim(src, '"', '"', c))
+     if (!COMMONER_NS(strndelim)(src, '"', '"', c))
           return NULL;
 
      if (c[0] == 0)
@@ -270,10 +318,10 @@ char *strwodqp(const char *src)
           return NULL;
      }
 
-     catl(newp, n, token);
+     COMMONER_NS(catl)(newp, n, token);
      while ((token = strtok_r(NULL, "\"", &rest)) != NULL) {
           if (even % 2 == 1) {
-               catm(newp, n, newp, token);
+               COMMONER_NS(catm)(newp, n, newp, token);
                --even;
           } else {
                ++even;
@@ -284,7 +332,7 @@ char *strwodqp(const char *src)
      return newp;
 }
 
-int strwodq(char *dst, const char *src, size_t n)
+int COMMONER_NS(strwodq)(char *dst, const char *src, size_t n)
 {
      int c[2] = {0, 0};
      int even = 0;
@@ -294,7 +342,7 @@ int strwodq(char *dst, const char *src, size_t n)
      char *rest = NULL;
      char *newp = NULL;
 
-     if (!strndelim(src, '"', '"', c)) {
+     if (!COMMONER_NS(strndelim)(src, '"', '"', c)) {
           r += 1;
           goto end;
      }
@@ -313,11 +361,11 @@ int strwodq(char *dst, const char *src, size_t n)
           r += 3;
           goto free;
      }
-     catl(newp, n, token);
+     COMMONER_NS(catl)(newp, n, token);
 
      while ((token = strtok_r(NULL, "\"", &rest)) != NULL) {
           if (even % 2 == 1) {
-               catm(newp, n, newp, token);
+               COMMONER_NS(catm)(newp, n, newp, token);
                --even;
           } else {
                ++even;
@@ -336,7 +384,7 @@ end:
 /////////////////////////////////////////
 // Taken from defunct mem.c
 /////////////////////////////////////////
-int memlen(const char *s)
+int COMMONER_NS(memlen)(const char *s)
 {
      char *a = NULL;
      if ((a = strchr(s, '\0')))
@@ -344,7 +392,7 @@ int memlen(const char *s)
      return -1;
 }
 
-char *strterm(char *s, size_t sz)
+char *COMMONER_NS(strterm)(char *s, size_t sz)
 {
      char *tmp = NULL;
      tmp = s;
@@ -355,7 +403,7 @@ char *strterm(char *s, size_t sz)
      return s;
 }
 
-void *memdup(const void *src, size_t n)
+void *COMMONER_NS(memdup)(const void *src, size_t n)
 {
      void *tmp = malloc(n);
      memcpy(tmp, src, n);
@@ -374,14 +422,14 @@ void *memdup(const void *src, size_t n)
  * the NULL terminator--*n* is the size of the destination;
  * not how many characters you want.
  */
-int repeat(char *dst, const char c, size_t n)
+int COMMONER_NS(repeat)(char *dst, const char c, size_t n)
 {
      if (n == 0) {
           dst = NULL;
           return 1;
      }
 
-     bzero(dst, n);
+     COMMONER_NS(bzero)(dst, n);
      char *wp = dst;
 
      do {
@@ -397,14 +445,14 @@ int repeat(char *dst, const char c, size_t n)
 }
 
 /* XXX *n* is how many characters you want */
-char *repeatp(const char c, int n)
+char *COMMONER_NS(repeatp)(const char c, int n)
 {
      if (n == 0)
           return NULL;
      char *wp = malloc(n + 1);
      COINT_DBG("n + 1: '%d'\n", n + 1);
      char *headp = wp;
-     bzero(wp, n + 1);
+     COMMONER_NS(bzero)(wp, n + 1);
      do {
           *wp = c;
      } while (++wp != headp + n);
@@ -413,9 +461,9 @@ char *repeatp(const char c, int n)
      return headp;
 }
 
-int strrep(char *dst, const char *s, size_t n)
+int COMMONER_NS(strrep)(char *dst, const char *s, size_t n)
 {
-     bzero(dst, n);
+     COMMONER_NS(bzero)(dst, n);
      char *wp = dst;
      int r = 0;
 
@@ -427,7 +475,7 @@ int strrep(char *dst, const char *s, size_t n)
      tsiz += ssiz;
 
      do {
-          wp = mempcpy(wp, (char *)s, ssiz);
+          wp = COMMONER_NS(mempcpy)(wp, (char *)s, ssiz);
      } while (tsiz += ssiz, tsiz < n-1);
 
      *wp++ = '\0';
@@ -435,14 +483,14 @@ end:
      return r;
 }
 
-char *strprep(const char *s, int times)
+char *COMMONER_NS(strprep)(const char *s, int times)
 {
      size_t ssiz = strlen(s);
      char *copy = malloc(ssiz * times + 1);
      char *wp = copy;
 
      for (; times > 0; --times)
-          wp = mempcpy(wp, (char *)s, ssiz);
+          wp = COMMONER_NS(mempcpy)(wp, (char *)s, ssiz);
 
      *wp++ = '\0';
      return copy;
@@ -454,7 +502,7 @@ char *strprep(const char *s, int times)
 /////////////////////////////////////////
 // Taken from defunct rev.c
 /////////////////////////////////////////
-void rev(char *s)
+void COMMONER_NS(rev)(char *s)
 {
      int idx = 0;
      int hdx = (int)strlen(s) - 1;
@@ -467,7 +515,7 @@ void rev(char *s)
 }
 
 /* remember to free the returned pointer */
-char *revp(const char *s)
+char *COMMONER_NS(revp)(const char *s)
 {
      int idx = 0;
      int hdx = (int)strlen(s) - 1;
@@ -481,7 +529,7 @@ char *revp(const char *s)
      return copy;
 }
 
-void revn(char *s, size_t n)
+void COMMONER_NS(revn)(char *s, size_t n)
 {
      --n;
      if (strchr(s, '\0'))
@@ -494,7 +542,7 @@ void revn(char *s, size_t n)
      }
 }
 
-char *revnp(char *s, size_t n)
+char *COMMONER_NS(revnp)(char *s, size_t n)
 {
      const size_t len = --n;
      if (strchr(s, '\0'))

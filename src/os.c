@@ -38,7 +38,7 @@
 # include <time.h>
 # include <math.h>
 
-char *subdir(char **dirs, size_t ssz)
+char *COMMONER_NS(subdir)(char **dirs, size_t ssz)
 {
      char *src = dirs[0];
      char *dst = dirs[1];
@@ -49,7 +49,7 @@ char *subdir(char **dirs, size_t ssz)
      COINT_DBG("src: '%s'\n", src);
      COINT_DBG("dst: '%s'\n", dst);
 
-     sz0 = catl(buf, ssz, src, dst);
+     sz0 = COMMONER_NS(catl)(buf, ssz, src, dst);
      if (sz0 != ssz && sz0 > 0) {
           tmp = strdup(buf);
           goto rok_free;
@@ -62,7 +62,7 @@ rok_free:
 
 }
 
-char *getdir(int *err, const char *pth)
+char *COMMONER_NS(getdir)(int *err, const char *pth)
 {
      if (pth == NULL)
           return NULL;
@@ -79,7 +79,7 @@ char *getdir(int *err, const char *pth)
      return tmp;
 }
 
-int rpath(char *pth, size_t n)
+int COMMONER_NS(rpath)(char *pth, size_t n)
 {
      if (pth == NULL)
           return -1;
@@ -98,7 +98,7 @@ int rpath(char *pth, size_t n)
  * 0 if false
  * errno on error.
  */
-bool direxists(char *pth)
+bool COMMONER_NS(direxists)(char *pth)
 {
      DIR *dir = opendir(pth);
      if (dir) {
@@ -117,13 +117,12 @@ bool direxists(char *pth)
  * of `fp' when done.
  * On failure: returns EOF
  */
-size_t flen(FILE *fp)
+size_t COMMONER_NS(flen)(FILE *fp)
 {
      if (fp == NULL)
           return EOF;
 
      size_t lines = 0;
-     int fp_ret;
 
 # if defined(HAVE_GETLINE)
      char *line = NULL;
@@ -168,7 +167,7 @@ static int smkstmp(char *tmpfn, const char *templ)
 #  pragma GCC push_options
 #  pragma GCC optimize ("O0")
 # endif
-int mkstmp(char *template)
+int COMMONER_NS(mkstmp)(char *template)
 {
      char /**tmp,*/ *XXXX;
      uint64_t val;
@@ -184,7 +183,7 @@ int mkstmp(char *template)
      xcnt = cnt = pos = 0;
      pid = getpid();
      srand(time(NULL));
-     val = getrandom() * rand() * randm(RAND_MAX) ^ pid;
+     val = COMMONER_NS(getrandom)() * rand() * COMMONER_NS(randm)(RAND_MAX) ^ pid;
 
 /* The number of times to attempt to generate a temporary file.
  * POSIX demands that this must be no smaller than TMP_MAX.
@@ -213,7 +212,7 @@ int mkstmp(char *template)
 
      /* build substring for strstr */
      COINT_DBG("xcnt: '%d'\n", xcnt);
-     char *substr = repeatp('X', xcnt);
+     char *substr = COMMONER_NS(repeatp)('X', xcnt);
      COINT_DBG("substr: '%s'\n", substr);
      COINT_DBG("length of substr: '%d'\n", strlen(substr));
 

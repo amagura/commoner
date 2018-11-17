@@ -31,7 +31,7 @@
 
 
 /*void die(int *rc, const char *format, ...) __attribute__((sentinel));*/
-void die(int *rc, const char *format, ...)
+void COMMONER_NS(die)(int *rc, const char *format, ...)
 {
      va_list lap;
      va_start(lap, format);
@@ -41,7 +41,7 @@ void die(int *rc, const char *format, ...)
 }
 
 /*void kys(const char *format, ...) __attribute__((sentinel));*/
-void kys(const char *format, ...)
+void COMMONER_NS(kys)(const char *format, ...)
 {
      va_list lap;
      va_start(lap, format);
@@ -50,8 +50,8 @@ void kys(const char *format, ...)
      exit(EXIT_FAILURE);
 }
 
-void croak(int *rc, const char *msg, ...) __attribute__((sentinel));
-void croak(int *rc, const char *msg, ...)
+void COMMONER_NS(croak)(int *rc, const char *msg, ...) __attribute__((sentinel));
+void COMMONER_NS(croak)(int *rc, const char *msg, ...)
 {
      const char *s0;
      printf("%s: %s\n", PROGNAME, msg);
@@ -65,8 +65,8 @@ void croak(int *rc, const char *msg, ...)
      exit(rc == NULL ? EXIT_FAILURE : *rc);
 }
 
-void ribbt(const char *msg, ...) __attribute__((sentinel));
-void ribbt(const char *msg, ...)
+void COMMONER_NS(ribbt)(const char *msg, ...) __attribute__((sentinel));
+void COMMONER_NS(ribbt)(const char *msg, ...)
 {
      const char *s0;
      printf("%s: %s\n", PROGNAME, msg);
