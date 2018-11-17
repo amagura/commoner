@@ -10,13 +10,14 @@ Welcome to Commoner!
 
 ### abs_path
 
-```
-char *
-abs_path(const char *path);
+```c
+char *abs_path(const char *path);
 
-// Example
+/* Since abs_path expects a pointer to an immutable string
+ *  it is safe to pass it literals
+ */
 char *tmp = abs_path("/symlink/to/home");
-// *tmp -> "/home/USER"
+// *tmp => "/home"
 ```
 ## Str.c
 
