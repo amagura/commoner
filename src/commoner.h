@@ -161,7 +161,7 @@ BEGIN_C_DECLS
 # endif
 
 # if !defined(COMMONER_VERSION)
-#  define COMMONER_VERSION 0x079 // 121
+#  define COMMONER_VERSION 0x79 // 121
 # endif
 
 # if COMNR_DEBUG
