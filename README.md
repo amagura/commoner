@@ -47,7 +47,7 @@ A simple no-op function implemented using inline assembly:
 if (true)
   nop();
 else
-  /* actually do something */
+  /* do something */
 ```
 
 Calls `__asm__ __volatile__ ("nop")`.
