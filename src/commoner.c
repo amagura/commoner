@@ -30,13 +30,25 @@
 #include <errno.h>
 #include <string.h>
 
+int comnr_errno = 0;
+
 inline char* COMMONER_NS(abs_path)(const char *pth)
 {
-     return COMMONER_NS(getdir)(NULL, pth);
+     int *err = NULL;
+     char *r = NULL;
+     r = COMMONER_NS(getdir)(err, pth);
+
+     if (err) {
+          comnr_errno = *err;
+          if (r)
+               free(r);
+          return NULL;
+     }
+     return r; // needs a free
 }
 
 inline void COMMONER_NS(noop)()
-{COMMONER_NS(nop)();}
+{return;}
 
 inline void COMMONER_NS(nop)()
 {__asm__ __volatile__ ("nop");}
@@ -60,6 +72,7 @@ inline void COMMONER_NS(nop)()
  */
 inline size_t COMMONER_NS(strlcat)(char *dst, const char *src, size_t siz)
 {
+     /*      $OpenBSD: strlcat.c,v 1.2 1999/06/17 16:28:58 millert Exp $     */
      /*-
       * SPDX-License-Identifier: BSD-3-Clause
       *
@@ -122,6 +135,7 @@ inline size_t COMMONER_NS(strlcat)(char *dst, const char *src, size_t siz)
  */
 inline size_t COMMONER_NS(strlcpy)(char * __restrict dst, const char * __restrict src, size_t dsize)
 {
+     /*      $OpenBSD: strlcpy.c,v 1.12 2015/01/15 03:54:12 millert Exp $    */
      /*
       * Copyright (c) 1998, 2015 Todd C. Miller <Todd.Miller@courtesan.com>
       *
@@ -167,29 +181,39 @@ inline void COMMONER_NS(bzero)(void *ptr, size_t sz)
 
 # if !defined(HAVE_BCOPY) && !defined(bcopy) || USE_COMMONER_NAMESPACE
 inline void COMMONER_NS(bcopy)(const void *src, void *dest, size_t n)
-{memmove(dest, src, n);}
+{memcpy(dest, src, n);}
 # endif
 
 # if (!defined(HAVE_MEMPCPY) && !defined(mempcpy)) || USE_COMMONER_NAMESPACE
 inline void *COMMONER_NS(mempcpy)(void *dest, const void *src, size_t n)
-{return memcpy(dest, src, n);}
+{
+     void *p = memcpy(dest, src, n);
+     return p + n;
+}
 # endif
 
 inline void *COMMONER_NS(mempmove)(void *dest, const void *src, size_t n)
-{return memmove(dest, src, n);}
+{
+     void *p = memmove(dest, src, n);
+     return p + n;
+}
 
 /* if *dst is NULL, remember to free it later */
-int COMMONER_NS(stoll)(long long *dst, const char *s0)
+int COMMONER_NS(stoll)(long long *dst, const char *src)
 {
      if (dst == NULL)
 	  dst = malloc(1 * sizeof(*dst));
 
 # if HAVE_STRTONUM || defined(strtonum)
-     *dst = strtonum(s0, INT_MIN, INT_MAX, NULL);
+     *dst = strtonum(src, INT_MIN, INT_MAX, NULL);
 # else
-     *dst = (long long)strtol(s0, NULL, 10);
+     *dst = (long long)strtol(src, NULL, 10);
 # endif
-     return (errno) ? errno : 0;
+     if (errno) {
+          comnr_errno = errno;
+          return -1;
+     }
+     return 0;
 }
 
 #if defined(COMMONER_NEEDS_A_MAIN)

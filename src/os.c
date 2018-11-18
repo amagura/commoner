@@ -67,16 +67,16 @@ char *COMMONER_NS(getdir)(int *err, const char *pth)
      if (pth == NULL)
           return NULL;
 
-     char *tmp = realpath(pth, NULL);
      /* FIXME: we should check for realpath, and if it is not present,
       * use an alternative
       */
+     char *tmp = realpath(pth, NULL);
 
      if (errno) {
           if (err)
                *err = errno;
      }
-     return tmp;
+     return tmp; // don't forget to free this
 }
 
 int COMMONER_NS(rpath)(char *pth, size_t n)
