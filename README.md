@@ -135,6 +135,50 @@ int stoll(long long *dst, const char *src);
 
 ## Str.c
 
+### chars
+Counts how many times `c` appears in `s`.
+
+```c
+int chars(const char *s, const char c);
+
+/* Check how many times "l" appears in "Hello World" */
+int dec = chars("Hello World", 'l');
+// dec => 3
+```
+
+#### charstermp
+A variant of `chars` designed to work with non c-like strings<sup>a</sup>
+
+```c
+int charstermp(const char *s, const char c, const char *endp);
+
+/* Check how many times "l" appears in "Hello World" */
+char *s = malloc(11);
+strncpy(s, "Hello World", 11); // doesn't copy the last (null) byte
+char *endp = strchr(s, 'd');
+
+int dec = charstermp(s, 'l', endp);
+// dec => 3
+```
+### trim
+
+### cmpstrs
+
+### cmpcase
+
+### cpeek
+
+### memlen
+
+### strterm
+
+### memdup
+
+### repeat
+
+### strrep
+
+### rev
 
 # Macros
 
