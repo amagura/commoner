@@ -278,7 +278,7 @@ extern size_t COMMONER_NS(strlcat) PARAMS((char *dst, const char *src, size_t si
 extern size_t COMMONER_NS(strlcpy) PARAMS((char *dst, const char *src, size_t dsize));
 extern void COMMONER_NS(bzero) PARAMS((void *src, size_t n));
 extern void COMMONER_NS(bcopy) PARAMS((const void *src, void *dest, size_t n));
-void *mempmove PARAMS((void *dest, const void *src, size_t n));
+void COMMONER_NS(*mempmove) PARAMS((void *dest, const void *src, size_t n));
 extern void COMMONER_NS(*mempcpy) PARAMS((void *dest, const void *src, size_t n));
 int COMMONER_NS(stoll) PARAMS((long long *dst, const char *src));
 //int COMMONER_NS(comnr_init) PARAMS((void));
