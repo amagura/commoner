@@ -147,7 +147,7 @@ int dec = chars("Hello World", 'l');
 ```
 
 #### charstermp
-A variant of `chars` designed to work with non c-like strings<sup>a</sup>
+A variant of `chars` designed to work with non c-like strings<sup>a</sup>--expects `endp` to point to the end of `s`.
 
 ```c
 int charstermp(const char *s, const char c, const char *endp);
@@ -160,7 +160,35 @@ char *endp = strchr(s, 'd');
 int dec = charstermp(s, 'l', endp);
 // dec => 3
 ```
+
+<sup>a</sup> Strings that aren't terminated with the `NULL` byte.
+
 ### trim
+Removes leading and trailing spaces from `str`.
+
+```c
+void trim(char *str);
+
+/* Remove spaces from both ends of " Hello World   " */
+char *s = strdup(" Hello World   ");
+trim(s);
+
+// s => "Hello World"
+```
+
+#### ptrim
+Variant of `trim` for use on immutable strings.
+
+On success, returns a free-able pointer to the modified string; returns `NULL` and sets `comnr_ernno` on failure.
+
+If `str` is empty, returns `NULL` without setting `comnr_errno`.
+
+```c
+char *ptrim(const char *str);
+
+char *str = ptrim(" spam spam spam ");
+// str => "spam spam spam"
+```
 
 ### cmpstrs
 

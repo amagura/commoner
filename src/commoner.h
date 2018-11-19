@@ -289,8 +289,8 @@ int COMMONER_NS(stoll) PARAMS((long long *dst, const char *src));
 int COMMONER_NS(chars) PARAMS((const char *s, const char c));
 int COMMONER_NS(charsterm) PARAMS((const char *s, const char c, const char head, const char end));
 int COMMONER_NS(charstermp) PARAMS((const char *s, const char c, const char *endp));
-void COMMONER_NS(trim) PARAMS((char *s));
-char *COMMONER_NS(ptrim) PARAMS((const char *s));
+void COMMONER_NS(trim) PARAMS((char *str));
+char *COMMONER_NS(ptrim) PARAMS((const char *str));
 int COMMONER_NS(cmpstrs) PARAMS((const char *base, size_t n, ...)) __attribute__((sentinel));
 int COMMONER_NS(cmpcase) PARAMS((const char *base, size_t n, ...)) __attribute__((sentinel));
 char *COMMONER_NS(strend) PARAMS((const char *s));
@@ -350,6 +350,11 @@ void COMMONER_NS(die) PARAMS((int *rc, const char *format, ...)) /*__attribute__
 void COMMONER_NS(kys) PARAMS((const char *format, ...)) /*__attribute__((sentinel))*/;
 void COMMONER_NS(croak) PARAMS((int *rc, const char *msg, ...)) __attribute__((sentinel));
 void COMMONER_NS(ribbt) PARAMS((const char *msg, ...)) __attribute__((sentinel));
+
+/////////////////////////////////////////
+// PUBLIC Variables
+/////////////////////////////////////////
+extern int comnr_errno;
 
 END_C_DECLS
 

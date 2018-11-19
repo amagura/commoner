@@ -31,6 +31,10 @@
 # include <stdarg.h>
 # include <ctype.h>
 
+# if !defined(errno)
+#  include <errno.h>
+# endif
+
 # if COMMONER_VERSION == 0x100
 #  include <concat.c>
 #  include <repeat.c>
@@ -40,7 +44,6 @@
 # if !defined(CHAR_MAX)
 #  include <limits.h>
 # endif
-
 
 # if 0
 /*# define COMNR_BM_ALPHABET_LEN CHAR_MAX*/
@@ -186,20 +189,28 @@ int COMMONER_NS(charsterm)(const char *s, const char c, const char head, const c
      return cnt;
 }
 
-void COMMONER_NS(trim)(char *s0)
+void COMMONER_NS(trim)(char *str)
 {
      char *wp = NULL;
-     size_t len = strlen(s0);
-     for (wp = s0 + len - 1; isspace(*wp); --wp); /* shrink wp to not include trailing spaces */
+     size_t len = strlen(str);
+     for (wp = str + len - 1; isspace(*wp); --wp); /* shrink wp to not include trailing spaces */
      wp[1] = '\0';
-     for (wp = s0; isspace(*wp); ++wp); /* shrink wp to not include leading spaces */
-     memmove(s0, wp, len - (size_t)(wp - s0) + 1);
+     for (wp = str; isspace(*wp); ++wp); /* shrink wp to not include leading spaces */
+     memmove(str, wp, len - (size_t)(wp - str) + 1);
 }
 
-char *COMMONER_NS(ptrim)(const char *s0)
+char *COMMONER_NS(ptrim)(const char *str)
 {
-     char *wp = strdup(s0);
-     size_t len = strlen(s0);
+     if (!str)
+          return NULL;
+     char *wp = strdup(str);
+
+     if (wp == NULL) {
+          comnr_errno = errno;
+          return NULL;
+     }
+
+     size_t len = strlen(str);
      char *tmp = wp + len - 1;
      for (; isspace(*tmp); --tmp);
      tmp[1] = '\0';
@@ -352,7 +363,7 @@ int *COMMONER_NS(strndelim)(const char *s0, const char od, const char cd, int co
      return count;
 fail:
      return NULL;
-}
+
 
 char *COMMONER_NS(strwodqp)(const char *src)
 {
@@ -368,13 +379,27 @@ char *COMMONER_NS(strwodqp)(const char *src)
           return NULL;
 
      tmp = strdup(src);
+
+     if (tmp == NULL) {
+          comnr_errno = errno;
+          return NULL;
+     }
+
      newp = malloc(n);
+
+     if (newp == NULL && n != 0) {
+          free(tmp);
+          comnr_errno = errno;
+          return NULL;
+     }
+
      even = c[0] - abs(c[0] - c[1]);
 
      token = strtok_r(tmp, "\"", &rest);
 
      if (token == NULL) {
           free(newp);
+          comnr_errno = 0;
           return NULL;
      }
 
