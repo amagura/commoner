@@ -27,6 +27,9 @@
 # include "commoner.h"
 # include <stdio.h>
 # include <stdlib.h>
+# if !defined(_POSIX_C_SOURCE)
+#  define _POSIX_C_SOURCE 200809L /* for strdup */
+# endif
 # include <string.h>
 # include <stdarg.h>
 # include <ctype.h>
@@ -45,8 +48,8 @@
 #  include <limits.h>
 # endif
 
-# if 0
-/*# define COMNR_BM_ALPHABET_LEN CHAR_MAX*/
+/*# if 0*/
+# define COMNR_BM_ALPHABET_LEN CHAR_MAX
 
 // bad character table
 void COMMONER_NS(pbm_bad)(char *str, uint8_t *pat, int32_t patlen)
@@ -99,7 +102,7 @@ char *COMMONER_NS(boyer_moore)(char *str, size_t ssz, char *pat, size_t patsz)
 
 
      /*static void boyer_moore_pre(char *text, char **/
-# endif
+/*# endif*/
 # if 0
 void COMMONER_NS(ceaser)(char *s, const int x)
 {
@@ -203,6 +206,7 @@ char *COMMONER_NS(ptrim)(const char *str)
 {
      if (!str)
           return NULL;
+
      char *wp = strdup(str);
 
      if (wp == NULL) {
@@ -331,7 +335,8 @@ char COMMONER_NS(cpeek)(const char *const sp0, const char *const head)
 
 int *COMMONER_NS(strndelim)(const char *s0, const char od, const char cd, int count[2])
 {
-     memset(count, 0, sizeof(*count)*2);
+     bzero(count, sizeof(*count)*2); // times 2 because count is an array of two.
+     /*memset(count, 0, sizeof(*count)*2);*/
 # if defined(_GNU_SOURCE)
      char *c = strchr(s0, '\0');
 # else
@@ -406,7 +411,7 @@ char *COMMONER_NS(strwodqp)(const char *src)
      COMMONER_NS(catl)(newp, n, token);
      while ((token = strtok_r(NULL, "\"", &rest)) != NULL) {
           if (even % 2 == 1) {
-               COMMONER_NS(catm)(newp, n, newp, token);
+               COMMONER_NS(concatm)(newp, n, newp, token, (void *)NULL);
                --even;
           } else {
                ++even;
@@ -438,7 +443,22 @@ int COMMONER_NS(strwodq)(char *dst, const char *src, size_t n)
      }
 
      tmp = strdup(src);
+
+     if (tmp == NULL) {
+          comnr_errno = errno;
+          r += 1;
+          goto end;
+     }
+
      newp = malloc(n);
+
+     if (newp == NULL && n != 0) {
+          free(tmp);
+          comnr_errno = errno;
+          r += 1;
+          goto end;
+     }
+
      even = c[0] - abs(c[0] - c[1]);
 
      token = strtok_r(tmp, "\"", &rest);
@@ -446,11 +466,12 @@ int COMMONER_NS(strwodq)(char *dst, const char *src, size_t n)
           r += 3;
           goto free;
      }
-     COMMONER_NS(catl)(newp, n, token);
+
+     COMMONER_NS(concatl)(newp, n, token, (void *)NULL);
 
      while ((token = strtok_r(NULL, "\"", &rest)) != NULL) {
           if (even % 2 == 1) {
-               COMMONER_NS(catm)(newp, n, newp, token);
+               COMMONER_NS(concatm)(newp, n, newp, token, (void *)NULL);
                --even;
           } else {
                ++even;

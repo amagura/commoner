@@ -36,7 +36,8 @@
 # include <string.h>
 # include <limits.h>
 
-// XXX OBSOLETE
+/* XXX OBSOLETE
+ *
 # if 0
 char *COMMONER_NS(concat)(const char *s1, ...) __attribute__((sentinel))
      __attribute__((warn_unused_result));
@@ -87,7 +88,7 @@ char *COMMONER_NS(concat)(const char *s1, ...)
 
 /* unlike `concat', which returns a
  * new pointer that must then be copied
- * or acted upon in some meaningfully meaningless
+ * or acted upon in some way
  * manner, `catl' returns the number of bytes belonging
  * to `buf', which could _NOT_ be filled, always copying
  * no more than `bufsiz` of data into `buf'
