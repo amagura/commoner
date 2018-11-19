@@ -125,13 +125,7 @@ char *P = (memmove(in, in, n) + n);
 ```
 
 ### stoll
-Converts a string to `long long`; if `strtonum` is not present, `strtol` is used instead, with the result casted to `long long`.
-
-Returns `0` on success, `-1` with `comnr_errno` set to `errno` on failure.
-
-```c
-int stoll(long long *dst, const char *src);
-```
+Deprecated.  Use `strtol` or `strtonum` instead.
 
 ## Str.c
 

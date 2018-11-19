@@ -198,11 +198,17 @@ inline void *COMMONER_NS(mempmove)(void *dest, const void *src, size_t n)
      return p + n;
 }
 
+# if 0
 /* if *dst is NULL, remember to free it later */
 int COMMONER_NS(stoll)(long long *dst, const char *src)
 {
      if (dst == NULL)
 	  dst = malloc(1 * sizeof(*dst));
+
+     if (dst == NULL && (sizeof(*dst) == 0)) {
+          comnr_errno = errno;
+          return -1;
+     }
 
 # if HAVE_STRTONUM || defined(strtonum)
      *dst = strtonum(src, INT_MIN, INT_MAX, NULL);
@@ -215,6 +221,7 @@ int COMMONER_NS(stoll)(long long *dst, const char *src)
      }
      return 0;
 }
+# endif
 
 #if defined(COMMONER_NEEDS_A_MAIN)
 int main(int argc, char **argv)
