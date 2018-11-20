@@ -24,52 +24,43 @@
 #  include <config.h>
 # endif
 
+# if !defined(INT_MAX)
+#  include <limits.h>
+# endif
+
 # include "commoner.h"
 # include <stdlib.h>
 # include <stdint.h>
 # include <string.h>
 # include <sys/time.h>
+# include <math.h>
 
-uintmax_t COMMONER_NS(uintm_len)(uintmax_t idx)
-{
-	uintmax_t r = 0;
-	while (idx) {
-		++r;
-		idx /= 10;
-	}
-	return r;
-}
+/*int COMMONER_NS(numlen)(const long double n)*/
+/*{*/
+     /*const long double posn = fabsl(n);*/
+     /*[>char *buf = rmchar(COMNR_MKSTR(posn), '.', NULL);<]*/
+     /*char *buf = NULL;*/
+     /*size_t sz = floor(log10(posn)) + 1;*/
+     /*buf = malloc(sz);*/
+     /*bzero(buf, sz);*/
+     /*snprintf("%Lf", buf, sz - 1, posn);*/
+     /*size_t len = strlen(buf);*/
+     /*free(buf);*/
+     /*return len;*/
+/*}*/
 
-int COMMONER_NS(intlen)(int idx)
+int COMMONER_NS(intlen)(const int n)
 {
-     int result = 0;
-     while (idx) {
-	  ++result;
-	  idx /= 10;
-     }
-     return result;
-}
+     int r = 0;
+     int copy = n;
 
-int COMMONER_NS(intlenc)(const int idx)
-{
-     int copy = idx;
-     int result = 0;
      while (copy) {
-	  ++result;
-	  copy /= 10;
+	  ++r;
+       copy /= 10;
      }
-     return result;
+     return r;
 }
 
-size_t COMMONER_NS(intlenm)(int src)
-{
-     size_t dst = 1; /* XXX adds 1 for null-terminator */
-     while (src) {
-	  ++dst;
-	  src /= 10;
-     }
-     return dst;
-}
 /* XXX The `randm' function is licensed under the terms of the Creative Commons License, said terms can be found here:
  * https://creativecommons.org/licenses/by-sa/3.0/
  *
@@ -100,12 +91,25 @@ uint64_t COMMONER_NS(getrandom)()
      uint64_t bits = ((uint64_t) tv.tv_usec << 16) ^ tv.tv_sec;
      return bits;
 }
+
+int COMMONER_NS(rseed)()
+{
+     struct timeval t;
+     gettimeofday(&t, NULL);
+     srand(t.tv_usec * t.tv_sec);
+     return 0;
+}
 /////////////////////////////////////////
 // Taken from defunct itoa.c
 /////////////////////////////////////////
 void COMMONER_NS(itoa)(char *dst, int src)
 {
-     size_t len = COMMONER_NS(intlenm)(src);
+     /* FIXME this is isn't great:
+      * I need to write a version of itoa that
+      * doesn't need to know the length of the
+      * src number
+      * */
+     size_t len = COMMONER_NS(intlen)(src) + 1;
      char tmp[len];
      char *wp = tmp;
 
@@ -138,7 +142,7 @@ void COMMONER_NS(itoa)(char *dst, int src)
 char *COMMONER_NS(itoap)(const int src)
 {
      COINT_DBG("src: %d\n", src);
-     size_t len = COMMONER_NS(intlenm)(src);
+     size_t len = COMMONER_NS(intlen)(src) + 1;
      int idx = src;
      char *dst = malloc(len);
      COMMONER_NS(bzero)(dst, len);

@@ -9,9 +9,9 @@ mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 mydir := $(abspath $(lastword $(dir $(MAKEFILE_LIST))))
 cwd := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
-CFLAGS ?= -std=c11 -O0 -Wall -Wextra -D_GNU_SOURCE -g -ggdb -DCOM_DEBUG=1 -DCOM_TESTING=1
+CFLAGS ?= -std=c11 -O0 -Wall -Wextra -D_GNU_SOURCE -g -ggdb -DCOMNR_DEBUG=1 -DCOMNR_TESTING=1 -DCOMNR_UNIT_TESTS=1
 LDFLAGS ?=
-LDFLAGS += -lcheck -lcommoner
+LDFLAGS += -lcheck -lm
 VFLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 
 BLKLIST = tub.c

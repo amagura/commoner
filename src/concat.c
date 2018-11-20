@@ -38,25 +38,29 @@
 
 /* XXX OBSOLETE
  *
-# if 0
-char *COMMONER_NS(concat)(const char *s1, ...) __attribute__((sentinel))
-     __attribute__((warn_unused_result));
+ */
+
+char *COMMONER_NS(concat)(const char *src, ...) __attribute__((sentinel))
+     __attribute__((warn_unused_result))
+     __attribute__((deprecated("use concatl or concatm instead")));
 
 // XXX returned value needs free
-char *COMMONER_NS(concat)(const char *s1, ...)
+char *COMMONER_NS(concat)(const char *src, ...)
 {
 	va_list args;
-	const char *s;
+	const char *src_x;
 	char *p, *result;
 	unsigned long l, m, n;
-	m = n = strlen(s1);
-	va_start(args, s1);
-	while ((s = va_arg(args, char *))) {
-		l = strlen(s);
+
+	m = n = strlen(src);
+	va_start(args, src);
+
+	while ((src_x = va_arg(args, char *))) {
+		l = strlen(src_x);
 		if ((m += l) < l) break;
 	}
 	va_end(args);
-	if (s || m >= INT_MAX) return NULL;
+	if (src_x || m >= INT_MAX) return NULL;
 	comnr_mtrace;
 
 # if defined(__cplusplus)
@@ -64,19 +68,19 @@ char *COMMONER_NS(concat)(const char *s1, ...)
 # else
 	result = malloc(m + 1);
 # endif
-	if (!result) return NULL;
+     if (result == NULL && m + 1 == 0) {
+          return NULL;
+     }
 
-	memcpy(p = result, s1, n);
-	p += n;
-	va_start(args, s1);
-	while ((s = va_arg(args, char *))) {
-		l = strlen(s);
+     p = mempcpy(p = result, src, n);
+	va_start(args, src);
+	while ((src_x = va_arg(args, char *))) {
+		l = strlen(src_x);
 		if ((n += l) < l || n > m) break;
-		memcpy(p, s, l);
-		p += l;
+		p = mempcpy(p, src_x, l);
 	}
 	va_end(args);
-	if (s || m != n || p != result + n) {
+	if (src_x || m != n || p != result + n) {
 		free(result);
 		return NULL;
 	}
@@ -84,7 +88,6 @@ char *COMMONER_NS(concat)(const char *s1, ...)
 	comnr_muntrace;
 	return result;
 }
-# endif
 
 /* unlike `concat', which returns a
  * new pointer that must then be copied
@@ -103,9 +106,9 @@ char *COMMONER_NS(concat)(const char *s1, ...)
  * the destination buffers size_, which may make errors somewhat
  * harder to spot! */
 
-size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
+size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src, ...) __attribute__((sentinel));
 
-size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src0, ...)
+size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src, ...)
 {
      va_list args;
      const char *src_x = NULL;
@@ -113,8 +116,8 @@ size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src0, ...)
      unsigned long ldx, mdx, ndx;
      size_t used = 0;
 
-     mdx = ndx = strlen(src0);
-     va_start(args, src0);
+     mdx = ndx = strlen(src);
+     va_start(args, src);
      while ((src_x = va_arg(args, char *))) {
 	  ldx = strlen(src_x);
 	  if ((mdx += ldx) < ldx) break;
@@ -132,13 +135,13 @@ size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src0, ...)
      COMMONER_NS(bzero)(dst, mdx + 1);
 
      p = tmp;
-     p = COMMONER_NS(mempcpy)(p, (char *)src0, ndx);
+     p = COMMONER_NS(mempcpy)(p, (char *)src, ndx);
 
      used += ndx;
      COINT_DBG("p: `%s`\n", p);
      COINT_DBG("used: %lu\n", used - 0);
 
-     va_start(args, src0);
+     va_start(args, src);
      while ((src_x = va_arg(args, char *))) {
 	  ldx = strlen(src_x);
 	  if ((ndx += ldx) < ldx || ndx > mdx) break;
@@ -169,9 +172,9 @@ size_t COMMONER_NS(concatl)(char *dst, size_t dsize, const char *src0, ...)
 /* concatm is a little different:
  * unlike `concatl' or `concat', concatm _moves_ memory: that is, the destination
  * pointer can be passed as an argument. */
-size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
+size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src, ...) __attribute__((sentinel));
 
-size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src0, ...)
+size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src, ...)
 {
      va_list args;
      const char *src_x = NULL;
@@ -179,8 +182,8 @@ size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src0, ...)
      unsigned long ldx, mdx, ndx;
      size_t used = 0;
 
-     mdx = ndx = strlen(src0);
-     va_start(args, src0);
+     mdx = ndx = strlen(src);
+     va_start(args, src);
      while ((src_x = va_arg(args, char *))) {
 	  ldx = strlen(src_x);
 	  if ((mdx += ldx) < ldx) break;
@@ -199,13 +202,13 @@ size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src0, ...)
      COMMONER_NS(bzero)(tmp, mdx + 1);
 
      p = tmp;
-     p = COMMONER_NS(mempcpy)(p, (char *)src0, ndx);
+     p = COMMONER_NS(mempcpy)(p, (char *)src, ndx);
 
      used += ndx;
      COINT_DBG("p: `%s`\n", p);
      COINT_DBG("used: %lu\n", used - 0);
 
-     va_start(args, src0);
+     va_start(args, src);
      while ((src_x = va_arg(args, char *))) {
 	  ldx = strlen(src_x);
 	  if ((ndx += ldx) < ldx || ndx > mdx) break;
@@ -234,9 +237,9 @@ size_t COMMONER_NS(concatm)(char *dst, size_t dsize, const char *src0, ...)
 }
 
 #if 0
-void *COMMONER_NS(shrnkcat)(size_t src_size, size_t max, const char *src0, ...) __attribute__((sentinel));
+void *COMMONER_NS(shrnkcat)(size_t src_size, size_t max, const char *src, ...) __attribute__((sentinel));
 
-void *COMMONER_NS(shrnkcat)(size_t src_size, size_t max, const char *src0, ...)
+void *COMMONER_NS(shrnkcat)(size_t src_size, size_t max, const char *src, ...)
 {
      va_list args;
      const char *src_x = NULL;
@@ -245,8 +248,8 @@ void *COMMONER_NS(shrnkcat)(size_t src_size, size_t max, const char *src0, ...)
      unsigned long ldx, mdx, ndx;
      size_t used = 0;
 
-     mdx = ndx = strlen(src0);
-     va_start(args, src0);
+     mdx = ndx = strlen(src);
+     va_start(args, src);
 
      char *buf = malloc(max);
 }

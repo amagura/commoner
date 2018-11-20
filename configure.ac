@@ -22,6 +22,10 @@ AC_PROG_RANLIB
 AC_PROG_CXX
 LT_INIT
 
+# Check for packages
+PKG_PROG_PKG_CONFIG()
+PKG_CHECK_MODULES([CHECK], [check >= 0.12.0])
+
 # Checks for header files
 AC_CHECK_HEADERS([fcntl.h limits.h stdint.h stdlib.h string.h strings.h sys/time.h unistd.h mcheck.h])
 

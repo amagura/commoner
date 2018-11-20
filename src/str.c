@@ -48,7 +48,7 @@
 #  include <limits.h>
 # endif
 
-/*# if 0*/
+# if 0
 # define COMNR_BM_ALPHABET_LEN CHAR_MAX
 
 // bad character table
@@ -102,7 +102,7 @@ char *COMMONER_NS(boyer_moore)(char *str, size_t ssz, char *pat, size_t patsz)
 
 
      /*static void boyer_moore_pre(char *text, char **/
-/*# endif*/
+# endif
 # if 0
 void COMMONER_NS(ceaser)(char *s, const int x)
 {
@@ -152,6 +152,33 @@ next:
 }
 # endif
 
+char *COMMONER_NS(rmchar)(const char *src, const char c, size_t *n)
+{
+     const char *wp = src;
+     size_t len = 0;
+
+     if (n == NULL)
+          len = strlen(src) + 1;
+     else
+          len = *n;
+
+     char *dst = malloc(len);
+
+     if (dst == NULL && len != 0) {
+          comnr_errno = errno;
+          return NULL;
+     }
+
+     bzero(dst, len);
+
+     for (; *wp; ++wp)
+          if (*wp != c)
+               *dst = *wp;
+
+     *dst = '\0';
+     return dst;
+}
+
 int COMMONER_NS(chars)(const char *s, const char c)
 {
      int cnt = 0;
@@ -196,7 +223,7 @@ void COMMONER_NS(trim)(char *str)
 {
      char *wp = NULL;
      size_t len = strlen(str);
-     for (wp = str + len - 1; isspace(*wp); --wp); /* shrink wp to not include trailing spaces */
+     for (wp = str + len; isspace(*wp); --wp); /* shrink wp to not include trailing spaces */
      wp[1] = '\0';
      for (wp = str; isspace(*wp); ++wp); /* shrink wp to not include leading spaces */
      memmove(str, wp, len - (size_t)(wp - str) + 1);
@@ -215,7 +242,7 @@ char *COMMONER_NS(ptrim)(const char *str)
      }
 
      size_t len = strlen(str);
-     char *tmp = wp + len - 1;
+     char *tmp = wp + len;
      for (; isspace(*tmp); --tmp);
      tmp[1] = '\0';
      for (tmp = wp; isspace(*tmp); ++tmp);
@@ -295,7 +322,7 @@ char *COMMONER_NS(strend)(const char *s0)
 # if defined(_GNU_SOURCE)
      char *endp = strchr(s0, '\0') - 1;
 # else
-     char *endp = (char *)&s0[strlen(s0)] - 1;
+     char *endp = (char *)&s0[strlen(s0)];// - 1;
 # endif
      /* FIXME: this shouldn't return NULL for both when s0 is NULL and when *s0
       * is '\0'.
@@ -337,11 +364,8 @@ int *COMMONER_NS(strndelim)(const char *s0, const char od, const char cd, int co
 {
      bzero(count, sizeof(*count)*2); // times 2 because count is an array of two.
      /*memset(count, 0, sizeof(*count)*2);*/
-# if defined(_GNU_SOURCE)
-     char *c = strchr(s0, '\0');
-# else
-     char *c = (char *)&s0[strlen(s0)];
-# endif
+     char *c = strend(s0);
+
      if (c == s0) // we are looking at the end of the string
           goto fail;
 
@@ -368,7 +392,7 @@ int *COMMONER_NS(strndelim)(const char *s0, const char od, const char cd, int co
      return count;
 fail:
      return NULL;
-
+}
 
 char *COMMONER_NS(strwodqp)(const char *src)
 {
@@ -611,7 +635,7 @@ char *COMMONER_NS(strprep)(const char *s, int times)
 void COMMONER_NS(rev)(char *s)
 {
      int idx = 0;
-     int hdx = (int)strlen(s) - 1;
+     int hdx = (int)strlen(s);
 
      for (char c; idx < hdx; ++idx, --hdx) {
 	  c = s[idx];
@@ -624,7 +648,7 @@ void COMMONER_NS(rev)(char *s)
 char *COMMONER_NS(revp)(const char *s)
 {
      int idx = 0;
-     int hdx = (int)strlen(s) - 1;
+     int hdx = (int)strlen(s);
      char *copy = strdup(s);
 
      for (char c; idx < hdx; ++idx, --hdx) {

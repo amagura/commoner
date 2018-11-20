@@ -135,6 +135,7 @@ BEGIN_C_DECLS
 /////////////////////////////////////////
 // PUBLIC Macros
 /////////////////////////////////////////
+# define COMNR_MKSTR(COMNR_MKSTR_ARG) #COMNR_MKSTR_ARG
 //# define COMNR_NOP() do { __asm__ __volatile__ ("nop"); } while (0)
 
 /* XXX Do not use the cat? macros when debugging */
@@ -285,6 +286,7 @@ extern void COMMONER_NS(*mempcpy) PARAMS((void *dest, const void *src, size_t n)
 /** functions hosted by str.c **/
 //void COMMONER_NS(ceaser) PARAMS((char *s, const int x));
 
+char *COMMONER_NS(rmchar) PARAMS((const char *src, const char c, size_t *n));
 int COMMONER_NS(chars) PARAMS((const char *s, const char c));
 int COMMONER_NS(charsterm) PARAMS((const char *s, const char c, const char head, const char end));
 int COMMONER_NS(charstermp) PARAMS((const char *s, const char c, const char *endp));
@@ -317,18 +319,14 @@ char *COMMONER_NS(revnp) PARAMS((char *s, size_t n));
 
 /** functions hosted by concat.c **/
 
-/* it is worth noting that the original concat
- * is still available in concat.c
- * it is, however, commented out.
- */
+char *COMMONER_NS(concat) PARAMS((const char *src, ...)) __attribute__((sentinel)) __attribute__((warn_unused_result)) __attribute__((deprecated("use concatl or concatm instead")));
 size_t COMMONER_NS(concatl) PARAMS((char *dst, size_t dsize, const char *src0, ...)) __attribute__((sentinel));
 size_t COMMONER_NS(concatm) PARAMS((char *dst, size_t dsize, const char *src0, ...)) __attribute__((sentinel));
 
 /** functions hosted by int.c **/
-uintmax_t COMMONER_NS(uintm_len) PARAMS((uintmax_t idx));
-int COMMONER_NS(intlen) PARAMS((int idx));
-int COMMONER_NS(intlenc) PARAMS((const int idx));
-size_t COMMONER_NS(intlenm) PARAMS((int src));
+//uintmax_t COMMONER_NS(uintm_len) PARAMS((uintmax_t idx));
+//int COMMONER_NS(numlen) PARAMS((const long double n));
+int COMMONER_NS(intlen) PARAMS((const int n));
 long COMMONER_NS(randm) PARAMS((long max));
 uint64_t COMMONER_NS(getrandom) PARAMS(());
 
@@ -337,6 +335,7 @@ void COMMONER_NS(itoa) PARAMS((char *dst, int src));
 char *COMMONER_NS(itoap) PARAMS((const int src));
 
 /** functions hosted by os.c **/
+int COMMONER_NS(rseed) PARAMS(());
 char *COMMONER_NS(subdir) PARAMS((char **dirs, size_t ssz));
 char *COMMONER_NS(getdir) PARAMS((int *err, const char *pth));
 int COMMONER_NS(rpath) PARAMS((char *pth, size_t n));
