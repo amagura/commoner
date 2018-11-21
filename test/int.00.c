@@ -31,7 +31,7 @@ START_TEST(test_intlen_accuracy_02)
 {
      /* test using a random number */
      /*int tmp = randm(INT_MAX);*/
-     int tmp = rand() % RAND_MAX;
+     int tmp = rand();
      char *buf = itoap(tmp);
      /*char *base = malloc(sizeof(int)*sizeof(*base));*/
      int base = strlen(buf);
@@ -49,9 +49,9 @@ START_TEST(test_intlen_accuracy_03)
      char *buf = NULL;
      int base = 0;
 
-     for (int idx = 0; idx < 10; ++idx) {
-          n = randm(rand() % RAND_MAX);
-          COMNR_DBG("random number: '%d'\n", tmp);
+     for (int idx = 0; idx < 5; ++idx) {
+          n = rand();
+          COMNR_DBG("random number: '%d'\n", n);
           buf = itoap(tmp);
           base = strlen(buf);
           free(buf);
@@ -60,27 +60,18 @@ START_TEST(test_intlen_accuracy_03)
 }
 END_TEST
 
-START_TEST(test_numlen_accuracy_01)
+START_TEST(test_randm_randomness)
 {
-     int n = 40000;
-     int len = numlen(n);
-     ck_assert_int_eq(len, 5);
+     int base = randm(RAND_MAX);
+     int rc = randm(RAND_MAX);
+     ck_assert_int_ne(base, rc);
 }
 END_TEST
 
-START_TEST(test_numlen_accuracy_02)
+START_TEST(test_getrandom_randomness)
 {
-     int n = 0;
-     int len = 0;
-     char *buf = NULL;
-     int base = 0;
-
-     for (int idx = 0; idx < 10; ++idx) {
-          n = rand() % RAND_MAX;
-          COMNR_DBG("random number: '%d'\n", n);
-          len = numlen(n);
-          base = intlen(n);
-          ck_assert_int_eq(len, base);
-     }
+     uint64_t *base = getrandom();
+     uint64_t *rc = getrandom();
+     ck_assert_uint_ne(base, (unsigned int)rc);
 }
 END_TEST

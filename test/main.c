@@ -18,8 +18,11 @@ Suite * int_suite()
      tcase_add_test(tc_core, test_intlen_accuracy_03);
 
      /* numlen */
-     tcase_add_test(tc_core, test_numlen_accuracy_01);
-     tcase_add_test(tc_core, test_numlen_accuracy_02);
+     /*tcase_add_test(tc_core, test_numlen_accuracy_01);*/
+     /*tcase_add_test(tc_core, test_numlen_accuracy_02);*/
+
+     /* randm */
+     tcase_add_test(tc_core, test_randm_randomness);
      suite_add_tcase(s, tc_core);
 
      return s;

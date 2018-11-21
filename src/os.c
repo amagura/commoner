@@ -24,6 +24,7 @@
 #  include <config.h>
 # endif
 
+# include <string.h>
 # include "commoner.h"
 # include "os.h"
 # include <stdio.h>
@@ -32,10 +33,10 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <limits.h>
-# include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <time.h>
+# include <sys/time.h>
 # include <math.h>
 
 char *COMMONER_NS(subdir)(char **dirs, size_t ssz)
@@ -62,6 +63,7 @@ rok_free:
 
 }
 
+# if 0
 char *COMMONER_NS(getdir)(int *err, const char *pth)
 {
      if (pth == NULL)
@@ -92,6 +94,7 @@ int COMMONER_NS(rpath)(char *pth, size_t n)
      free(buf);
      return 0;
 }
+# endif
 
 /* XXX returns:
  * 1 if true
@@ -109,7 +112,8 @@ bool COMMONER_NS(direxists)(char *pth)
           /* `dir' doesn't exist */
           return false;
      } else {
-          return errno;
+          comnr_errno = errno;
+          return -1;
      }
 }
 
@@ -183,7 +187,12 @@ int COMMONER_NS(mkstmp)(char *template)
      xcnt = cnt = pos = 0;
      pid = getpid();
      srand(time(NULL));
-     val = COMMONER_NS(getrandom)() * rand() * COMMONER_NS(randm)(RAND_MAX) ^ pid;
+
+     struct timeval thyme;
+     gettimeofday(&thyme, NULL);
+     uint64_t rand_bits = ((uint64_t) thyme.tv_usec << 16) ^ thyme.tv_sec;
+
+     val = rand_bits * rand() * COMMONER_NS(randm)(RAND_MAX) ^ pid;
 
 /* The number of times to attempt to generate a temporary file.
  * POSIX demands that this must be no smaller than TMP_MAX.
@@ -199,7 +208,7 @@ int COMMONER_NS(mkstmp)(char *template)
      /* make sure that we at least have one template X */
      if (sp == NULL) {
           /* no period was found in template string */
-          errno = EINVAL;
+          comnr_errno = EINVAL;
           return -1;
      }
      /* Determine how many X's we have in wp. */
@@ -236,6 +245,7 @@ loop:
                free(substr);
                return fd;
           } else if (errno != EEXIST) {
+               comnr_errno = errno;
                COINT_DBG("errno: '%d'\n", errno);
                return -2;
           } else if (errno == EEXIST) {
@@ -248,7 +258,7 @@ loop:
      free(substr);
 
      /* ran out of tries */
-     errno = EAGAIN; // try again
+     comnr_errno = EAGAIN; // try again
      return -1;
 }
 # if COINT_INTERNAL_DEBUG

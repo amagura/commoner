@@ -83,6 +83,7 @@ long COMMONER_NS(randm)(long max) {
      return x0/binsz;
 }
 
+# if 0
 /* returns, hopefully, a bunch of random bits based on the current timestamp */
 uint64_t COMMONER_NS(getrandom)()
 {
@@ -91,6 +92,7 @@ uint64_t COMMONER_NS(getrandom)()
      uint64_t bits = ((uint64_t) tv.tv_usec << 16) ^ tv.tv_sec;
      return bits;
 }
+# endif
 
 int COMMONER_NS(rseed)()
 {
@@ -104,11 +106,6 @@ int COMMONER_NS(rseed)()
 /////////////////////////////////////////
 void COMMONER_NS(itoa)(char *dst, int src)
 {
-     /* FIXME this is isn't great:
-      * I need to write a version of itoa that
-      * doesn't need to know the length of the
-      * src number
-      * */
      size_t len = COMMONER_NS(intlen)(src) + 1;
      char tmp[len];
      char *wp = tmp;

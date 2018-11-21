@@ -30,16 +30,17 @@
 #include <errno.h>
 #include <string.h>
 
-#if COMNR_UNIT_TESTS
-# include "os.c"
-# include "concat.c"
-# include "int.c"
-# include "msg.c"
-# include "str.c"
-#endif
+/*#if COMNR_UNIT_TESTS*/
+/*# include "os.c"*/
+/*# include "concat.c"*/
+/*# include "int.c"*/
+/*# include "msg.c"*/
+/*# include "str.c"*/
+/*#endif*/
 
 int comnr_errno = 0;
 
+# if 0
 inline char* COMMONER_NS(abs_path)(const char *pth)
 {
      int *err = NULL;
@@ -54,6 +55,7 @@ inline char* COMMONER_NS(abs_path)(const char *pth)
      }
      return r; // needs a free
 }
+# endif
 
 inline void COMMONER_NS(noop)()
 {return;}

@@ -271,7 +271,7 @@ BEGIN_C_DECLS
 /////////////////////////////////////////
 
 /** functions hosted by commoner.c **/
-char *COMMONER_NS(abs_path) PARAMS((const char *pth));
+//char *COMMONER_NS(abs_path) PARAMS((const char *pth));
 void COMMONER_NS(noop) PARAMS(());
 void COMMONER_NS(nop) PARAMS(());
 extern size_t COMMONER_NS(strlcat) PARAMS((char *dst, const char *src, size_t siz));
@@ -328,7 +328,7 @@ size_t COMMONER_NS(concatm) PARAMS((char *dst, size_t dsize, const char *src0, .
 //int COMMONER_NS(numlen) PARAMS((const long double n));
 int COMMONER_NS(intlen) PARAMS((const int n));
 long COMMONER_NS(randm) PARAMS((long max));
-uint64_t COMMONER_NS(getrandom) PARAMS(());
+//uint64_t COMMONER_NS(getrandom) PARAMS(());
 
 /* from defunct itoa.c */
 void COMMONER_NS(itoa) PARAMS((char *dst, int src));
@@ -337,8 +337,8 @@ char *COMMONER_NS(itoap) PARAMS((const int src));
 /** functions hosted by os.c **/
 int COMMONER_NS(rseed) PARAMS(());
 char *COMMONER_NS(subdir) PARAMS((char **dirs, size_t ssz));
-char *COMMONER_NS(getdir) PARAMS((int *err, const char *pth));
-int COMMONER_NS(rpath) PARAMS((char *pth, size_t n));
+//char *COMMONER_NS(getdir) PARAMS((int *err, const char *pth));
+//int COMMONER_NS(rpath) PARAMS((char *pth, size_t n));
 bool COMMONER_NS(direxists) PARAMS((char *pth));
 size_t COMMONER_NS(flen) PARAMS((FILE *fp));
 int COMMONER_NS(mkstmp) PARAMS((char *tmpl));
