@@ -152,11 +152,19 @@ inline void bcopy(const void *src, void *dest, size_t n)
 
 # if !defined(HAVE_MEMPCPY) && !defined(mempcpy)
 inline void *mempcpy(void *dest, const void *src, size_t n)
-{return memcpy(dest, src, n);}
+{
+     void *tmp = memcpy(dest, src, n);
+     tmp += n;
+     return tmp;
+}
 # endif
 
 inline void *mempmove(void *dest, const void *src, size_t n)
-{return memmove(dest, src, n);}
+{
+     void *tmp = memmove(dest, src, n);
+     tmp += n;
+     return tmp;
+}
 
 /* if *dst is NULL, remember to free it later */
 int stoll(long long *dst, const char *s0)
