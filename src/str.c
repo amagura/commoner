@@ -241,7 +241,8 @@ fail:
      return NULL;
 }
 
-char *strwodqp(const char *src)
+// string without quotes (pointer)
+char *strwoqp(const char *src)
 {
      size_t n = strlen(src) + 1;
      int c[2] = {0, 0}, even = 0;
@@ -279,7 +280,8 @@ char *strwodqp(const char *src)
      return newp;
 }
 
-int strwodq(char *dst, const char *src, size_t n)
+// string without quotes
+int strwoq(char *dst, const char *src, size_t n)
 {
      int c[2] = {0, 0};
      int even = 0;
