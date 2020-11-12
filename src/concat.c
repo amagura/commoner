@@ -160,7 +160,7 @@ size_t concatl(char *dst, size_t dsize, const char *src0, ...)
      COINT_DBG("strlen(dst): %lu\n", strlen(dst));
      COINT_DBG("used#2: %lu\n", used - 0);
      coint_muntrace;
-     return (dsize - used);
+     return dsize - used;
 }
 
 /* concatm is a little different:
