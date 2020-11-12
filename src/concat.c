@@ -165,7 +165,8 @@ size_t concatl(char *dst, size_t dsize, const char *src0, ...)
 
 /* concatm is a little different:
  * unlike `concatl' or `concat', concatm _moves_ memory: that is, the destination
- * pointer can be passed as an argument. */
+ * pointer can be passed as an argument.
+ * In every other regard, concatm behaves exactly like concatl. */
 size_t concatm(char *dst, size_t dsize, const char *src0, ...) __attribute__((sentinel));
 
 size_t concatm(char *dst, size_t dsize, const char *src0, ...)
@@ -227,7 +228,7 @@ size_t concatm(char *dst, size_t dsize, const char *src0, ...)
      COINT_DBG("used#2: %lu\n", used - 0);
      coint_muntrace;
 
-     return (used > dsize ? 0 : dsize - used);
+     return dsize - used;
 }
 
 #if 0
