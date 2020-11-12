@@ -88,14 +88,13 @@ char *concat(const char *s1, ...)
  * new pointer that must then be copied
  * or acted upon in some meaningfully meaningless
  * manner, `catl' returns the number of bytes belonging
- * to `buf', which could _NOT_ be filled, always copying
- * no more than `bufsiz` of data into `buf'
+ * to `dst', which could _NOT_ be filled xor could _NOT_ be copied,
+ * always copying no more than `dsize` of data into `dst'
  *
- * If the return value is an integral value, which
- * we'll call `y', that is less than 0,
+ * If the return value, which we'll call `y', is negative, 
  * then the resulting catenation has been truncated by `!y'
  * many bytes.  Similarlly, if a positive value is returned:
- * `y' many bytes is how much of `buf', which was _NOT_ used.
+ * `y' many bytes is how much of `dst', which was _NOT_ used.
  *
  * XXX A failure is indicated by a return value _equal to
  * the destination buffers size_, which may make errors somewhat
@@ -161,7 +160,7 @@ size_t concatl(char *dst, size_t dsize, const char *src0, ...)
      COINT_DBG("strlen(dst): %lu\n", strlen(dst));
      COINT_DBG("used#2: %lu\n", used - 0);
      coint_muntrace;
-     return (used > dsize ? 0 : dsize - used);
+     return (dsize - used);
 }
 
 /* concatm is a little different:
