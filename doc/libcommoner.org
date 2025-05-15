@@ -1,0 +1,74 @@
+#+title: libcommoner - general purpose (convenience) functions
+#+date: May 15, 2025
+#+author: Alexej Magura
+
+
+* Description
+The libcommoner library provides a set of (convenience) functions and macros, some of which are common to certain variants of *NIX systems, but non-standard.  Some are purely included for my own use and may be unnecessary or even silly.
+Ultimately, this project is more a small hobby I like to entertain myself with than a serious endeavor, but I follow SOPs for project development and stability.
+
+As of the writing of this, I have not written any integration with pkgconf(1); the load flags for commoner aren't complicated enough at this time.
+
+Add ~-l libcommoner~ to your ~LDFLAGS~ and make sure the install directory for commoner.h is in either ~C_INCLUDE_PATH~ or ~CPATH~.
+
+
+* HEADERS
+
+Commoner comes with a single header file, which exports everything.
+
+*#include <commoner.h>*
+
+Other header files are used internally, but only commoner.h is /exported/ to the system on install.
+
+
+* INSTALL
+
+Building and installing Commoner is typical of most simple C projects.
+
+~autoconf -i~
+~./configure --prefix=/usr/local~
+~make~
+~make install~
+
+* COMPATIBILITY
+
+** Linux
+
+First-class - just add water.
+
+** BSD
+
+Should work right out of the box, just as with Linux.
+
+** Windows
+
+Windows is not supported, but commoner /should/ be usable within an LLVM environment.
+
+*** DOS
+
+DOS support, (primarily FreeDOS), is WIP at this moment.
+
+
+** BeOS
+
+While not supported directly, just as with UNIX, libcommoner should work on (most/more) modern systems based on BeOS.
+
+* OTHER FEATURES
+
+You may notice that Commoner includes more than just C code, at this time, the install/build process only supports the C library, but I would like to change that in the future.
+Note, that what Commoner (project) offers for these other languages is /not/ the same as what /lib/commoner offers for C.
+Platforms/langauges I intend to target:
+
++ Clojure and SBCL
+  Commoner should support /most/ modern lisps, but I only use Clojure and SBCL.
+
++ Scheme
+  There was a time when I used a lot of Chicken Scheme; this is no longer the case.
+
++ Rust
+  Maybe, it's a neat little thing.
+
+
+* SEE ALSO
+
+[[https://github.com/amagura/utl][User Tools]] (WIP) - a suite of aliases and functions for shell scripting.  Includes POSIX-compliant/specific features too!
