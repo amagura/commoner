@@ -30,7 +30,7 @@ limitations under the License.
 @titlepage
 @title (lib)Commoner
 @subtitle Comprehensive User's Manual
-@author Alexej G. Magura @email{amagura28@@gmail.com}
+@author Alexej Magura @email{amagura28@@gmail.com}
 @page
 @vskip 0pt plus 1filll
 @insertcopying
